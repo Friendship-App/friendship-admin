@@ -50,6 +50,11 @@ const mapDispatchToProps = dispatch => ({
   refreshUser: user => {
     dispatch(rest.actions.userDetails({ userId: user.id }));
   },
+  deleteUser: (user, callback) => {
+      dispatch(rest.actions.userDetails.delete({ userId: user.id }, null, () => {
+          dispatch(rest.actions.users());
+      }));
+  }
 });
 
 export class Users extends React.Component {
@@ -57,6 +62,8 @@ export class Users extends React.Component {
   // Here we keep track of whether the user details dialog is open.
   state = {
     dialogOpen: false,
+    deleteUserDialogOpen: false,
+    toBeDeletedUser: null,
   };
 
   // Refresh user list when component is first mounted
@@ -75,16 +82,23 @@ export class Users extends React.Component {
       : null;
   }
 
+  openDeleteModal(user) {
+      this.setState({
+          deleteUserDialogOpen: true,
+          toBeDeletedUser: user
+      });
+  }
+
   render() {
     const {
       users,
+      refresh,
       refreshUser,
       userDetails,
+      deleteUser,
       intl: { formatMessage },
     } = this.props;
-    const { dialogOpen } = this.state;
-
-    console.log(users);
+    const { dialogOpen, deleteUserDialogOpen } = this.state;
 
     // Show the following user details in the dialog
     const userDetailsDescription = (
@@ -110,6 +124,16 @@ export class Users extends React.Component {
       </div>
     );
 
+    const userDeleteDescription = (
+        <div>
+            <DialogContentText>
+                <strong>
+                    {formatMessage({ id: 'deleteUser_description' })}
+                </strong>
+            </DialogContentText>
+        </div>
+    )
+
     return (
       <div>
         <DialogWithButtons
@@ -121,6 +145,19 @@ export class Users extends React.Component {
           submit={() => this.setState({ dialogOpen: false })}
           close={() => this.setState({ dialogOpen: false })}
         />
+        <DialogWithButtons
+            title={formatMessage({ id: 'deleteUser_title' })}
+            description={userDeleteDescription}
+            submitAction={formatMessage({ id: 'deleteUser_ok' })}
+            cancelAction={formatMessage({ id: 'deleteUser_cancel' })}
+            isOpen={deleteUserDialogOpen}
+            submit={() => {
+                deleteUser(this.state.toBeDeletedUser);
+                this.setState({ deleteUserDialogOpen: false})
+
+            }}
+            close={() => this.setState({ deleteUserDialogOpen: false})}
+            />
 
         {this.renderProgressBar()}
 
@@ -156,6 +193,13 @@ export class Users extends React.Component {
                   >
                     <ListIcon style={{ paddingRight: 10 }} />
                     {formatMessage({ id: 'showUserDetails' })}
+                  </Button>
+                  <Button
+                      color="primary"
+                      onClick={() => {
+                          this.openDeleteModal(user)
+                      }}>
+                      Delete
                   </Button>
                 </TableCell>
               </TableRow>,
