@@ -44,13 +44,33 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
+
+  /**
+   * Refresh the user list
+   *
+   * @return {void}
+   */
   refresh: () => {
     dispatch(rest.actions.users());
   },
+
+  /**
+   * Refresh a spcific user
+   *
+   * @param  {Object} user The user to be refreshed
+   * @return {void}
+   */
   refreshUser: user => {
     dispatch(rest.actions.userDetails({ userId: user.id }));
   },
-  deleteUser: (user, callback) => {
+
+  /**
+   * Delete a spcific user
+   *
+   * @param  {object} user The to be deleted user
+   * @return {void}
+   */
+  deleteUser: (user) => {
       dispatch(rest.actions.userDetails.delete({ userId: user.id }, null, () => {
           dispatch(rest.actions.users());
       }));
@@ -82,82 +102,131 @@ export class Users extends React.Component {
       : null;
   }
 
+  /**
+   * Open the delete user modal
+   *
+   * @param  {object} user The to be deleted user
+   * @return {void}
+   */
   openDeleteModal(user) {
-      this.setState({
-          deleteUserDialogOpen: true,
-          toBeDeletedUser: user
-      });
+    this.setState({
+        deleteUserDialogOpen: true,
+        toBeDeletedUser: user
+    });
   }
 
+  renderUserDetailsDesc = () =>
+    <div>
+      <DialogContentText>
+        <b>
+          {this.props.intl.formatMessage({ id: 'userId' })}
+        </b>
+        {`: ${this.props.userDetails.data.id}`}
+      </DialogContentText>
+      <DialogContentText>
+        <b>
+          {this.props.intl.formatMessage({ id: 'email' })}
+        </b>
+        {`: ${this.props.userDetails.data.email}`}
+      </DialogContentText>
+      <DialogContentText>
+        <b>
+          {this.props.intl.formatMessage({ id: 'description' })}
+        </b>
+        {`: ${this.props.userDetails.data.description}`}
+      </DialogContentText>
+    </div>;
+
+  /**
+   * Render the user delete dialog description
+   *
+   * @return {Node}
+   */
+  renderUserDeleteDesc = () =>
+    <div>
+        <DialogContentText>
+            <strong>
+                {this.props.intl.formatMessage({ id: 'deleteUser_description' })}
+            </strong>
+        </DialogContentText>
+    </div>;
+
+  /**
+   * Render the user row in the user list
+   *
+   * @param  {object} user The user that has to be rendered
+   * @return {TableRow} The tablerow associated with the user
+   */
+  renderUserRow = (user) =>
+    <TableRow key={user.id}>
+      <TableCell>
+        {user.id}
+      </TableCell>
+      <TableCell>
+        {user.email}
+      </TableCell>
+      <TableCell numeric>
+        <Button
+          color="primary"
+          onClick={() => {
+            this.props.refreshUser(user);
+            this.setState({ dialogOpen: true });
+          }}
+        >
+          <ListIcon style={{ paddingRight: 10 }} />
+          {this.props.intl.formatMessage({ id: 'showUserDetails' })}
+        </Button>
+        <Button
+            color="primary"
+            onClick={() => {
+                this.openDeleteModal(user)
+            }}>
+            {this.props.intl.formatMessage({ id: 'deleteUser_delete' })}
+        </Button>
+      </TableCell>
+    </TableRow>;
+
+  /**
+   * Render the dialogs
+   * @return {Node} The dialogs
+   */
+  renderDialogs = () =>
+    <div>
+      <DialogWithButtons
+        title={this.props.intl.formatMessage({ id: 'userDetails' })}
+        description={this.renderUserDetailsDesc()}
+        submitAction={this.props.intl.formatMessage({ id: 'close' })}
+        isOpen={this.state.dialogOpen}
+        loading={this.props.userDetails.loading}
+        submit={() => this.setState({ dialogOpen: false })}
+        close={() => this.setState({ dialogOpen: false })}
+      />
+      <DialogWithButtons
+          title={this.props.intl.formatMessage({ id: 'deleteUser_title' })}
+          description={this.renderUserDeleteDesc()}
+          submitAction={this.props.intl.formatMessage({ id: 'deleteUser_ok' })}
+          cancelAction={this.props.intl.formatMessage({ id: 'deleteUser_cancel' })}
+          isOpen={this.state.deleteUserDialogOpen}
+          submit={() => {
+              this.props.deleteUser(this.state.toBeDeletedUser);
+              this.setState({ deleteUserDialogOpen: false})
+
+          }}
+          close={() => this.setState({ deleteUserDialogOpen: false})}
+          />
+      </div>;
+
+  /**
+   * Render the user list
+   *
+   * @return {Node}
+   */
   render() {
-    const {
-      users,
-      refresh,
-      refreshUser,
-      userDetails,
-      deleteUser,
-      intl: { formatMessage },
-    } = this.props;
-    const { dialogOpen, deleteUserDialogOpen } = this.state;
-
-    // Show the following user details in the dialog
-    const userDetailsDescription = (
-      <div>
-        <DialogContentText>
-          <b>
-            {formatMessage({ id: 'userId' })}
-          </b>
-          {`: ${userDetails.data.id}`}
-        </DialogContentText>
-        <DialogContentText>
-          <b>
-            {formatMessage({ id: 'email' })}
-          </b>
-          {`: ${userDetails.data.email}`}
-        </DialogContentText>
-        <DialogContentText>
-          <b>
-            {formatMessage({ id: 'description' })}
-          </b>
-          {`: ${userDetails.data.description}`}
-        </DialogContentText>
-      </div>
-    );
-
-    const userDeleteDescription = (
-        <div>
-            <DialogContentText>
-                <strong>
-                    {formatMessage({ id: 'deleteUser_description' })}
-                </strong>
-            </DialogContentText>
-        </div>
-    )
+    const{ users } = this.props;
 
     return (
       <div>
-        <DialogWithButtons
-          title={formatMessage({ id: 'userDetails' })}
-          description={userDetailsDescription}
-          submitAction={formatMessage({ id: 'close' })}
-          isOpen={dialogOpen}
-          loading={userDetails.loading}
-          submit={() => this.setState({ dialogOpen: false })}
-          close={() => this.setState({ dialogOpen: false })}
-        />
-        <DialogWithButtons
-            title={formatMessage({ id: 'deleteUser_title' })}
-            description={userDeleteDescription}
-            submitAction={formatMessage({ id: 'deleteUser_ok' })}
-            cancelAction={formatMessage({ id: 'deleteUser_cancel' })}
-            isOpen={deleteUserDialogOpen}
-            submit={() => {
-                deleteUser(this.state.toBeDeletedUser);
-                this.setState({ deleteUserDialogOpen: false})
-
-            }}
-            close={() => this.setState({ deleteUserDialogOpen: false})}
-            />
+        {this.renderDialogs()}
 
         {this.renderProgressBar()}
 
@@ -165,10 +234,10 @@ export class Users extends React.Component {
           <TableHead>
             <TableRow>
               <TableCell>
-                {formatMessage({ id: 'userId' })}
+                {this.props.intl.formatMessage({ id: 'userId' })}
               </TableCell>
               <TableCell>
-                {formatMessage({ id: 'email' })}
+                {this.props.intl.formatMessage({ id: 'email' })}
               </TableCell>
               <TableCell />
             </TableRow>
@@ -176,33 +245,7 @@ export class Users extends React.Component {
           <TableBody>
             {// Loop over each user and render a <TableRow>
             users.data.map(user =>
-              <TableRow key={user.id}>
-                <TableCell>
-                  {user.id}
-                </TableCell>
-                <TableCell>
-                  {user.email}
-                </TableCell>
-                <TableCell numeric>
-                  <Button
-                    color="primary"
-                    onClick={() => {
-                      refreshUser(user);
-                      this.setState({ dialogOpen: true });
-                    }}
-                  >
-                    <ListIcon style={{ paddingRight: 10 }} />
-                    {formatMessage({ id: 'showUserDetails' })}
-                  </Button>
-                  <Button
-                      color="primary"
-                      onClick={() => {
-                          this.openDeleteModal(user)
-                      }}>
-                      Delete
-                  </Button>
-                </TableCell>
-              </TableRow>,
+              this.renderUserRow(user)
             )}
           </TableBody>
         </Table>

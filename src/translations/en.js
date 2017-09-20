@@ -20,6 +20,7 @@ export default {
   deleteUser_description: 'Are you sure you want to delete this user?',
   deleteUser_ok: 'Yup',
   deleteUser_cancel: 'Cancel',
+  deleteUser_delete: 'Delete',
 
   // Preferences view
   language: 'App language',
