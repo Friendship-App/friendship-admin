@@ -7,9 +7,7 @@ import { render } from 'react-dom';
 import { ConnectedRouter } from 'react-router-redux';
 
 // import injectTapEventPlugin from 'react-tap-event-plugin';
-
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-import createMuiTheme from 'material-ui/styles/theme';
+import { MuiThemeProvider, createMuiTheme } from 'material-ui/styles';
 
 import { IntlProvider } from 'react-intl-redux';
 

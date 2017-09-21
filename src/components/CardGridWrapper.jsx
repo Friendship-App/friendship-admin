@@ -6,9 +6,9 @@ import Hidden from 'material-ui/Hidden';
 
 import withWidth, { isWidthDown } from 'material-ui/utils/withWidth';
 
-import { withStyles, createStyleSheet } from 'material-ui/styles';
+import { withStyles } from 'material-ui/styles';
 
-const styleSheet = createStyleSheet('CardGridWrapper', {
+const styles = {
   mobileContainer: {
     marginTop: 12,
     paddingBottom: 12,
@@ -21,7 +21,7 @@ const styleSheet = createStyleSheet('CardGridWrapper', {
   desktopGrid: {
     maxWidth: '80%',
   },
-});
+};
 
 export class CardGridWrapper extends React.Component {
   static propTypes = {
@@ -31,17 +31,19 @@ export class CardGridWrapper extends React.Component {
     width: PropTypes.string.isRequired,
   };
 
-  renderChildDesktop = (component, index) =>
+  renderChildDesktop = (component, index) => (
     <Hidden key={index} xsDown>
       <Grid item sm={12} md={10} lg={6} xl={4}>
         {component}
       </Grid>
-    </Hidden>;
+    </Hidden>
+  );
 
-  renderChildMobile = component =>
+  renderChildMobile = component => (
     <Grid item xs={12}>
       {component}
-    </Grid>;
+    </Grid>
+  );
 
   render() {
     const { children, classes, width } = this.props;
@@ -77,4 +79,4 @@ export class CardGridWrapper extends React.Component {
   }
 }
 
-export default withWidth()(withStyles(styleSheet)(CardGridWrapper));
+export default withWidth()(withStyles(styles)(CardGridWrapper));

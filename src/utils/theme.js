@@ -1,5 +1,4 @@
-import createPalette from 'material-ui/styles/palette';
-import { lightGreen, orange, red } from 'material-ui/styles/colors';
+import { lightGreen, orange, red } from 'material-ui/colors';
 
 export default {
   // App spacing config. Sets the size of various components.
@@ -8,10 +7,10 @@ export default {
   },
 
   // App color palette
-  palette: createPalette({
+  palette: {
     primary: lightGreen,
-    accent: orange,
+    secondary: orange,
     error: red,
     type: 'light',
-  }),
+  },
 };
