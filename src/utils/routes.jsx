@@ -36,6 +36,7 @@ Routes may optionally contain the following keys:
 // Icons
 import HomeIcon from 'material-ui-icons/Home';
 import UsersIcon from 'material-ui-icons/SupervisorAccount';
+import CopyrightIcon from 'material-ui-icons/Copyright';
 import PreferencesIcon from 'material-ui-icons/Settings';
 import LoginIcon from 'material-ui-icons/AccountCircle';
 import LogoutIcon from 'material-ui-icons/ExitToApp';
@@ -43,6 +44,7 @@ import LogoutIcon from 'material-ui-icons/ExitToApp';
 // Components
 import Home from '../modules/Home';
 import Users from '../modules/Users';
+import Tos from '../modules/Tos';
 import Preferences from '../modules/Preferences';
 import Login from '../modules/Login';
 import Logout from '../modules/Logout';
@@ -61,6 +63,14 @@ const routeConfigs = [
     name: 'Users',
     component: Users,
     icon: UsersIcon,
+    separator: true,
+    requiresLogin: true,
+  },
+  {
+    path: '/tos',
+    name: 'Tos',
+    component: Tos,
+    icon: CopyrightIcon,
     separator: true,
     requiresLogin: true,
   },
