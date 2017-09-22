@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { injectIntl } from 'react-intl';
 
 import Button from 'material-ui/Button';
+import TextField from 'material-ui/TextField'
 import Table, {
   TableBody,
   TableHead,
@@ -12,6 +13,8 @@ import Table, {
 
 import { LinearProgress } from 'material-ui/Progress';
 import ListIcon from 'material-ui-icons/List';
+import DeleteIcon from 'material-ui-icons/Delete';
+import WarningIcon from 'material-ui-icons/Warning';
 
 import { DialogContentText } from 'material-ui/Dialog';
 import DialogWithButtons from '../components/DialogWithButtons';
@@ -74,6 +77,10 @@ const mapDispatchToProps = dispatch => ({
       dispatch(rest.actions.userDetails.delete({ userId: user.id }, null, () => {
           dispatch(rest.actions.users());
       }));
+  },
+
+  banUser: (user) => {
+
   }
 });
 
@@ -84,6 +91,8 @@ export class Users extends React.Component {
     dialogOpen: false,
     deleteUserDialogOpen: false,
     toBeDeletedUser: null,
+    banUserDialogOpen: false,
+    toBeBannedUser: null,
   };
 
   // Refresh user list when component is first mounted
@@ -108,11 +117,24 @@ export class Users extends React.Component {
    * @param  {object} user The to be deleted user
    * @return {void}
    */
-  openDeleteModal(user) {
+  openDeleteModal = (user) => {
     this.setState({
         deleteUserDialogOpen: true,
         toBeDeletedUser: user
     });
+  }
+
+  /**
+   * Open the ban user modal
+   *
+   * @param  {object} user the to be banned user
+   * @return {void}
+   */
+  openBanModal = (user) => {
+    this.setState({
+      banUserDialogOpen: true,
+      toBeBannedUser: user
+    })
   }
 
   renderUserDetailsDesc = () =>
@@ -151,6 +173,17 @@ export class Users extends React.Component {
         </DialogContentText>
     </div>;
 
+  renderUserBanDesc = () =>
+    <div>
+      <DialogContentText>
+
+      </DialogContentText>
+      <TextField
+        label="Fill in the reason"
+        fullWidth={true}
+      />
+  </div>;
+
   /**
    * Render the user row in the user list
    *
@@ -181,7 +214,14 @@ export class Users extends React.Component {
             onClick={() => {
                 this.openDeleteModal(user)
             }}>
+            <DeleteIcon style={{ paddingRight: 10 }} />
             {this.props.intl.formatMessage({ id: 'deleteUser_delete' })}
+        </Button>
+        <Button color="primary" onClick={() => {
+            this.openBanModal(user)
+          }}>
+          <WarningIcon style={{ paddingRight: 10 }} />
+          {this.props.intl.formatMessage({ id: 'deleteUser_ban' })}
         </Button>
       </TableCell>
     </TableRow>;
@@ -214,6 +254,18 @@ export class Users extends React.Component {
           }}
           close={() => this.setState({ deleteUserDialogOpen: false})}
           />
+        <DialogWithButtons
+          title={this.props.intl.formatMessage({ id: 'banUser_title' })}
+          description={this.renderUserBanDesc()}
+          submitAction={this.props.intl.formatMessage({ id: 'banUser_ok' })}
+          cancelAction={this.props.intl.formatMessage({ id: 'banUser_cancel' })}
+          isOpen={this.state.banUserDialogOpen}
+          submit={() => {
+            this.props.banUser(this.state.toBeBannedUser)
+            this.setState({ deleteUserDialogOpen: false })
+          }}
+          close={() => this.setState({ banUserDialogOpen: false })}
+          />
       </div>;
 
   /**
@@ -222,7 +274,6 @@ export class Users extends React.Component {
    * @return {Node}
    */
   render() {
-    const{ users } = this.props;
 
     return (
       <div>
@@ -244,7 +295,7 @@ export class Users extends React.Component {
           </TableHead>
           <TableBody>
             {// Loop over each user and render a <TableRow>
-            users.data.map(user =>
+            this.props.users.data.map(user =>
               this.renderUserRow(user)
             )}
           </TableBody>

@@ -15,12 +15,16 @@ export default {
   userDetails: 'User details',
   userActions: 'Actions',
 
-  //Delete User
+  // Delete User
   deleteUser_title: 'Delete user',
   deleteUser_description: 'Are you sure you want to delete this user?',
   deleteUser_ok: 'Yup',
   deleteUser_cancel: 'Cancel',
   deleteUser_delete: 'Delete',
+
+  // Ban User
+  deleteUser_ban: 'Ban',
+  deleteUer_title: 'Ban user',
 
   // Preferences view
   language: 'App language',
