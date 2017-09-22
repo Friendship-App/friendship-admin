@@ -38,7 +38,7 @@ const rest = reduxApi({
   userDetails: {
     url: `${apiRoot}/users/:userId`,
     crud: true,
-  },
+},
 
   // Add more API endpoints here! Examples below:
 
