@@ -79,8 +79,12 @@ const mapDispatchToProps = dispatch => ({
       }));
   },
 
-  banUser: (user) => {
-
+  banUser: (user, banInfo) => {
+      dispatch(rest.actions.banUser({ userId: user.id }, {
+          body: JSON.stringify(banInfo)
+        }, () => {
+          dispatch(rest.actions.users());
+        }))
   }
 });
 
@@ -93,6 +97,10 @@ export class Users extends React.Component {
     toBeDeletedUser: null,
     banUserDialogOpen: false,
     toBeBannedUser: null,
+    banInfo: {
+      value: '',
+      expire: '',
+    }
   };
 
   // Refresh user list when component is first mounted
@@ -175,13 +183,14 @@ export class Users extends React.Component {
 
   renderUserBanDesc = () =>
     <div>
-      <DialogContentText>
-
-      </DialogContentText>
       <TextField
-        label="Fill in the reason"
+        label="Expires (DD-MM-YYYY)"
         fullWidth={true}
+        onChange={(event) => {
+          this.setState({ banInfo: {...this.state.banInfo, expire: event.target.value} })}
+        }
       />
+
   </div>;
 
   /**
@@ -221,7 +230,7 @@ export class Users extends React.Component {
             this.openBanModal(user)
           }}>
           <WarningIcon style={{ paddingRight: 10 }} />
-          {this.props.intl.formatMessage({ id: 'deleteUser_ban' })}
+          {this.props.intl.formatMessage({ id: 'banUser_ban' })}
         </Button>
       </TableCell>
     </TableRow>;
@@ -255,15 +264,13 @@ export class Users extends React.Component {
           close={() => this.setState({ deleteUserDialogOpen: false})}
           />
         <DialogWithButtons
+          textField={{label: this.props.intl.formatMessage({ id: 'banUser_reason' }), fullWidth: true, onChange: (event) => this.setState({ banInfo: {...this.state.banInfo, reason: event.target.value}}) }}
           title={this.props.intl.formatMessage({ id: 'banUser_title' })}
           description={this.renderUserBanDesc()}
           submitAction={this.props.intl.formatMessage({ id: 'banUser_ok' })}
           cancelAction={this.props.intl.formatMessage({ id: 'banUser_cancel' })}
           isOpen={this.state.banUserDialogOpen}
-          submit={() => {
-            this.props.banUser(this.state.toBeBannedUser)
-            this.setState({ deleteUserDialogOpen: false })
-          }}
+          submit={() => this.props.banUser(this.state.toBeBannedUser, this.state.banInfo) }
           close={() => this.setState({ banUserDialogOpen: false })}
           />
       </div>;

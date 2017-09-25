@@ -23,8 +23,13 @@ export default {
   deleteUser_delete: 'Delete',
 
   // Ban User
-  deleteUser_ban: 'Ban',
-  deleteUer_title: 'Ban user',
+  banUser_ban: 'Ban',
+  banUser_title: 'Ban user',
+  banUser_reason: 'Fill in the reason',
+  banUser_ok: 'Ban',
+  banUser_cancel: 'Cancel',
+  banUser_description: 'Banning user with ID: ',
+
 
   // Preferences view
   language: 'App language',

@@ -23,6 +23,14 @@ export default {
   deleteUser_delete: '???',
   deleteUser_ban: '???',
 
+  // Ban User
+  banUser_ban: '???',
+  banUser_title: '???',
+  banUser_reason: '???',
+  banUser_ok: '???',
+  banUser_cancel: '???',
+  banUser_description: '???',
+
   // Preferences view
   language: 'Sovelluksen kieli',
   selectedLanguage: 'Valittu kieli',
