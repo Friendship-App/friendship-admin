@@ -147,11 +147,15 @@ class DialogWithButtons extends React.Component {
           { textField ?
             <DialogContentText>
               <TextField
-                floatingLabelText={textField.label}
+                label={textField.label}
                 value={this.state.value}
-                onChange={this.handleChange}
+                onChange={(event) => {
+                  if(textField.onChange) textField.onChange(event);
+                  this.handleChange(event)
+                }}
                 autoFocus
                 onKeyDown={this.keyDown}
+                fullWidth={textField.fullWidth}
               />
             </DialogContentText>
             :

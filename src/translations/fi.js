@@ -13,6 +13,23 @@ export default {
   description: 'Kuvaus',
   showUserDetails: 'Lisätiedot',
   userDetails: 'Käyttäjän lisätiedot',
+  userActions: '???',
+
+  //Delete User
+  deleteUser_title: '???',
+  deleteUser_description: '???',
+  deleteUser_ok: '???',
+  deleteUser_cancel: '???',
+  deleteUser_delete: '???',
+  deleteUser_ban: '???',
+
+  // Ban User
+  banUser_ban: '???',
+  banUser_title: '???',
+  banUser_reason: '???',
+  banUser_ok: '???',
+  banUser_cancel: '???',
+  banUser_description: '???',
 
   // Preferences view
   language: 'Sovelluksen kieli',
