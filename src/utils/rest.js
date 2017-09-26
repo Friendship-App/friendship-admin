@@ -39,6 +39,13 @@ const rest = reduxApi({
     url: `${apiRoot}/users/:userId`,
     crud: true,
   },
+  banUser: {
+    url: `${apiRoot}/users/:userId/ban`,
+    crud: true,
+    options: {
+      method: 'POST'
+    }
+  },
 
   // Add more API endpoints here! Examples below:
 

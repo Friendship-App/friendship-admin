@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { injectIntl } from 'react-intl';
 
 import Button from 'material-ui/Button';
+import TextField from 'material-ui/TextField'
 import Table, {
   TableBody,
   TableHead,
@@ -12,6 +13,8 @@ import Table, {
 
 import { LinearProgress } from 'material-ui/Progress';
 import ListIcon from 'material-ui-icons/List';
+import DeleteIcon from 'material-ui-icons/Delete';
+import WarningIcon from 'material-ui-icons/Warning';
 
 import { DialogContentText } from 'material-ui/Dialog';
 import DialogWithButtons from '../components/DialogWithButtons';
@@ -44,12 +47,45 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
+
+  /**
+   * Refresh the user list
+   *
+   * @return {void}
+   */
   refresh: () => {
     dispatch(rest.actions.users());
   },
+
+  /**
+   * Refresh a spcific user
+   *
+   * @param  {Object} user The user to be refreshed
+   * @return {void}
+   */
   refreshUser: user => {
     dispatch(rest.actions.userDetails({ userId: user.id }));
   },
+
+  /**
+   * Delete a spcific user
+   *
+   * @param  {object} user The to be deleted user
+   * @return {void}
+   */
+  deleteUser: (user) => {
+      dispatch(rest.actions.userDetails.delete({ userId: user.id }, null, () => {
+          dispatch(rest.actions.users());
+      }));
+  },
+
+  banUser: (user, banInfo) => {
+      dispatch(rest.actions.banUser({ userId: user.id }, {
+          body: JSON.stringify(banInfo)
+        }, () => {
+          dispatch(rest.actions.users());
+        }))
+  }
 });
 
 export class Users extends React.Component {
@@ -57,6 +93,14 @@ export class Users extends React.Component {
   // Here we keep track of whether the user details dialog is open.
   state = {
     dialogOpen: false,
+    deleteUserDialogOpen: false,
+    toBeDeletedUser: null,
+    banUserDialogOpen: false,
+    toBeBannedUser: null,
+    banInfo: {
+      value: '',
+      expire: '',
+    }
   };
 
   // Refresh user list when component is first mounted
@@ -75,52 +119,172 @@ export class Users extends React.Component {
       : null;
   }
 
+  /**
+   * Open the delete user modal
+   *
+   * @param  {object} user The to be deleted user
+   * @return {void}
+   */
+  openDeleteModal = (user) => {
+    this.setState({
+        deleteUserDialogOpen: true,
+        toBeDeletedUser: user
+    });
+  }
+
+  /**
+   * Open the ban user modal
+   *
+   * @param  {object} user the to be banned user
+   * @return {void}
+   */
+  openBanModal = (user) => {
+    this.setState({
+      banUserDialogOpen: true,
+      toBeBannedUser: user
+    })
+  }
+
+  renderUserDetailsDesc = () =>
+    <div>
+      <DialogContentText>
+        <b>
+          {this.props.intl.formatMessage({ id: 'userId' })}
+        </b>
+        {`: ${this.props.userDetails.data.id}`}
+      </DialogContentText>
+      <DialogContentText>
+        <b>
+          {this.props.intl.formatMessage({ id: 'email' })}
+        </b>
+        {`: ${this.props.userDetails.data.email}`}
+      </DialogContentText>
+      <DialogContentText>
+        <b>
+          {this.props.intl.formatMessage({ id: 'description' })}
+        </b>
+        {`: ${this.props.userDetails.data.description}`}
+      </DialogContentText>
+    </div>;
+
+  /**
+   * Render the user delete dialog description
+   *
+   * @return {Node}
+   */
+  renderUserDeleteDesc = () =>
+    <div>
+        <DialogContentText>
+            <strong>
+                {this.props.intl.formatMessage({ id: 'deleteUser_description' })}
+            </strong>
+        </DialogContentText>
+    </div>;
+
+  renderUserBanDesc = () =>
+    <div>
+      <TextField
+        label="Expires (DD-MM-YYYY)"
+        fullWidth={true}
+        onChange={(event) => {
+          this.setState({ banInfo: {...this.state.banInfo, expire: event.target.value} })}
+        }
+      />
+
+  </div>;
+
+  /**
+   * Render the user row in the user list
+   *
+   * @param  {object} user The user that has to be rendered
+   * @return {TableRow} The tablerow associated with the user
+   */
+  renderUserRow = (user) =>
+    <TableRow key={user.id}>
+      <TableCell>
+        {user.id}
+      </TableCell>
+      <TableCell>
+        {user.email}
+      </TableCell>
+      <TableCell numeric>
+        <Button
+          color="primary"
+          onClick={() => {
+            this.props.refreshUser(user);
+            this.setState({ dialogOpen: true });
+          }}
+        >
+          <ListIcon style={{ paddingRight: 10 }} />
+          {this.props.intl.formatMessage({ id: 'showUserDetails' })}
+        </Button>
+        <Button
+            color="primary"
+            onClick={() => {
+                this.openDeleteModal(user)
+            }}>
+            <DeleteIcon style={{ paddingRight: 10 }} />
+            {this.props.intl.formatMessage({ id: 'deleteUser_delete' })}
+        </Button>
+        <Button color="primary" onClick={() => {
+            this.openBanModal(user)
+          }}>
+          <WarningIcon style={{ paddingRight: 10 }} />
+          {this.props.intl.formatMessage({ id: 'banUser_ban' })}
+        </Button>
+      </TableCell>
+    </TableRow>;
+
+  /**
+   * Render the dialogs
+   * @return {Node} The dialogs
+   */
+  renderDialogs = () =>
+    <div>
+      <DialogWithButtons
+        title={this.props.intl.formatMessage({ id: 'userDetails' })}
+        description={this.renderUserDetailsDesc()}
+        submitAction={this.props.intl.formatMessage({ id: 'close' })}
+        isOpen={this.state.dialogOpen}
+        loading={this.props.userDetails.loading}
+        submit={() => this.setState({ dialogOpen: false })}
+        close={() => this.setState({ dialogOpen: false })}
+      />
+      <DialogWithButtons
+          title={this.props.intl.formatMessage({ id: 'deleteUser_title' })}
+          description={this.renderUserDeleteDesc()}
+          submitAction={this.props.intl.formatMessage({ id: 'deleteUser_ok' })}
+          cancelAction={this.props.intl.formatMessage({ id: 'deleteUser_cancel' })}
+          isOpen={this.state.deleteUserDialogOpen}
+          submit={() => {
+              this.props.deleteUser(this.state.toBeDeletedUser);
+              this.setState({ deleteUserDialogOpen: false})
+
+          }}
+          close={() => this.setState({ deleteUserDialogOpen: false})}
+          />
+        <DialogWithButtons
+          textField={{label: this.props.intl.formatMessage({ id: 'banUser_reason' }), fullWidth: true, onChange: (event) => this.setState({ banInfo: {...this.state.banInfo, reason: event.target.value}}) }}
+          title={this.props.intl.formatMessage({ id: 'banUser_title' })}
+          description={this.renderUserBanDesc()}
+          submitAction={this.props.intl.formatMessage({ id: 'banUser_ok' })}
+          cancelAction={this.props.intl.formatMessage({ id: 'banUser_cancel' })}
+          isOpen={this.state.banUserDialogOpen}
+          submit={() => this.props.banUser(this.state.toBeBannedUser, this.state.banInfo) }
+          close={() => this.setState({ banUserDialogOpen: false })}
+          />
+      </div>;
+
+  /**
+   * Render the user list
+   *
+   * @return {Node}
+   */
   render() {
-    const {
-      users,
-      refreshUser,
-      userDetails,
-      intl: { formatMessage },
-    } = this.props;
-    const { dialogOpen } = this.state;
-
-    console.log(users);
-
-    // Show the following user details in the dialog
-    const userDetailsDescription = (
-      <div>
-        <DialogContentText>
-          <b>
-            {formatMessage({ id: 'userId' })}
-          </b>
-          {`: ${userDetails.data.id}`}
-        </DialogContentText>
-        <DialogContentText>
-          <b>
-            {formatMessage({ id: 'email' })}
-          </b>
-          {`: ${userDetails.data.email}`}
-        </DialogContentText>
-        <DialogContentText>
-          <b>
-            {formatMessage({ id: 'description' })}
-          </b>
-          {`: ${userDetails.data.description}`}
-        </DialogContentText>
-      </div>
-    );
 
     return (
       <div>
-        <DialogWithButtons
-          title={formatMessage({ id: 'userDetails' })}
-          description={userDetailsDescription}
-          submitAction={formatMessage({ id: 'close' })}
-          isOpen={dialogOpen}
-          loading={userDetails.loading}
-          submit={() => this.setState({ dialogOpen: false })}
-          close={() => this.setState({ dialogOpen: false })}
-        />
+        {this.renderDialogs()}
 
         {this.renderProgressBar()}
 
@@ -128,37 +292,18 @@ export class Users extends React.Component {
           <TableHead>
             <TableRow>
               <TableCell>
-                {formatMessage({ id: 'userId' })}
+                {this.props.intl.formatMessage({ id: 'userId' })}
               </TableCell>
               <TableCell>
-                {formatMessage({ id: 'email' })}
+                {this.props.intl.formatMessage({ id: 'email' })}
               </TableCell>
               <TableCell />
             </TableRow>
           </TableHead>
           <TableBody>
             {// Loop over each user and render a <TableRow>
-            users.data.map(user =>
-              <TableRow key={user.id}>
-                <TableCell>
-                  {user.id}
-                </TableCell>
-                <TableCell>
-                  {user.email}
-                </TableCell>
-                <TableCell numeric>
-                  <Button
-                    color="primary"
-                    onClick={() => {
-                      refreshUser(user);
-                      this.setState({ dialogOpen: true });
-                    }}
-                  >
-                    <ListIcon style={{ paddingRight: 10 }} />
-                    {formatMessage({ id: 'showUserDetails' })}
-                  </Button>
-                </TableCell>
-              </TableRow>,
+            this.props.users.data.map(user =>
+              this.renderUserRow(user)
             )}
           </TableBody>
         </Table>
