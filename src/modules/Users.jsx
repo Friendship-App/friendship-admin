@@ -10,6 +10,8 @@ import Table, {
   TableRow,
   TableCell,
 } from 'material-ui/Table';
+import { FormControlLabel } from 'material-ui/Form';
+import Switch from 'material-ui/Switch';
 
 import { LinearProgress } from 'material-ui/Progress';
 import ListIcon from 'material-ui-icons/List';
@@ -79,12 +81,31 @@ const mapDispatchToProps = dispatch => ({
       }));
   },
 
+  /**
+   * Bans the user
+   *
+   * @param  {object} user    The to be banned user
+   * @param  {object} banInfo The information about the ban
+   * @return {void}
+   */
   banUser: (user, banInfo) => {
       dispatch(rest.actions.banUser({ userId: user.id }, {
           body: JSON.stringify(banInfo)
         }, () => {
           dispatch(rest.actions.users());
         }))
+  },
+
+  /**
+   * Activate the user
+   * @param  {object} user    The the be activated user
+   * @param  {boolean} checked true: the user is activated|false: the user is not activated
+   * @return {void}
+   */
+  activateUser: (user, checked) => {
+    dispatch(rest.actions.userDetails.patch({ userId: user.id }, { body: JSON.stringify({active: checked})}, () => {
+      dispatch(rest.actions.users());
+    }))
   }
 });
 
@@ -208,6 +229,15 @@ export class Users extends React.Component {
         {user.email}
       </TableCell>
       <TableCell numeric>
+        <FormControlLabel
+          control={
+            <Switch
+              checked={user.active}
+              onChange={(event, checked) => this.props.activateUser(user, checked) }
+            />
+          }
+          label={this.props.intl.formatMessage({ id: 'userDetails_activate' })}
+        />
         <Button
           color="primary"
           onClick={() => {
