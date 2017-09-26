@@ -1,4 +1,4 @@
-import { lightGreen, orange, red } from 'material-ui/colors';
+import { blueGrey, orange, red } from 'material-ui/colors';
 
 export default {
   // App spacing config. Sets the size of various components.
@@ -8,7 +8,7 @@ export default {
 
   // App color palette
   palette: {
-    primary: lightGreen,
+    primary: blueGrey,
     secondary: orange,
     error: red,
     type: 'light',
