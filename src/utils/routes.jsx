@@ -40,12 +40,18 @@ import PreferencesIcon from 'material-ui-icons/Settings';
 import LoginIcon from 'material-ui-icons/AccountCircle';
 import LogoutIcon from 'material-ui-icons/ExitToApp';
 
+
 // Components
 import Home from '../modules/Home';
 import Users from '../modules/Users';
 import Preferences from '../modules/Preferences';
 import Login from '../modules/Login';
 import Logout from '../modules/Logout';
+import Tags from '../modules/Tags';
+import Metrics from '../modules/Metrics';
+import Events from '../modules/Events';
+import Reports from '../modules/Reports';
+import Banned from '../modules/Banned';
 
 // Routes
 const routeConfigs = [
@@ -61,6 +67,46 @@ const routeConfigs = [
     name: 'Users',
     component: Users,
     icon: UsersIcon,
+    separator: true,
+    requiresLogin: true,
+  },
+  {
+    path: '/tags',
+    name: 'Tags',
+    component: Tags,
+    icon: HomeIcon,
+    separator: true,
+    requiresLogin: true,
+  },
+  {
+    path: '/metrics',
+    name: 'Metrics',
+    component: Metrics,
+    icon: HomeIcon,
+    separator: true,
+    requiresLogin: true,
+  },
+  {
+    path: '/events',
+    name: 'Events',
+    component: Events,
+    icon: HomeIcon,
+    separator: true,
+    requiresLogin: true,
+  },
+  {
+    path: '/reports',
+    name: 'Reports',
+    component: Reports,
+    icon: HomeIcon,
+    separator: true,
+    requiresLogin: true,
+  },
+  {
+    path: '/banned',
+    name: 'Banned',
+    component: Banned,
+    icon: HomeIcon,
     separator: true,
     requiresLogin: true,
   },
