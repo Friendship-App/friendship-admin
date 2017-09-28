@@ -12,6 +12,10 @@ import Table, {
 } from 'material-ui/Table';
 import { FormControlLabel } from 'material-ui/Form';
 import Switch from 'material-ui/Switch';
+import Input, { InputLabel } from 'material-ui/Input';
+import { MenuItem } from 'material-ui/Menu';
+import { FormControl, FormHelperText } from 'material-ui/Form';
+import Select from 'material-ui/Select';
 
 import { LinearProgress } from 'material-ui/Progress';
 import ListIcon from 'material-ui-icons/List';
@@ -89,11 +93,17 @@ const mapDispatchToProps = dispatch => ({
    * @return {void}
    */
   banUser: (user, banInfo) => {
-      dispatch(rest.actions.banUser({ userId: user.id }, {
-          body: JSON.stringify(banInfo)
-        }, () => {
-          dispatch(rest.actions.users());
-        }))
+    console.log(banInfo);
+    const info = {
+      reason: banInfo.reason,
+      expire: banInfo.expire.amount === '' || banInfo.expire.indicator === '' ? 'x' : banInfo.expire.amount + ':' + banInfo.expire.indicator
+    }
+
+    dispatch(rest.actions.banUser({ userId: user.id }, {
+        body: JSON.stringify(info)
+      }, () => {
+        dispatch(rest.actions.users());
+      }))
   },
 
   /**
@@ -119,8 +129,11 @@ export class Users extends React.Component {
     banUserDialogOpen: false,
     toBeBannedUser: null,
     banInfo: {
-      value: '',
-      expire: '',
+      reason: '',
+      expire: {
+        amount: '',
+        indicator: '',
+      },
     }
   };
 
@@ -203,15 +216,32 @@ export class Users extends React.Component {
     </div>;
 
   renderUserBanDesc = () =>
-    <div>
-      <TextField
-        label="Expires (DD-MM-YYYY)"
-        fullWidth={true}
-        onChange={(event) => {
-          this.setState({ banInfo: {...this.state.banInfo, expire: event.target.value} })}
-        }
-      />
-
+    <div style={{display: 'flex'}}>
+      <FormControl>
+          <InputLabel htmlFor="expire-time">Amount</InputLabel>
+          <Input id="expire-time"
+            onChange={(event) => {
+              this.setState({ banInfo: {...this.state.banInfo, expire: {...this.state.banInfo.expire, amount: event.target.value}} })}
+            }
+             />
+           <FormHelperText>Choose the ban length, empty is forever</FormHelperText>
+        </FormControl>
+        <FormControl>
+          <InputLabel htmlFor="expire-indicator">Indicator</InputLabel>
+          <Select
+            value={this.state.banInfo.expire.indicator}
+            onChange={(event) => this.setState({ banInfo: {...this.state.banInfo, expire: {...this.state.banInfo.expire, indicator: event.target.value}} })}
+            input={<Input id="expire-indicator" />}
+          >
+            <MenuItem value="">
+              <em>None</em>
+            </MenuItem>
+            <MenuItem value="hours">Hour(s)</MenuItem>
+            <MenuItem value="days">Day(s)</MenuItem>
+            <MenuItem value="weeks">Week(s)</MenuItem>
+            <MenuItem value="years">Year(s)</MenuItem>
+          </Select>
+        </FormControl>
   </div>;
 
   /**
@@ -294,14 +324,24 @@ export class Users extends React.Component {
           close={() => this.setState({ deleteUserDialogOpen: false})}
           />
         <DialogWithButtons
-          textField={{label: this.props.intl.formatMessage({ id: 'banUser_reason' }), fullWidth: true, onChange: (event) => this.setState({ banInfo: {...this.state.banInfo, reason: event.target.value}}) }}
+          textField={{label: this.props.intl.formatMessage({ id: 'banUser_reason' }), fullWidth: true}}
           title={this.props.intl.formatMessage({ id: 'banUser_title' })}
           description={this.renderUserBanDesc()}
           submitAction={this.props.intl.formatMessage({ id: 'banUser_ok' })}
           cancelAction={this.props.intl.formatMessage({ id: 'banUser_cancel' })}
           isOpen={this.state.banUserDialogOpen}
-          submit={() => this.props.banUser(this.state.toBeBannedUser, this.state.banInfo) }
-          close={() => this.setState({ banUserDialogOpen: false })}
+          submit={(data) => {
+            console.log(data);
+             this.setState({ banInfo: {...this.state.banInfo, reason: data.value} }, () => {
+               this.props.banUser(this.state.toBeBannedUser, this.state.banInfo);
+               this.setState({banInfo: {reason: '',  expire: {amount: '', indicator: ''}}, banUserDialogOpen: false});
+             })
+          }}
+          close={() => {
+            this.setState({banInfo: {reason: '',  expire: {amount: '', indicator: ''}}, banUserDialogOpen: false}, () => {
+              console.log(this.state);
+            });
+          }}
           />
       </div>;
 
