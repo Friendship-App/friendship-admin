@@ -85,7 +85,7 @@ class DialogWithButtons extends React.Component {
 
     if (event.keyCode === 13) {
       submit(this.state);
-      close();
+      this.setState({value: ''})
     }
   };
 
@@ -117,7 +117,10 @@ class DialogWithButtons extends React.Component {
         <Button
           color="primary"
           key="cancel"
-          onClick={close}
+          onClick={() => {
+            this.setState({value: ''})
+            close();
+          }}
         >
           {cancelAction}
         </Button>,
@@ -131,7 +134,7 @@ class DialogWithButtons extends React.Component {
         disabled={(textField && !this.state.value) || (imageUpload && !this.state.file)}
         onClick={() => {
           submit(this.state);
-          close();
+          this.setState({value: ''})
         }}
       >
         {submitAction}
@@ -150,7 +153,6 @@ class DialogWithButtons extends React.Component {
                 label={textField.label}
                 value={this.state.value}
                 onChange={(event) => {
-                  if(textField.onChange) textField.onChange(event);
                   this.handleChange(event)
                 }}
                 autoFocus
