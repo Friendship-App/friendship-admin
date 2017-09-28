@@ -93,7 +93,6 @@ const mapDispatchToProps = dispatch => ({
    * @return {void}
    */
   banUser: (user, banInfo) => {
-    console.log(banInfo);
     const info = {
       reason: banInfo.reason,
       expire: banInfo.expire.amount === '' || banInfo.expire.indicator === '' ? 'x' : banInfo.expire.amount + ':' + banInfo.expire.indicator
@@ -331,16 +330,13 @@ export class Users extends React.Component {
           cancelAction={this.props.intl.formatMessage({ id: 'banUser_cancel' })}
           isOpen={this.state.banUserDialogOpen}
           submit={(data) => {
-            console.log(data);
              this.setState({ banInfo: {...this.state.banInfo, reason: data.value} }, () => {
                this.props.banUser(this.state.toBeBannedUser, this.state.banInfo);
                this.setState({banInfo: {reason: '',  expire: {amount: '', indicator: ''}}, banUserDialogOpen: false});
              })
           }}
           close={() => {
-            this.setState({banInfo: {reason: '',  expire: {amount: '', indicator: ''}}, banUserDialogOpen: false}, () => {
-              console.log(this.state);
-            });
+            this.setState({banInfo: {reason: '',  expire: {amount: '', indicator: ''}}, banUserDialogOpen: false});
           }}
           />
       </div>;
