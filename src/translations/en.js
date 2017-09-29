@@ -1,7 +1,4 @@
 export default {
-  // global
-
-
   // Navigation
   navigation: 'Navigation',
   Home: 'Home',
@@ -48,10 +45,9 @@ export default {
 
   // Scope user
   scopeUser_title: 'Change user scope',
-  scopeUser_desciption: 'Are you sure you want to delete this user\'s scope?',
+  scopeUser_desciption: 'Are you sure you want to change this user\'s scope?',
   scopeUser_ok: 'Yup',
   scopeUser_cancel: 'Cancel',
-
 
   // Preferences view
   language: 'App language',
