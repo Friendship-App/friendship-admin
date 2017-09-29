@@ -25,6 +25,8 @@ import WarningIcon from 'material-ui-icons/Warning';
 import { DialogContentText } from 'material-ui/Dialog';
 import DialogWithButtons from '../components/DialogWithButtons';
 
+import NumberFormat from 'react-number-format';
+
 import rest from '../utils/rest';
 
 // Here we 'connect' the component to the Redux store. This means that the component will receive
@@ -232,6 +234,7 @@ export class Users extends React.Component {
             onChange={(event) => {
               this.setState({ banInfo: {...this.state.banInfo, expire: {...this.state.banInfo.expire, amount: event.target.value}} })}
             }
+            inputComponent={NumberFormat}
              />
            <FormHelperText>{this.props.intl.formatMessage({ id: 'banUser_choose'})}</FormHelperText>
         </FormControl>
