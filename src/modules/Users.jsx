@@ -217,28 +217,27 @@ export class Users extends React.Component {
   renderUserBanDesc = () =>
     <div style={{display: 'flex'}}>
       <FormControl>
-          <InputLabel htmlFor="expire-time">Amount</InputLabel>
+          <InputLabel htmlFor="expire-time">{this.props.intl.formatMessage({ id: 'banUser_amount' })}</InputLabel>
           <Input id="expire-time"
             onChange={(event) => {
               this.setState({ banInfo: {...this.state.banInfo, expire: {...this.state.banInfo.expire, amount: event.target.value}} })}
             }
              />
-           <FormHelperText>Choose the ban length, empty is forever</FormHelperText>
+           <FormHelperText>{this.props.intl.formatMessage({ id: 'banUser_choose'})}</FormHelperText>
         </FormControl>
         <FormControl>
-          <InputLabel htmlFor="expire-indicator">Indicator</InputLabel>
+          <InputLabel htmlFor="expire-indicator">{this.props.intl.formatMessage({ id: 'banUser_indicator' })}</InputLabel>
           <Select
             value={this.state.banInfo.expire.indicator}
             onChange={(event) => this.setState({ banInfo: {...this.state.banInfo, expire: {...this.state.banInfo.expire, indicator: event.target.value}} })}
             input={<Input id="expire-indicator" />}
           >
-            <MenuItem value="">
-              <em>None</em>
-            </MenuItem>
-            <MenuItem value="hours">Hour(s)</MenuItem>
-            <MenuItem value="days">Day(s)</MenuItem>
-            <MenuItem value="weeks">Week(s)</MenuItem>
-            <MenuItem value="years">Year(s)</MenuItem>
+            <MenuItem value="minutes">{this.props.intl.formatMessage({ id: 'banUser_indicator_minutes' })}</MenuItem>
+            <MenuItem value="hours">{this.props.intl.formatMessage({ id: 'banUser_indicator_hours' })}</MenuItem>
+            <MenuItem value="days">{this.props.intl.formatMessage({ id: 'banUser_indicator_days' })}</MenuItem>
+            <MenuItem value="weeks">{this.props.intl.formatMessage({ id: 'banUser_indicator_weeks' })}</MenuItem>
+            <MenuItem value="months">{this.props.intl.formatMessage({ id: 'banUser_indicator_months' })}</MenuItem>
+            <MenuItem value="years">{this.props.intl.formatMessage({ id: 'banUser_indicator_years' })}</MenuItem>
           </Select>
         </FormControl>
   </div>;

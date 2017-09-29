@@ -1,4 +1,7 @@
 export default {
+  // global
+
+
   // Navigation
   navigation: 'Navigation',
   Home: 'Home',
@@ -30,6 +33,15 @@ export default {
   banUser_ok: 'Ban',
   banUser_cancel: 'Cancel',
   banUser_description: 'Banning user with ID: ',
+  banUser_choose: 'Choose the ban length, empty is a permanent ban',
+  banUser_indicator: 'Indicator',
+  banUser_amount: 'Amount',
+  banUser_indicator_minutes: 'Minute(s)',
+  banUser_indicator_hours: 'Hour(s)',
+  banUser_indicator_days: 'Day(s)',
+  banUser_indicator_weeks: 'Week(s)',
+  banUser_indicator_months: 'Month(s)',
+  banUser_indicator_years: 'Year(s)',
 
 
   // Preferences view
