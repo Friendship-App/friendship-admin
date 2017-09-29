@@ -25,6 +25,14 @@ export default {
   deleteUser_cancel: '???',
   deleteUser_delete: '???',
   deleteUser_ban: '???',
+
+  // Ban User
+  banUser_ban: '???',
+  banUser_title: '???',
+  banUser_reason: '???',
+  banUser_ok: '???',
+  banUser_cancel: '???',
+  banUser_description: '???',
   banUser_choose: '???',
   banUser_indicator: '???',
   banUser_amount: '???',
@@ -34,14 +42,6 @@ export default {
   banUser_indicator_weeks: '???',
   banUser_indicator_months: '???',
   banUser_indicator_years: '???',
-
-  // Ban User
-  banUser_ban: '???',
-  banUser_title: '???',
-  banUser_reason: '???',
-  banUser_ok: '???',
-  banUser_cancel: '???',
-  banUser_description: '???',
 
   // Scope user
   scopeUser_title: '???',
