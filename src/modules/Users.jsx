@@ -106,16 +106,17 @@ const mapDispatchToProps = dispatch => ({
   },
 
   /**
-   * Activate the user
-   * @param  {object} user    The the be activated user
-   * @param  {boolean} checked true: the user is activated|false: the user is not activated
+   * General method to update the user
+   *
+   * @param  {object} user   The user to be updated
+   * @param  {object} update The fields to be updated
    * @return {void}
    */
-  activateUser: (user, checked) => {
-    dispatch(rest.actions.userDetails.patch({ userId: user.id }, { body: JSON.stringify({active: checked})}, () => {
+  updateUser: (user, update) => {
+    dispatch(rest.actions.userDetails.patch({ userId: user.id }, { body: JSON.stringify(update) }, () => {
       dispatch(rest.actions.users());
     }))
-  }
+  },
 });
 
 export class Users extends React.Component {
@@ -124,9 +125,10 @@ export class Users extends React.Component {
   state = {
     dialogOpen: false,
     deleteUserDialogOpen: false,
-    toBeDeletedUser: null,
     banUserDialogOpen: false,
-    toBeBannedUser: null,
+    openScopeModal: false,
+    tempUserForDialogs: null,
+    scope: null,
     banInfo: {
       reason: '',
       expire: {
@@ -161,7 +163,7 @@ export class Users extends React.Component {
   openDeleteModal = (user) => {
     this.setState({
         deleteUserDialogOpen: true,
-        toBeDeletedUser: user
+        tempUserForDialogs: user
     });
   }
 
@@ -174,7 +176,15 @@ export class Users extends React.Component {
   openBanModal = (user) => {
     this.setState({
       banUserDialogOpen: true,
-      toBeBannedUser: user
+      tempUserForDialogs: user
+    })
+  }
+
+  openScopeModal = (user, scope) => {
+    this.setState({
+      scopeDialogOpen: true,
+      tempUserForDialogs: user,
+      scope: scope
     })
   }
 
@@ -242,6 +252,15 @@ export class Users extends React.Component {
         </FormControl>
   </div>;
 
+  renderUserScopeDesc = () =>
+  <div>
+      <DialogContentText>
+          <strong>
+              {this.props.intl.formatMessage({ id: 'scopeUser_desciption' })}
+          </strong>
+      </DialogContentText>
+  </div>;
+
   /**
    * Render the user row in the user list
    *
@@ -256,12 +275,24 @@ export class Users extends React.Component {
       <TableCell>
         {user.email}
       </TableCell>
+      <TableCell>
+        <FormControl>
+          <Select
+            value={user.scope}
+            onChange={(event) => this.openScopeModal(user, event.target.value) }
+          >
+            <MenuItem value="admin">{this.props.intl.formatMessage({ id: 'scope_admin' })}</MenuItem>
+            <MenuItem value="user">{this.props.intl.formatMessage({ id: 'scope_user' })}</MenuItem>
+
+          </Select>
+        </FormControl>
+      </TableCell>
       <TableCell numeric>
         <FormControlLabel
           control={
             <Switch
               checked={user.active}
-              onChange={(event, checked) => this.props.activateUser(user, checked) }
+              onChange={(event, checked) => this.props.updateUser(user, {active: checked}) }
             />
           }
           label={this.props.intl.formatMessage({ id: 'userDetails_activate' })}
@@ -315,11 +346,11 @@ export class Users extends React.Component {
           cancelAction={this.props.intl.formatMessage({ id: 'deleteUser_cancel' })}
           isOpen={this.state.deleteUserDialogOpen}
           submit={() => {
-              this.props.deleteUser(this.state.toBeDeletedUser);
-              this.setState({ deleteUserDialogOpen: false})
+              this.props.deleteUser(this.state.tempUserForDialogs);
+              this.setState({ tempUserForDialogs: null, deleteUserDialogOpen: false})
 
           }}
-          close={() => this.setState({ deleteUserDialogOpen: false})}
+          close={() => this.setState({ tempUserForDialogs: null, deleteUserDialogOpen: false})}
           />
         <DialogWithButtons
           textField={{label: this.props.intl.formatMessage({ id: 'banUser_reason' }), fullWidth: true}}
@@ -330,14 +361,28 @@ export class Users extends React.Component {
           isOpen={this.state.banUserDialogOpen}
           submit={(data) => {
              this.setState({ banInfo: {...this.state.banInfo, reason: data.value} }, () => {
-               this.props.banUser(this.state.toBeBannedUser, this.state.banInfo);
-               this.setState({banInfo: {reason: '',  expire: {amount: '', indicator: ''}}, banUserDialogOpen: false});
+               this.props.banUser(this.state.tempUserForDialogs, this.state.banInfo);
+               this.setState({tempUserForDialogs: null, banInfo: {reason: '',  expire: {amount: '', indicator: ''}}, banUserDialogOpen: false});
              })
           }}
           close={() => {
-            this.setState({banInfo: {reason: '',  expire: {amount: '', indicator: ''}}, banUserDialogOpen: false});
+            this.setState({tempUserForDialogs: null, banInfo: {reason: '',  expire: {amount: '', indicator: ''}}, banUserDialogOpen: false});
           }}
           />
+          <DialogWithButtons
+            title={this.props.intl.formatMessage({ id: 'scopeUser_title' })}
+            description={this.renderUserScopeDesc()}
+            submitAction={this.props.intl.formatMessage({ id: 'scopeUser_ok' })}
+            cancelAction={this.props.intl.formatMessage({ id: 'scopeUser_cancel' })}
+            isOpen={this.state.scopeDialogOpen}
+            submit={(data) => {
+              this.props.updateUser(this.state.tempUserForDialogs, {scope: this.state.scope})
+              this.setState({scope: null, scopeDialogOpen: false, tempUserForDialogs: null})
+            }}
+            close={() => {
+              this.setState({scope: null, scopeDialogOpen: false, tempUserForDialogs: null});
+            }}
+            />
       </div>;
 
   /**
@@ -361,6 +406,9 @@ export class Users extends React.Component {
               </TableCell>
               <TableCell>
                 {this.props.intl.formatMessage({ id: 'email' })}
+              </TableCell>
+              <TableCell>
+                {this.props.intl.formatMessage({ id: 'scope' })}
               </TableCell>
               <TableCell />
             </TableRow>
