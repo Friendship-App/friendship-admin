@@ -13,6 +13,9 @@ export default {
   // Users view
   userId: 'ID',
   email: 'E-mail',
+  scope: 'Scope',
+  scope_admin: 'Admin',
+  scope_user: 'User',
   description: 'Description',
   showUserDetails: 'Details',
   userDetails: 'User details',
@@ -42,6 +45,12 @@ export default {
   banUser_indicator_weeks: 'Week(s)',
   banUser_indicator_months: 'Month(s)',
   banUser_indicator_years: 'Year(s)',
+
+  // Scope user
+  scopeUser_title: 'Change user scope',
+  scopeUser_desciption: 'Are you sure you want to delete this user\'s scope?',
+  scopeUser_ok: 'Yup',
+  scopeUser_cancel: 'Cancel',
 
 
   // Preferences view
