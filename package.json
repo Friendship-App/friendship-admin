@@ -5,7 +5,7 @@
   "dependencies": {
     "history": "^4.7.2",
     "jwt-decode": "^2.2.0",
-    "material-ui": "1.0.0-beta.8",
+    "material-ui": "1.0.0-beta.12",
     "material-ui-icons": "^1.0.0-beta.5",
     "offline-plugin": "^4.8.3",
     "prop-types": "^15.5.10",

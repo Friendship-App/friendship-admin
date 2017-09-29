@@ -14,6 +14,7 @@ export default {
   showUserDetails: 'Details',
   userDetails: 'User details',
   userActions: 'Actions',
+  userDetails_activate: 'Activate',
 
   // Delete User
   deleteUser_title: 'Delete user',
