@@ -11,6 +11,9 @@ export default {
   userId: 'ID',
   email: 'Sähköpostiosoite',
   description: 'Kuvaus',
+  scope: '???',
+  scope_admin: '???',
+  scope_user: '???',
   showUserDetails: 'Lisätiedot',
   userDetails: 'Käyttäjän lisätiedot',
   userActions: '???',
@@ -39,6 +42,12 @@ export default {
   banUser_ok: '???',
   banUser_cancel: '???',
   banUser_description: '???',
+
+  // Scope user
+  scopeUser_title: '???',
+  scopeUser_desciption: '???',
+  scopeUser_ok: '???',
+  scopeUser_cancel: '???',
 
   // Preferences view
   language: 'Sovelluksen kieli',
