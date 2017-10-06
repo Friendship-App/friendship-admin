@@ -22,7 +22,7 @@ import DialogWithButtons from '../components/DialogWithButtons';
 import rest from '../utils/rest';
 
 const mapStateToProps = state => ({
-  tags: state.tags,
+  tags: state.taglist,
   tagsLoading: state.tags.loading,
   tagDetails: state.tagDetails,
 });
@@ -35,7 +35,7 @@ const mapDispatchToProps = dispatch => ({
    * @return {void}
    */
   refresh: () => {
-    dispatch(rest.actions.tags());
+    dispatch(rest.actions.taglist());
   },
 
   /**
@@ -87,10 +87,10 @@ renderTagDetailsDesc = () =>
         {tag.name}
       </TableCell>
       <TableCell>
-        {tag.loves}
+        {tag.nbLoves}
       </TableCell>
       <TableCell>
-        {tag.hates}
+        {tag.nbHates}
       </TableCell>
       <TableCell>
         {tag.creator}
@@ -123,7 +123,7 @@ renderTagDetailsDesc = () =>
               {this.props.intl.formatMessage({ id: 'Hates' })}
             </TableCell>
             <TableCell>
-              {this.props.intl.formatMessage({ id: 'creator' })}
+              {this.props.intl.formatMessage({ id: 'Creator' })}
             </TableCell>
             <TableCell>
               {this.props.intl.formatMessage({ id: 'related events' })}
