@@ -96,6 +96,9 @@ renderTagDetailsDesc = () =>
         {tag.creator}
       </TableCell>
       <TableCell>
+        {tag.createdAt}
+      </TableCell>
+      <TableCell>
         {tag.relatedEvents}
       </TableCell>
     </TableRow>;
@@ -124,6 +127,9 @@ renderTagDetailsDesc = () =>
             </TableCell>
             <TableCell>
               {this.props.intl.formatMessage({ id: 'Creator' })}
+            </TableCell>
+            <TableCell>
+              {this.props.intl.formatMessage({ id: 'Creation date' })}
             </TableCell>
             <TableCell>
               {this.props.intl.formatMessage({ id: 'related events' })}

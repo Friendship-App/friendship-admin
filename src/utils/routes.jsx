@@ -36,6 +36,7 @@ Routes may optionally contain the following keys:
 // Icons
 import HomeIcon from 'material-ui-icons/Home';
 import UsersIcon from 'material-ui-icons/SupervisorAccount';
+import LoyaltyIcon from 'material-ui-icons/Loyalty';
 import CopyrightIcon from 'material-ui-icons/Copyright';
 import PreferencesIcon from 'material-ui-icons/Settings';
 import LoginIcon from 'material-ui-icons/AccountCircle';
@@ -76,7 +77,7 @@ const routeConfigs = [
     path: '/tags',
     name: 'Tags',
     component: Tags,
-    icon: HomeIcon,
+    icon: LoyaltyIcon,
     separator: true,
     requiresLogin: true,
   },
