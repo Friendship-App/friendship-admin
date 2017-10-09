@@ -10,7 +10,7 @@ export default {
   // Users view
   userId: 'ID',
   email: 'E-mail',
-  scope: 'Scope',
+  scope: 'Role',
   scope_admin: 'Admin',
   scope_user: 'User',
   description: 'Description',
@@ -34,7 +34,7 @@ export default {
   banUser_cancel: 'Cancel',
   banUser_description: 'Banning user with ID: ',
   banUser_choose: 'Choose the ban length, empty is a permanent ban',
-  banUser_indicator: 'Indicator',
+  banUser_indicator: 'Time',
   banUser_amount: 'Amount',
   banUser_indicator_minutes: 'Minute(s)',
   banUser_indicator_hours: 'Hour(s)',
