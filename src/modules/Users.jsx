@@ -25,6 +25,8 @@ import WarningIcon from 'material-ui-icons/Warning';
 import { DialogContentText } from 'material-ui/Dialog';
 import DialogWithButtons from '../components/DialogWithButtons';
 
+import NumberFormat from 'react-number-format';
+
 import rest from '../utils/rest';
 
 // Here we 'connect' the component to the Redux store. This means that the component will receive
@@ -188,9 +190,27 @@ export class Users extends React.Component {
       </DialogContentText>
       <DialogContentText>
         <b>
+          {this.props.intl.formatMessage({ id: 'username' })}
+        </b>
+        {`: ${this.props.userDetails.data.username}`}
+      </DialogContentText>
+      <DialogContentText>
+        <b>
           {this.props.intl.formatMessage({ id: 'email' })}
         </b>
         {`: ${this.props.userDetails.data.email}`}
+      </DialogContentText>
+      <DialogContentText>
+        <b>
+          {this.props.intl.formatMessage({ id: 'status' })}
+        </b>
+        {`: ${this.props.userDetails.data.status}`}
+      </DialogContentText>
+      <DialogContentText>
+        <b>
+          {this.props.intl.formatMessage({ id: 'createdAt' })}
+        </b>
+        {`: ${this.props.userDetails.data.createdAt}`}
       </DialogContentText>
       <DialogContentText>
         <b>
@@ -217,16 +237,17 @@ export class Users extends React.Component {
   renderUserBanDesc = () =>
     <div style={{display: 'flex'}}>
       <FormControl>
-          <InputLabel htmlFor="expire-time">Amount</InputLabel>
+          <InputLabel htmlFor="expire-time">{this.props.intl.formatMessage({ id: 'banUser_amount' })}</InputLabel>
           <Input id="expire-time"
             onChange={(event) => {
               this.setState({ banInfo: {...this.state.banInfo, expire: {...this.state.banInfo.expire, amount: event.target.value}} })}
             }
+            inputComponent={NumberFormat}
              />
-           <FormHelperText>Choose the ban length, empty is forever</FormHelperText>
+           <FormHelperText>{this.props.intl.formatMessage({ id: 'banUser_choose'})}</FormHelperText>
         </FormControl>
         <FormControl>
-          <InputLabel htmlFor="expire-indicator">Indicator</InputLabel>
+          <InputLabel htmlFor="expire-indicator">{this.props.intl.formatMessage({ id: 'banUser_indicator' })}</InputLabel>
           <Select
             value={this.state.banInfo.expire.indicator}
             onChange={(event) => this.setState({ banInfo: {...this.state.banInfo, expire: {...this.state.banInfo.expire, indicator: event.target.value}} })}
@@ -235,10 +256,10 @@ export class Users extends React.Component {
             <MenuItem value="">
               <em>None</em>
             </MenuItem>
-            <MenuItem value="hours">Hour(s)</MenuItem>
-            <MenuItem value="days">Day(s)</MenuItem>
-            <MenuItem value="weeks">Week(s)</MenuItem>
-            <MenuItem value="years">Year(s)</MenuItem>
+            <MenuItem value="hours">{this.props.intl.formatMessage({ id: 'banUser_indicator_hours' })}</MenuItem>
+            <MenuItem value="days">{this.props.intl.formatMessage({ id: 'banUser_indicator_days' })}</MenuItem>
+            <MenuItem value="weeks">{this.props.intl.formatMessage({ id: 'banUser_indicator_weeks' })}</MenuItem>
+            <MenuItem value="years">{this.props.intl.formatMessage({ id: 'banUser_indicator_years' })}</MenuItem>
           </Select>
         </FormControl>
   </div>;
@@ -255,7 +276,19 @@ export class Users extends React.Component {
         {user.id}
       </TableCell>
       <TableCell>
+        {user.username}
+      </TableCell>
+      <TableCell>
         {user.email}
+      </TableCell>
+      <TableCell>
+        {user.status}
+      </TableCell>
+      <TableCell>
+        {user.reports}
+      </TableCell>
+      <TableCell>
+        {user.createdAt}
       </TableCell>
       <TableCell numeric>
         <FormControlLabel
@@ -347,7 +380,6 @@ export class Users extends React.Component {
    * @return {Node}
    */
   render() {
-
     return (
       <div>
         {this.renderDialogs()}
@@ -361,7 +393,19 @@ export class Users extends React.Component {
                 {this.props.intl.formatMessage({ id: 'userId' })}
               </TableCell>
               <TableCell>
+                {this.props.intl.formatMessage({ id: 'username' })}
+              </TableCell>
+              <TableCell>
                 {this.props.intl.formatMessage({ id: 'email' })}
+              </TableCell>
+              <TableCell>
+                {this.props.intl.formatMessage({ id: 'status' })}
+              </TableCell>
+              <TableCell>
+                {this.props.intl.formatMessage({ id: 'reports' })}
+              </TableCell>
+              <TableCell>
+                {this.props.intl.formatMessage({ id: 'createdAt' })}
               </TableCell>
               <TableCell />
             </TableRow>

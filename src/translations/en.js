@@ -10,6 +10,9 @@ export default {
   // Users view
   userId: 'ID',
   email: 'E-mail',
+  scope: 'Role',
+  scope_admin: 'Admin',
+  scope_user: 'User',
   description: 'Description',
   showUserDetails: 'Details',
   userDetails: 'User details',
@@ -30,7 +33,21 @@ export default {
   banUser_ok: 'Ban',
   banUser_cancel: 'Cancel',
   banUser_description: 'Banning user with ID: ',
+  banUser_choose: 'Choose the ban length, empty is a permanent ban',
+  banUser_indicator: 'Time',
+  banUser_amount: 'Amount',
+  banUser_indicator_minutes: 'Minute(s)',
+  banUser_indicator_hours: 'Hour(s)',
+  banUser_indicator_days: 'Day(s)',
+  banUser_indicator_weeks: 'Week(s)',
+  banUser_indicator_months: 'Month(s)',
+  banUser_indicator_years: 'Year(s)',
 
+  // Scope user
+  scopeUser_title: 'Change user scope',
+  scopeUser_desciption: 'Are you sure you want to change this user\'s scope?',
+  scopeUser_ok: 'Yup',
+  scopeUser_cancel: 'Cancel',
 
   // Preferences view
   language: 'App language',
