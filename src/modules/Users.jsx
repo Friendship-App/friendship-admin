@@ -190,9 +190,27 @@ export class Users extends React.Component {
       </DialogContentText>
       <DialogContentText>
         <b>
+          {this.props.intl.formatMessage({ id: 'username' })}
+        </b>
+        {`: ${this.props.userDetails.data.username}`}
+      </DialogContentText>
+      <DialogContentText>
+        <b>
           {this.props.intl.formatMessage({ id: 'email' })}
         </b>
         {`: ${this.props.userDetails.data.email}`}
+      </DialogContentText>
+      <DialogContentText>
+        <b>
+          {this.props.intl.formatMessage({ id: 'status' })}
+        </b>
+        {`: ${this.props.userDetails.data.status}`}
+      </DialogContentText>
+      <DialogContentText>
+        <b>
+          {this.props.intl.formatMessage({ id: 'createdAt' })}
+        </b>
+        {`: ${this.props.userDetails.data.createdAt}`}
       </DialogContentText>
       <DialogContentText>
         <b>
@@ -258,7 +276,19 @@ export class Users extends React.Component {
         {user.id}
       </TableCell>
       <TableCell>
+        {user.username}
+      </TableCell>
+      <TableCell>
         {user.email}
+      </TableCell>
+      <TableCell>
+        {user.status}
+      </TableCell>
+      <TableCell>
+        {user.reports}
+      </TableCell>
+      <TableCell>
+        {user.createdAt}
       </TableCell>
       <TableCell numeric>
         <FormControlLabel
@@ -350,7 +380,6 @@ export class Users extends React.Component {
    * @return {Node}
    */
   render() {
-
     return (
       <div>
         {this.renderDialogs()}
@@ -364,7 +393,19 @@ export class Users extends React.Component {
                 {this.props.intl.formatMessage({ id: 'userId' })}
               </TableCell>
               <TableCell>
+                {this.props.intl.formatMessage({ id: 'username' })}
+              </TableCell>
+              <TableCell>
                 {this.props.intl.formatMessage({ id: 'email' })}
+              </TableCell>
+              <TableCell>
+                {this.props.intl.formatMessage({ id: 'status' })}
+              </TableCell>
+              <TableCell>
+                {this.props.intl.formatMessage({ id: 'reports' })}
+              </TableCell>
+              <TableCell>
+                {this.props.intl.formatMessage({ id: 'createdAt' })}
               </TableCell>
               <TableCell />
             </TableRow>
