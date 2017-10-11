@@ -13,4 +13,12 @@ export default {
     error: red,
     type: 'light',
   },
+
+  paper: {
+    padding: 8,
+  },
+
+  root: {
+    flexGrow: 1,
+  },
 };

@@ -27,6 +27,8 @@ import DialogWithButtons from '../components/DialogWithButtons';
 
 import NumberFormat from 'react-number-format';
 
+import FilterUser from './FilterUser';
+
 import rest from '../utils/rest';
 
 // Here we 'connect' the component to the Redux store. This means that the component will receive
@@ -49,7 +51,7 @@ import rest from '../utils/rest';
 // is used for localization.
 
 const mapStateToProps = state => ({
-  users: state.users,
+  users: state.filteredUsers || state.users,
   usersLoading: state.users.loading,
   userDetails: state.userDetails,
 });
@@ -385,7 +387,7 @@ export class Users extends React.Component {
         {this.renderDialogs()}
 
         {this.renderProgressBar()}
-
+        <FilterUser />
         <Table>
           <TableHead>
             <TableRow>
@@ -410,6 +412,7 @@ export class Users extends React.Component {
               <TableCell />
             </TableRow>
           </TableHead>
+
           <TableBody>
             {// Loop over each user and render a <TableRow>
             this.props.users.data.map(user =>
