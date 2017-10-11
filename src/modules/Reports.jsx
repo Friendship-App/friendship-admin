@@ -1,103 +1,138 @@
 import React from 'react';
-
-import Card, { CardContent, CardActions, CardMedia } from 'material-ui/Card';
+import { connect } from 'react-redux';
+import { injectIntl } from 'react-intl';
 
 import Button from 'material-ui/Button';
-import Typography from 'material-ui/Typography';
+import TextField from 'material-ui/TextField'
+import Table, {
+  TableBody,
+  TableHead,
+  TableRow,
+  TableCell,
+} from 'material-ui/Table';
+import { FormControlLabel } from 'material-ui/Form';
+import Switch from 'material-ui/Switch';
+import Input, { InputLabel } from 'material-ui/Input';
+import { MenuItem } from 'material-ui/Menu';
+import { FormControl, FormHelperText } from 'material-ui/Form';
+import Select from 'material-ui/Select';
 
-import CardGridWrapper from '../components/CardGridWrapper';
+import { LinearProgress } from 'material-ui/Progress';
+import ListIcon from 'material-ui-icons/List';
+import DeleteIcon from 'material-ui-icons/Delete';
+import WarningIcon from 'material-ui-icons/Warning';
 
-import theme from '../utils/theme';
+import { DialogContentText } from 'material-ui/Dialog';
+import DialogWithButtons from '../components/DialogWithButtons';
 
-import chilicorn from '../assets/chilicorn/chilicorn_no_text-256.png';
-import placeholder from '../assets/placeholder.png';
+import rest from '../utils/rest';
 
-const styles = {
-  chilicornHeader: {
-    height: 240,
-    background: `url(${chilicorn})`,
-    backgroundColor: theme.palette.primary[100],
-    backgroundSize: 'contain',
-    backgroundPosition: 'center',
-    backgroundRepeat: 'no-repeat',
+// Here we 'connect' the component to the Redux store. This means that the component will receive
+// parts of the Redux store as its props. Exactly which parts is chosen by mapStateToProps.
+
+// We should map only necessary values as props, in order to avoid unnecessary re-renders. In this
+// case we need the list of reports, as returned by the REST API. The component will be able to access
+// the reports list via `this.props.reports`. Additionally, we need details about the selected report,
+// which will be available as `this.props.userDetails`.
+
+// The second function (mapDispatchToProps) allows us to 'make changes' to the Redux store, by
+// dispatching Redux actions. The functions we define here will be available to the component as
+// props, so in our example the component will be able to call `this.props.refresh()` in order to
+// refresh the reports list, and `this.props.refreshUser(report)` to fetch more info about a specific
+// report.
+
+// More details: https://github.com/reactjs/react-redux/blob/master/docs/api.md#connectmapstatetoprops-mapdispatchtoprops-mergeprops-options
+
+// The injectIntl decorator makes this.props.intl.formatMessage available to the component, which
+// is used for localization.
+
+const mapStateToProps = state => ({
+  reports: state.reports,
+  //reportsLoading: state.reports.loading,
+  reportDetails: state.reportDetails,
+});
+
+const mapDispatchToProps = dispatch => ({
+
+  /**
+   * Refresh the report list
+   *
+   * @return {void}
+   */
+  refresh: () => {
+    dispatch(rest.actions.reports());
   },
-  loremHeader: {
-    height: 240,
-    background: `url(${placeholder})`,
-    backgroundSize: 'cover',
-    backgroundPosition: 'center',
-    objectFit: 'cover',
-    width: '100%',
+
+  /**
+   * Refresh a spcific report
+   *
+   * @param  {Object} report The report to be refreshed
+   * @return {void}
+   */
+  refreshReport: report => {
+    dispatch(rest.actions.reportDetails({ reportId: report.id }));
   },
-};
 
-export default class Reports extends React.Component {
-  renderChilicornCard = () =>
-    <Card>
-      <CardMedia>
-        <div style={styles.chilicornHeader} />
-      </CardMedia>
-      <CardContent>
-        <Typography type="headline" component="h2">
-          Title 1
-        </Typography>
+});
 
-        <Typography component="p">
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis
-          lobortis, diam id dapibus auctor, augue urna bibendum ligula, id
-          finibus est tortor vel dolor. Phasellus a nulla tellus. Phasellus
-          augue ante, consequat vel condimentum eu, vulputate vitae nulla. Morbi
-          ut finibus risus. Etiam gravida felis lectus, eu sagittis dolor auctor
-          et. Vivamus nec leo non ligula tincidunt vulputate quis efficitur mi.
-          In est eros, dignissim ut aliquet ut, ultrices eget nisi.
-        </Typography>
-      </CardContent>
-      <CardActions>
-        <Button compact color="primary">
-          Share
-        </Button>
-        <Button compact color="primary">
-          Learn More
-        </Button>
-      </CardActions>
-    </Card>;
+export class Reports extends React.Component {
 
-  renderPlaceholderCard = () =>
-    <Card>
-      <CardMedia>
-        <div style={styles.loremHeader} />
-      </CardMedia>
-      <CardContent>
-        <Typography type="headline" component="h2">
-          Title 2
-        </Typography>
+  // Refresh report list when component is first mounted
+  componentDidMount() {
+    const { refresh } = this.props;
 
-        <Typography component="p">
-          Proin odio dolor, aliquet ac tellus sit amet, blandit venenatis massa.
-          Phasellus id aliquet dui, eu rutrum lectus. Suspendisse hendrerit
-          sollicitudin mauris, sed venenatis augue tristique et. Proin sed
-          tortor lacinia, finibus diam eget, vulputate elit. Sed venenatis nunc
-          nec urna molestie aliquet a at tortor. Proin dignissim diam ac turpis
-          viverra auctor. Sed ac faucibus mauris, at consequat ipsum. Nunc
-          cursus nunc id augue aliquet, sed vulputate nisl commodo.
-        </Typography>
-      </CardContent>
-      <CardActions>
-        <Button compact color="primary">
-          Share
-        </Button>
-        <Button compact color="primary">
-          Learn More
-        </Button>
-      </CardActions>
-    </Card>;
+    refresh();
+  }
+
+
+  renderProgressBar() {
+    const { reportsLoading } = this.props;
+    return reportsLoading
+      ? <div style={{ marginBottom: '-5px' }}>
+          <LinearProgress />
+        </div>
+      : null;
+  }
+
+  renderReportRow = (report) =>
+    <TableRow key={report.id}>
+      <TableCell>
+        {report.id}
+      </TableCell>
+      <TableCell>
+        {report.email}
+      </TableCell>
+    </TableRow>;
 
   render() {
+
     return (
-      <CardGridWrapper>
-        {this.renderChilicornCard()}
-        {this.renderPlaceholderCard()}
-      </CardGridWrapper>
+      <div>
+
+        {this.renderProgressBar()}
+
+        <Table>
+          <TableHead>
+            <TableRow>
+              <TableCell>
+                {this.props.intl.formatMessage({ id: 'reportId' })}
+              </TableCell>
+              <TableCell>
+                {this.props.intl.formatMessage({ id: 'email' })}
+              </TableCell>
+              <TableCell />
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {// Loop over each report and render a <TableRow>
+            this.props.reports.data.map(report =>
+              this.renderReportRow(report)
+            )}
+          </TableBody>
+        </Table>
+      </div>
     );
   }
 }
+
+export default injectIntl(connect(mapStateToProps, mapDispatchToProps)(Reports));
