@@ -19,10 +19,12 @@ import WarningIcon from 'material-ui-icons/Warning';
 import { DialogContentText } from 'material-ui/Dialog';
 import DialogWithButtons from '../components/DialogWithButtons';
 
+import FilterTags from './FilterTags';
+
 import rest from '../utils/rest';
 
 const mapStateToProps = state => ({
-  tags: state.taglist,
+  tags: state.filteredTags || state.taglist,
   tagsLoading: state.tags.loading,
   tagDetails: state.tagDetails,
 });
@@ -110,39 +112,42 @@ renderTagDetailsDesc = () =>
      */
   render() {
     return(
-      <Table>
-        <TableHead>
-          <TableRow>
-            <TableCell>
-              {this.props.intl.formatMessage({ id: 'tagId' })}
-            </TableCell>
-            <TableCell>
-              {this.props.intl.formatMessage({ id: 'name' })}
-            </TableCell>
-            <TableCell>
-              {this.props.intl.formatMessage({ id: 'Loves' })}
-            </TableCell>
-            <TableCell>
-              {this.props.intl.formatMessage({ id: 'Hates' })}
-            </TableCell>
-            <TableCell>
-              {this.props.intl.formatMessage({ id: 'Creator' })}
-            </TableCell>
-            <TableCell>
-              {this.props.intl.formatMessage({ id: 'Creation date' })}
-            </TableCell>
-            <TableCell>
-              {this.props.intl.formatMessage({ id: 'related events' })}
-            </TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {// Loop over each user and render a <TableRow>
-          this.props.tags.data.map(tag =>
-            this.renderTagRow(tag)
-          )}
-        </TableBody>
-      </Table>
+      <div>
+        <FilterTags />
+        <Table>
+          <TableHead>
+            <TableRow>
+              <TableCell>
+                {this.props.intl.formatMessage({ id: 'tagId' })}
+              </TableCell>
+              <TableCell>
+                {this.props.intl.formatMessage({ id: 'name' })}
+              </TableCell>
+              <TableCell>
+                {this.props.intl.formatMessage({ id: 'Loves' })}
+              </TableCell>
+              <TableCell>
+                {this.props.intl.formatMessage({ id: 'Hates' })}
+              </TableCell>
+              <TableCell>
+                {this.props.intl.formatMessage({ id: 'Creator' })}
+              </TableCell>
+              <TableCell>
+                {this.props.intl.formatMessage({ id: 'Creation date' })}
+              </TableCell>
+              <TableCell>
+                {this.props.intl.formatMessage({ id: 'related events' })}
+              </TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {// Loop over each user and render a <TableRow>
+            this.props.tags.data.map(tag =>
+              this.renderTagRow(tag)
+            )}
+          </TableBody>
+        </Table>
+      </div>
     );
   }
 }
