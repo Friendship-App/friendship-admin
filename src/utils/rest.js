@@ -56,6 +56,34 @@ const rest = reduxApi({
       method: 'POST'
     }
   },
+  latestTos: {
+    url: `${apiRoot}/tos/latest`,
+    reducerName: "tos",
+    crud: true,
+  },
+  createTos: {
+    url: `${apiRoot}/tos`,
+    reducerName: "tos",
+    options: {
+      method: 'POST'
+    }
+  },
+
+  //not in use at the moment
+  /* 
+  allTos: {
+    url: `${apiRoot}/tos/allTos`,
+    transformer: transformers.array,
+    crud: true,
+  },
+  editTos: {
+    url: `${apiRoot}/tos/:terms_of_serviceId`,
+    reducerName: "tos",
+    options: {
+      method: 'POST'
+    }
+  },*/
+
 
   // Add more API endpoints here! Examples below:
 
