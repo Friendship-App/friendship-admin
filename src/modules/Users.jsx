@@ -383,7 +383,6 @@ export class Users extends React.Component {
     return (
       <div>
         {this.renderDialogs()}
-
         {this.renderProgressBar()}
 
         <Table>
