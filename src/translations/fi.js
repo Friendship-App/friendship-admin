@@ -30,7 +30,7 @@ export default {
   banUser_ban: 'Ban',
   banUser_title: 'Bannaa käyttäjä',
   banUser_reason: 'Syy',
-  banUser_ok: 'Ban',
+  banUser_ok: 'Ok',
   banUser_cancel: 'Peruuta',
   banUser_description: 'Bannataan käyttäjä ID: ',
   banUser_choose: 'Valitse bannin kesto, tyhjä on ikuinen',
@@ -42,6 +42,10 @@ export default {
   banUser_indicator_weeks: 'Viikkoa',
   banUser_indicator_months: 'Kuukautta',
   banUser_indicator_years: 'Vuotta',
+
+ // Terms of service 
+  terms_of_service_titel: 'Terms of Service',
+  terms_of_service_description: 'Are you sure you want to change the terms of service?',
 
   // Scope user
   scopeUser_title: 'Vaihda käyttäjän alaa',
@@ -58,5 +62,10 @@ export default {
   resetStateButton: 'Nollaa tila',
 
   // Miscellaneous
+  ok: 'Ok',
+  yup: 'Yup',
+  ban: 'Ban',
+  cancel: 'Peruuta',
   close: 'Sulje',
+  edit: 'insert finnish please',
 };
