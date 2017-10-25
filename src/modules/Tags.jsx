@@ -19,10 +19,12 @@ import WarningIcon from 'material-ui-icons/Warning';
 import { DialogContentText } from 'material-ui/Dialog';
 import DialogWithButtons from '../components/DialogWithButtons';
 
+import FilterTags from './FilterTags';
+
 import rest from '../utils/rest';
 
 const mapStateToProps = state => ({
-  tags: state.taglist,
+  tags: state.filteredTags || state.taglist,
   tagsLoading: state.tags.loading,
   tagDetails: state.tagDetails,
 });
@@ -175,7 +177,8 @@ renderTagDetailsDesc = () =>
     return(
       <div>
 
-        {this.renderDialogs()}
+      <FilterTags />
+      {this.renderDialogs()}
 
       <Table>
         <TableHead>
