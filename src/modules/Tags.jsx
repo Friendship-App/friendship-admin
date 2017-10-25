@@ -51,6 +51,7 @@ const mapDispatchToProps = dispatch => ({
    }
 });
 
+
 export class Tags extends React.Component {
   // Component initial state.
   // Here we keep track of whether the user details dialog is open.
