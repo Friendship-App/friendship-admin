@@ -41,13 +41,25 @@ const mapDispatchToProps = dispatch => ({
   },
 
   /**
-   * Refresh a spcific user
+   * Refresh a spcific tag
    *
    * @param  {Object} tag The tag to be refreshed
    * @return {void}
    */
    refreshTag: tag => {
      dispatch(rest.actions.tagDetails({tagId: tag.id}))
+   },
+
+   /**
+    * Delete a spcific user
+    *
+    * @param  {object} tag The to be deleted user
+    * @return {void}
+    */
+   deleteTagUser: (tag) => {
+       dispatch(rest.actions.tagDetails.delete({ tagId: tag.id }, null, () => {
+           dispatch(rest.actions.taglist());
+       }));
    }
 });
 
@@ -57,12 +69,27 @@ export class Tags extends React.Component {
   // Here we keep track of whether the user details dialog is open.
   state = {
     dialogOpen: false,
+    deleteUserDialogOpen: false,
+    toBeDeletedUser: null,
   };
 
 // Refresh user list when component is first mounted
 componentDidMount() {
   const { refresh } = this.props;
   refresh();
+}
+
+/**
+ * Open the delete tag modal
+ *
+ * @param  {object} tag The to be deleted tag
+ * @return {void}
+ */
+openDeleteModal = (tag) => {
+  this.setState({
+      deleteTagDialogOpen: true,
+      toBeDeletedTag: tag
+  });
 }
 
 renderTagDetailsDesc = () =>
@@ -75,10 +102,19 @@ renderTagDetailsDesc = () =>
     </DialogContentText>
   </div>;
 
+  renderUserDeleteDesc = () =>
+    <div>
+        <DialogContentText>
+            <strong>
+                {this.props.intl.formatMessage({ id: 'deleteUser_description' })}
+            </strong>
+        </DialogContentText>
+    </div>;
+
   /**
    * Render the user row in the user list
    *
-   * @param  {object} user The user that has to be rendered
+   * @param  {object} tag The tag that has to be rendered
    * @return {TableRow} The tablerow associated with the user
    */
    renderTagRow = (tag) =>
@@ -104,7 +140,34 @@ renderTagDetailsDesc = () =>
       <TableCell>
         {tag.relatedEvents}
       </TableCell>
+      <TableCell>
+        <Button
+            color="primary"
+            onClick={() => {
+                this.openDeleteModal(tag)
+            }}>
+            <DeleteIcon style={{ paddingRight: 10 }} />
+            {this.props.intl.formatMessage({ id: 'deleteUser_delete' })}
+        </Button>
+      </TableCell>
     </TableRow>;
+
+    renderDialogs = () =>
+    <div>
+      <DialogWithButtons
+          title={this.props.intl.formatMessage({ id: 'deleteUser_title' })}
+          description={this.renderUserDeleteDesc()}
+          submitAction={this.props.intl.formatMessage({ id: 'deleteUser_ok' })}
+          cancelAction={this.props.intl.formatMessage({ id: 'deleteUser_cancel' })}
+          isOpen={this.state.deleteTagDialogOpen}
+          submit={() => {
+              this.props.deleteTagUser(this.state.toBeDeletedTag);
+              this.setState({ deleteTagDialogOpen: false})
+
+          }}
+          close={() => this.setState({ deleteTagDialogOpen: false})}
+          />
+    </div>
 
     /**
      * Render the tag list
@@ -114,38 +177,41 @@ renderTagDetailsDesc = () =>
   render() {
     return(
       <div>
-        <FilterTags />
-        <Table>
-          <TableHead>
-            <TableRow>
-              <TableCell>
-                {this.props.intl.formatMessage({ id: 'tagId' })}
-              </TableCell>
-              <TableCell>
-                {this.props.intl.formatMessage({ id: 'name' })}
-              </TableCell>
-              <TableCell>
-                {this.props.intl.formatMessage({ id: 'Loves' })}
-              </TableCell>
-              <TableCell>
-                {this.props.intl.formatMessage({ id: 'Hates' })}
-              </TableCell>
-              <TableCell>
-                {this.props.intl.formatMessage({ id: 'Creator' })}
-              </TableCell>
-              <TableCell>
-                {this.props.intl.formatMessage({ id: 'Creation date' })}
-              </TableCell>
-              <TableCell>
-                {this.props.intl.formatMessage({ id: 'related events' })}
-              </TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {// Loop over each user and render a <TableRow>
-            this.props.tags.data.map(tag =>
-              this.renderTagRow(tag)
-            )}
+
+      <FilterTags />
+      {this.renderDialogs()}
+
+      <Table>
+        <TableHead>
+          <TableRow>
+            <TableCell>
+              {this.props.intl.formatMessage({ id: 'tagId' })}
+            </TableCell>
+            <TableCell>
+              {this.props.intl.formatMessage({ id: 'name' })}
+            </TableCell>
+            <TableCell>
+              {this.props.intl.formatMessage({ id: 'Loves' })}
+            </TableCell>
+            <TableCell>
+              {this.props.intl.formatMessage({ id: 'Hates' })}
+            </TableCell>
+            <TableCell>
+              {this.props.intl.formatMessage({ id: 'Creator' })}
+            </TableCell>
+            <TableCell>
+              {this.props.intl.formatMessage({ id: 'Creation date' })}
+            </TableCell>
+            <TableCell>
+              {this.props.intl.formatMessage({ id: 'related events' })}
+            </TableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          {// Loop over each user and render a <TableRow>
+          this.props.tags.data.map(tag =>
+            this.renderTagRow(tag)
+          )}
           </TableBody>
         </Table>
       </div>
