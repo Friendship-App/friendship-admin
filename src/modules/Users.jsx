@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { injectIntl } from 'react-intl';
+import moment from 'moment';
 
 import Button from 'material-ui/Button';
 import TextField from 'material-ui/TextField'
@@ -27,7 +28,8 @@ import DialogWithButtons from '../components/DialogWithButtons';
 
 import NumberFormat from 'react-number-format';
 
-import FilterUser from './FilterUser';
+import Filter from '../components/Filter';
+
 
 import rest from '../utils/rest';
 
@@ -115,11 +117,21 @@ const mapDispatchToProps = dispatch => ({
    * @param  {boolean} checked true: the user is activated|false: the user is not activated
    * @return {void}
    */
-  activateUser: (user, checked) => {
+  activateUser: (user, checked, filter) => {
     dispatch(rest.actions.userDetails.patch({ userId: user.id }, { body: JSON.stringify({active: checked})}, () => {
-      dispatch(rest.actions.users());
+      if(filter.username || filter.email) {
+        dispatch(rest.actions.users.get({filter: filter}));
+      }
+      else {
+        dispatch(rest.actions.users());
+      }
     }))
-  }
+  },
+
+  filterUsers: (filter) => {
+    console.log(filter);
+    dispatch(rest.actions.users.get({filter: filter}));
+  },
 });
 
 export class Users extends React.Component {
@@ -127,6 +139,7 @@ export class Users extends React.Component {
   // Here we keep track of whether the user details dialog is open.
   state = {
     dialogOpen: false,
+    filterUserDialogOpen: false,
     deleteUserDialogOpen: false,
     toBeDeletedUser: null,
     banUserDialogOpen: false,
@@ -137,6 +150,10 @@ export class Users extends React.Component {
         amount: '',
         indicator: '',
       },
+    },
+    filter: {
+      username: '',
+      email: ''
     }
   };
 
@@ -266,14 +283,20 @@ export class Users extends React.Component {
         </FormControl>
   </div>;
 
+  renderFilterDesc = () =>
+  <div style={{display: 'flex'}}>
+
+  </div>;
+
   /**
    * Render the user row in the user list
    *
    * @param  {object} user The user that has to be rendered
    * @return {TableRow} The tablerow associated with the user
    */
-  renderUserRow = (user) =>
-    <TableRow key={user.id}>
+  renderUserRow = (user) => {
+      console.log(user);
+    return <TableRow key={user.id}>
       <TableCell>
         {user.id}
       </TableCell>
@@ -284,20 +307,21 @@ export class Users extends React.Component {
         {user.email}
       </TableCell>
       <TableCell>
-        {user.status}
+        {user.isbanned === "1" ? 'Banned' : user.status}
       </TableCell>
       <TableCell>
         {user.reports}
       </TableCell>
       <TableCell>
-        {user.createdAt}
+        {moment(user.createdAt).format('DD-MM-YYYY hh:mm')}
       </TableCell>
       <TableCell numeric>
         <FormControlLabel
           control={
             <Switch
               checked={user.active}
-              onChange={(event, checked) => this.props.activateUser(user, checked) }
+              onChange={(event, checked) => {
+                this.props.activateUser(user, checked, this.state.filter) }}
             />
           }
           label={this.props.intl.formatMessage({ id: 'userDetails_activate' })}
@@ -327,7 +351,8 @@ export class Users extends React.Component {
           {this.props.intl.formatMessage({ id: 'banUser_ban' })}
         </Button>
       </TableCell>
-    </TableRow>;
+    </TableRow>
+  }
 
   /**
    * Render the dialogs
@@ -374,6 +399,15 @@ export class Users extends React.Component {
             this.setState({banInfo: {reason: '',  expire: {amount: '', indicator: ''}}, banUserDialogOpen: false});
           }}
           />
+          <DialogWithButtons
+            textField={{label: "Search User", fullWidth: true}}
+            title="Search"
+            description={this.renderFilterDesc()}
+            submitAction="Search"
+            cancelAction="Cancel"
+            isOpen={this.state.filterUserDialogOpen}
+            close={() => this.setState({filterUserDialogOpen: false})}
+             />
       </div>;
 
   /**
@@ -385,9 +419,16 @@ export class Users extends React.Component {
     return (
       <div>
         {this.renderDialogs()}
-
         {this.renderProgressBar()}
-        <FilterUser />
+        <Filter
+          onFilter={(value, fields) => {
+            this.setState({filter: {username: value, email: value, ...fields}}, () => {
+              this.props.filterUsers({username: value, email: value});
+            });
+          }}
+          fields={['active']}
+           />
+          <Button onClick={() => this.setState({filterUserDialogOpen: true})}>Filter</Button>
         <Table>
           <TableHead>
             <TableRow>

@@ -3,75 +3,149 @@ import { connect } from 'react-redux';
 import { injectIntl } from 'react-intl';
 
 import Button from 'material-ui/Button';
-import Table, {
-  TableBody,
-  TableHead,
-  TableRow,
-  TableCell,
-} from 'material-ui/Table';
+import { withStyles } from 'material-ui/styles';
+import TextField from 'material-ui/TextField';
 
-import { LinearProgress } from 'material-ui/Progress';
-import ListIcon from 'material-ui-icons/List';
-
-import { DialogContentText } from 'material-ui/Dialog';
 import DialogWithButtons from '../components/DialogWithButtons';
+import { DialogContentText } from 'material-ui/Dialog';
 
 import rest from '../utils/rest';
 
-// Here we 'connect' the component to the Redux store. This means that the component will receive
-// parts of the Redux store as its props. Exactly which parts is chosen by mapStateToProps.
-
-// We should map only necessary values as props, in order to avoid unnecessary re-renders. In this
-// case we need the list of users, as returned by the REST API. The component will be able to access
-// the users list via `this.props.users`. Additionally, we need details about the selected user,
-// which will be available as `this.props.userDetails`.
-
-// The second function (mapDispatchToProps) allows us to 'make changes' to the Redux store, by
-// dispatching Redux actions. The functions we define here will be available to the component as
-// props, so in our example the component will be able to call `this.props.refresh()` in order to
-// refresh the users list, and `this.props.refreshUser(user)` to fetch more info about a specific
-// user.
-
-// More details: https://github.com/reactjs/react-redux/blob/master/docs/api.md#connectmapstatetoprops-mapdispatchtoprops-mergeprops-options
-
-// The injectIntl decorator makes this.props.intl.formatMessage available to the component, which
-// is used for localization.
-
 const mapStateToProps = state => ({
-
+  tos: state.tos.data,
 });
 
 const mapDispatchToProps = dispatch => ({
+  /**
+  * Refresh the user list
+  *
+  * @return {void}
+  */
+  refresh: () => {
+    dispatch(rest.actions.latestTos());
+  },
+
+/**
+   * create new terms of service
+   *
+   * @param  String The to be created tos with tos text
+   * @return {void}
+   */
+  createTos: (tosInfo) => {
+    const info = {
+      tos_text: tosInfo,
+    }
+    dispatch(rest.actions.createTos(null, {
+        body: JSON.stringify(info)
+    }, () => {
+      dispatch(rest.actions.latestTos())}
+    ));
+  },
 
 });
 
+const textareaStyle = {
+    marginLeft: '10vw',
+    marginTop: '5vw',
+    width: '80%',
+}
+
+const buttonStyle = {
+    marginLeft: '10vw',
+}
+
 export class Tos extends React.Component {
   // Component initial state.
-  // Here we keep track of whether the user details dialog is open.
-  state = {
-    dialogOpen: false,
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      disabled: true,
+      multiline: props.tos.tos_text,
+      saveTosDialogOpen: false,
+    }
+  }
+ 
+  handleChange = name => event => {
+    this.setState({
+      [name]: event.target.value,
+    });
   };
 
+  // Refresh user list when component is first mounted
+  componentDidMount() {
+    const { refresh } = this.props;
 
-
-  renderProgressBar() {
-    /*
-    const { usersLoading } = this.props;
-    return usersLoading
-      ? (
-        <div style={{ marginBottom: '-5px' }}>
-          <LinearProgress />
-        </div>
-      ) : null;*/
+    refresh();
   }
 
   render() {
-    return(
+
+    return (
       <div>
-        
+        {this.renderDialog()}
+        <div>
+          <TextField 
+          id="multiline-flexible"
+          label={this.props.intl.formatMessage({ id: 'terms_of_service_titel' })}
+          style={textareaStyle}
+          multiline
+          value={this.state.multiline}
+          disabled={this.state.disabled}
+          onChange={this.handleChange('multiline')}
+        />
+        </div>
+        <Button 
+          compact color="primary"
+          style={buttonStyle}
+          onClick={() => {
+                  this.setState({disabled: false});
+              }}
+          >
+          {this.props.intl.formatMessage({ id: 'edit' })}
+        </Button>
+        <Button compact color="primary"
+          onClick={() => {
+                this.setState({ saveTosDialogOpen: true });
+              }}>
+          {this.props.intl.formatMessage({ id: 'save' })}
+        </Button>
       </div>
     );
   }
+
+  /**
+   * Render the tos dialog description
+   *
+   * @return {Node}
+   */
+  renderConfirmationDesc = () =>
+  <div>
+      <DialogContentText>
+          <strong>
+              {this.props.intl.formatMessage({ id: 'terms_of_service_description' })}
+          </strong>
+      </DialogContentText>
+  </div>;
+
+  renderDialog () {
+    return (
+      <DialogWithButtons
+      title={this.props.intl.formatMessage({ id: 'terms_of_service_titel' })}
+      description={this.renderConfirmationDesc()}
+      submitAction={this.props.intl.formatMessage({ id: 'ok' })}
+      cancelAction={this.props.intl.formatMessage({ id: 'cancel' })}
+      isOpen={this.state.saveTosDialogOpen}
+      submit={() => {
+          this.props.createTos(this.state.multiline);
+          this.setState({ saveTosDialogOpen: false });
+          this.setState({ disabled: true });
+      }}
+      close={() => this.setState({ saveTosDialogOpen: false })}
+      />
+    );
+  }
+
 }
 
 export default injectIntl(connect(mapStateToProps, mapDispatchToProps)(Tos));

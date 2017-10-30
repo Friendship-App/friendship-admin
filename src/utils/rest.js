@@ -40,13 +40,26 @@ const rest = reduxApi({
     transformer: transformers.array,
     crud: true,
   },
+  reports: {
+    url: `${apiRoot}/reports`,
+    transformer: transformers.array,
+    crud: true,
+  },
   taglist: {
     url: `${apiRoot}/tags_user/taglist`,
     transformer: transformers.array,
     crud: true,
   },
+  tagDetails: {
+    url: `${apiRoot}/tags/:tagId`,
+    crud: true,
+  },
   userDetails: {
     url: `${apiRoot}/users/:userId`,
+    crud: true,
+  },
+  reportDetails: {
+    url: `${apiRoot}/reports/:reportId`,
     crud: true,
   },
   banUser: {
@@ -56,6 +69,34 @@ const rest = reduxApi({
       method: 'POST'
     }
   },
+  latestTos: {
+    url: `${apiRoot}/tos/latest`,
+    reducerName: "tos",
+    crud: true,
+  },
+  createTos: {
+    url: `${apiRoot}/tos`,
+    reducerName: "tos",
+    options: {
+      method: 'POST'
+    }
+  },
+
+  //not in use at the moment
+  /* 
+  allTos: {
+    url: `${apiRoot}/tos/allTos`,
+    transformer: transformers.array,
+    crud: true,
+  },
+  editTos: {
+    url: `${apiRoot}/tos/:terms_of_serviceId`,
+    reducerName: "tos",
+    options: {
+      method: 'POST'
+    }
+  },*/
+
 
   // Add more API endpoints here! Examples below:
 

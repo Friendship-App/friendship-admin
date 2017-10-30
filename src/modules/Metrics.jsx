@@ -33,7 +33,7 @@ const styles = {
   },
 };
 
-export default class Home extends React.Component {
+export default class Metrics extends React.Component {
   renderChilicornCard = () =>
     <Card>
       <CardMedia>

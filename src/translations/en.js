@@ -43,6 +43,10 @@ export default {
   banUser_indicator_months: 'Month(s)',
   banUser_indicator_years: 'Year(s)',
 
+  // Terms of service 
+  terms_of_service_titel: 'Terms of Service',
+  terms_of_service_description: 'Are you sure you want to change the terms of service?',
+
   // Scope user
   scopeUser_title: 'Change user scope',
   scopeUser_desciption: 'Are you sure you want to change this user\'s scope?',
@@ -58,5 +62,11 @@ export default {
   resetStateButton: 'Clear app state',
 
   // Miscellaneous
+  ok: 'Ok',
+  yup: 'Yup',
+  ban: 'Ban',
+  cancel: 'Cancel',
   close: 'Close',
+  edit: 'Edit',
+  save: 'Save',
 };

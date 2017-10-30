@@ -82,7 +82,7 @@ export class Home extends React.Component {
         }} >
         <CardContent>
           <Typography component="p">
-            view metrics
+            Metrics
           </Typography>
         </CardContent>
         <CardActions>
@@ -95,7 +95,7 @@ export class Home extends React.Component {
           }} >
           <CardContent>
             <Typography component="p">
-              events
+              Events
             </Typography>
           </CardContent>
           <CardActions>
@@ -108,7 +108,7 @@ export class Home extends React.Component {
             }} >
             <CardContent>
               <Typography component="p">
-                tags
+                Tags
               </Typography>
             </CardContent>
             <CardActions>
