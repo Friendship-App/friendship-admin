@@ -81,6 +81,13 @@ const rest = reduxApi({
       method: 'POST'
     }
   },
+  editUser: {
+    url: `${apiRoot}/users/:userId`,
+    crud: true,
+    options: {
+      method: 'PATCH'
+    }
+  },
 
   //not in use at the moment
   /* 
