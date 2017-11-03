@@ -21,6 +21,7 @@
     "redux": "^3.7.2",
     "redux-act": "^1.4.0",
     "redux-api": "^0.11.0",
+    "redux-form": "^7.1.2",
     "redux-persist": "^4.9.1",
     "redux-persist-transform-filter": "^0.0.15",
     "redux-thunk": "^2.2.0",

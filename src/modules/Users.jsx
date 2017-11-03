@@ -12,15 +12,17 @@ import Table, {
 } from 'material-ui/Table';
 import { FormControlLabel } from 'material-ui/Form';
 import Switch from 'material-ui/Switch';
-import Input, { InputLabel } from 'material-ui/Input';
 import { MenuItem } from 'material-ui/Menu';
 import { FormControl, FormHelperText } from 'material-ui/Form';
 import Select from 'material-ui/Select';
+import IconButton from 'material-ui/IconButton';
+import Input, { InputLabel } from 'material-ui/Input';
 
 import { LinearProgress } from 'material-ui/Progress';
 import ListIcon from 'material-ui-icons/List';
 import DeleteIcon from 'material-ui-icons/Delete';
 import WarningIcon from 'material-ui-icons/Warning';
+import CreateIcon from 'material-ui-icons/Create';
 
 import { DialogContentText } from 'material-ui/Dialog';
 import DialogWithButtons from '../components/DialogWithButtons';
@@ -108,6 +110,28 @@ const mapDispatchToProps = dispatch => ({
   },
 
   /**
+   * edits the user
+   *
+   * @param  {object} user    The to be edited user
+   * @param  {object} editUserInfo The information about the edit
+   * @return {void}
+   */
+editUser: (user, editUserInfo) => {
+    const info = {
+      username: editUserInfo.username,
+      email: editUserInfo.email,
+      password: editUserInfo.password,
+    }
+
+    dispatch(rest.actions.editUser({ userId: user.id }, {
+        body: JSON.stringify(info)
+      }, () => {
+        dispatch(rest.actions.users());
+      }))
+    
+  },
+
+  /**
    * Activate the user
    * @param  {object} user    The the be activated user
    * @param  {boolean} checked true: the user is activated|false: the user is not activated
@@ -135,7 +159,14 @@ export class Users extends React.Component {
         amount: '',
         indicator: '',
       },
-    }
+    },
+    editUserDialogOpen: false,
+    toBeEditedUser: null,
+    editUserInfo: {
+      username: '',
+      email:  '',
+      password: '',
+    },
   };
 
   // Refresh user list when component is first mounted
@@ -179,6 +210,52 @@ export class Users extends React.Component {
       toBeBannedUser: user
     })
   }
+
+    /**
+   * Open the edit user modal
+   *
+   * @param  {object} user the to be edited user
+   * @return {void}
+   */
+  openEditUserModal = (user) => {
+    this.setState({
+      editUserDialogOpen: true,
+      toBeEditedUser: user
+    })
+  }
+
+
+  renderEditUser = () =>
+    <div>
+       <TextField
+          id="username"
+          label="Username"
+          value= {this.state.editUserInfo.username}
+          onChange ={(event) =>{
+            this.setState({ editUserInfo: {...this.state.editUserInfo, username: event.target.value}})}}
+          margin="normal"
+        />
+        <br/>
+        <TextField
+          id="email"
+          label="E-Mail"
+          value= {this.state.editUserInfo.email}
+          onChange ={(event) =>{
+            this.setState({ editUserInfo: {...this.state.editUserInfo, email: event.target.value}})}}
+          margin="normal"
+        />
+        <br/>
+        <InputLabel htmlFor="password">Password</InputLabel>
+        <br/>
+        <Input
+          id="password"
+          value= {this.state.editUserInfo.password}
+          type="password"
+          value={this.state.password}
+          onChange ={(event) =>{
+            this.setState({ editUserInfo: {...this.state.editUserInfo, password: event.target.value}})}}
+        />
+    </div>
 
   renderUserDetailsDesc = () =>
     <div>
@@ -324,6 +401,14 @@ export class Users extends React.Component {
           <WarningIcon style={{ paddingRight: 10 }} />
           {this.props.intl.formatMessage({ id: 'banUser_ban' })}
         </Button>
+        <Button color="primary" onClick={() => {
+            this.props.refreshUser(user);
+            this.setState({editUserInfo: {username: user.username, email: user.email}});
+            this.openEditUserModal(user);
+          }}>
+          <CreateIcon style={{ paddingRight: 10 }} />
+          {this.props.intl.formatMessage({ id: 'edit' })}
+        </Button>
       </TableCell>
     </TableRow>;
 
@@ -371,6 +456,19 @@ export class Users extends React.Component {
           close={() => {
             this.setState({banInfo: {reason: '',  expire: {amount: '', indicator: ''}}, banUserDialogOpen: false});
           }}
+          />
+        <DialogWithButtons
+          title={this.props.intl.formatMessage({ id: 'edit' })}
+          description={this.renderEditUser()}
+          submitAction={this.props.intl.formatMessage({ id: 'ok' })}
+          cancelAction={this.props.intl.formatMessage({ id: 'cancel' })}
+          isOpen={this.state.editUserDialogOpen}
+          submit={() => {
+              this.props.editUser(this.state.toBeEditedUser, this.state.editUserInfo);
+              this.setState({ editUserDialogOpen: false})
+
+          }}
+          close={() => this.setState({ editUserDialogOpen: false})}
           />
       </div>;
 
