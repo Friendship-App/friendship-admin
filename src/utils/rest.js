@@ -26,7 +26,7 @@ let apiRoot;
 if (process.env.NODE_ENV === 'development') {
   apiRoot = 'http://localhost:3888';
 } else {
-  apiRoot = 'https://my-app.herokuapp.com';
+  apiRoot = 'https://friendshipbackend.herokuapp.com';
 }
 
 const rest = reduxApi({
