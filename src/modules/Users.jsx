@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { injectIntl } from 'react-intl';
 import moment from 'moment';
+import theme from '../utils/theme';
 
 import Button from 'material-ui/Button';
 import TextField from 'material-ui/TextField'
@@ -255,21 +256,24 @@ export class Users extends React.Component {
   renderUserBanDesc = () =>
     <div style={{display: 'flex'}}>
       <FormControl>
-          <InputLabel htmlFor="expire-time">{this.props.intl.formatMessage({ id: 'banUser_amount' })}</InputLabel>
-          <Input id="expire-time"
-            onChange={(event) => {
-              this.setState({ banInfo: {...this.state.banInfo, expire: {...this.state.banInfo.expire, amount: event.target.value}} })}
-            }
-            inputComponent={NumberFormat}
-             />
+        <TextField
+          id="expire-time"
+          label={this.props.intl.formatMessage({ id: 'banUser_amount' })}
+          margin="normal"
+          type={"number"}
+          onChange={(event) => {
+            this.setState({ banInfo: {...this.state.banInfo, expire: {...this.state.banInfo.expire, amount: event.target.value}} })}
+          }
+        />
            <FormHelperText>{this.props.intl.formatMessage({ id: 'banUser_choose'})}</FormHelperText>
         </FormControl>
-        <FormControl>
-          <InputLabel htmlFor="expire-indicator">{this.props.intl.formatMessage({ id: 'banUser_indicator' })}</InputLabel>
-          <Select
+          <TextField
+            id="expire-indicator"
+            select
+            label={this.props.intl.formatMessage({ id: 'banUser_indicator' })}
             value={this.state.banInfo.expire.indicator}
             onChange={(event) => this.setState({ banInfo: {...this.state.banInfo, expire: {...this.state.banInfo.expire, indicator: event.target.value}} })}
-            input={<Input id="expire-indicator" />}
+            margin="normal"
           >
             <MenuItem value="">
               <em>None</em>
@@ -278,12 +282,8 @@ export class Users extends React.Component {
             <MenuItem value="days">{this.props.intl.formatMessage({ id: 'banUser_indicator_days' })}</MenuItem>
             <MenuItem value="weeks">{this.props.intl.formatMessage({ id: 'banUser_indicator_weeks' })}</MenuItem>
             <MenuItem value="years">{this.props.intl.formatMessage({ id: 'banUser_indicator_years' })}</MenuItem>
-          </Select>
-        </FormControl>
-  </div>;
+          </TextField>
 
-  renderFilterDesc = () =>
-  <div style={{display: 'flex'}}>
 
   </div>;
 
@@ -294,7 +294,7 @@ export class Users extends React.Component {
    * @return {TableRow} The tablerow associated with the user
    */
   renderUserRow = (user) => {
-    return <TableRow key={user.id}>
+    return <TableRow key={user.id} style={{backgroundColor: user.isbanned === "1" ? theme.palette.error[100] : null}}>
       <TableCell>
         {user.id}
       </TableCell>
@@ -305,7 +305,7 @@ export class Users extends React.Component {
         {user.email}
       </TableCell>
       <TableCell>
-        {user.isbanned === "1" ? 'Banned' : user.status}
+        {user.isbanned === "1" ? this.props.intl.formatMessage({ id: 'banned'}) : (user.active ? this.props.intl.formatMessage({ id: 'active'}) : this.props.intl.formatMessage({ id: 'inactive'}))}
       </TableCell>
       <TableCell>
         {user.reports}
@@ -322,7 +322,7 @@ export class Users extends React.Component {
                 this.props.activateUser(user, checked, this.state.filter) }}
             />
           }
-          label={this.props.intl.formatMessage({ id: 'userDetails_activate' })}
+          label={user.active ? this.props.intl.formatMessage({ id: 'userDetails_deactivate' }) : this.props.intl.formatMessage({ id: 'userDetails_activate' })}
         />
         <Button
           color="primary"
@@ -382,7 +382,7 @@ export class Users extends React.Component {
           />
         <DialogWithButtons
           textField={{label: this.props.intl.formatMessage({ id: 'banUser_reason' }), fullWidth: true}}
-          title={this.props.intl.formatMessage({ id: 'banUser_title' })}
+          title={this.props.intl.formatMessage({ id: 'banUser_title' }) + ' ' + (this.state.toBeBannedUser ? this.state.toBeBannedUser.username : '') }
           description={this.renderUserBanDesc()}
           submitAction={this.props.intl.formatMessage({ id: 'banUser_ok' })}
           cancelAction={this.props.intl.formatMessage({ id: 'banUser_cancel' })}
@@ -397,15 +397,6 @@ export class Users extends React.Component {
             this.setState({banInfo: {reason: '',  expire: {amount: '', indicator: ''}}, banUserDialogOpen: false});
           }}
           />
-          <DialogWithButtons
-            textField={{label: "Search User", fullWidth: true}}
-            title="Search"
-            description={this.renderFilterDesc()}
-            submitAction="Search"
-            cancelAction="Cancel"
-            isOpen={this.state.filterUserDialogOpen}
-            close={() => this.setState({filterUserDialogOpen: false})}
-             />
       </div>;
 
   /**
@@ -424,9 +415,7 @@ export class Users extends React.Component {
               this.props.filterUsers({username: value, email: value});
             });
           }}
-          fields={['active']}
            />
-          <Button onClick={() => this.setState({filterUserDialogOpen: true})}>Filter</Button>
         <Table>
           <TableHead>
             <TableRow>

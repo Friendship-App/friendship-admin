@@ -11,6 +11,9 @@ export default {
   userId: 'ID',
   email: 'E-mail',
   scope: 'Role',
+  banned: 'Banned',
+  active: 'Activated',
+  inactive: 'Not activated',
   scope_admin: 'Admin',
   scope_user: 'User',
   description: 'Description',
@@ -18,6 +21,7 @@ export default {
   userDetails: 'User details',
   userActions: 'Actions',
   userDetails_activate: 'Activate',
+  userDetails_deactivate: 'Deactivate',
 
   // Delete User
   deleteUser_title: 'Delete user',

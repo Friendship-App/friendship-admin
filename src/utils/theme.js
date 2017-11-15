@@ -6,6 +6,12 @@ export default {
     unit: 8,
   },
 
+  tablerow: {
+    banned: {
+      backgroundColor: red
+    }
+  },
+
   // App color palette
   palette: {
     primary: blueGrey,
