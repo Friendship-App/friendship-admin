@@ -129,7 +129,6 @@ const mapDispatchToProps = dispatch => ({
   },
 
   filterUsers: (filter) => {
-    console.log(filter);
     dispatch(rest.actions.users.get({filter: filter}));
   },
 });
@@ -203,37 +202,37 @@ export class Users extends React.Component {
     <div>
       <DialogContentText>
         <b>
-          {this.props.intl.formatMessage({ id: 'userId' })}
+          {this.props.intl.formatMessage({id: 'userId'})}
         </b>
         {`: ${this.props.userDetails.data.id}`}
       </DialogContentText>
       <DialogContentText>
         <b>
-          {this.props.intl.formatMessage({ id: 'username' })}
+          {this.props.intl.formatMessage({id: 'username'})}
         </b>
         {`: ${this.props.userDetails.data.username}`}
       </DialogContentText>
       <DialogContentText>
         <b>
-          {this.props.intl.formatMessage({ id: 'email' })}
+          {this.props.intl.formatMessage({id: 'email'})}
         </b>
         {`: ${this.props.userDetails.data.email}`}
       </DialogContentText>
       <DialogContentText>
         <b>
-          {this.props.intl.formatMessage({ id: 'status' })}
+          {this.props.intl.formatMessage({id: 'status'})}
         </b>
-        {`: ${this.props.userDetails.data.status}`}
+        {`: ${this.props.userDetails.data.isbanned === '1' ? this.props.intl.formatMessage({id: 'status_banned'}) : this.props.userDetails.data.status}`}
       </DialogContentText>
       <DialogContentText>
         <b>
-          {this.props.intl.formatMessage({ id: 'createdAt' })}
+          {this.props.intl.formatMessage({id: 'createdAt'})}
         </b>
         {`: ${this.props.userDetails.data.createdAt}`}
       </DialogContentText>
       <DialogContentText>
         <b>
-          {this.props.intl.formatMessage({ id: 'description' })}
+          {this.props.intl.formatMessage({id: 'description'})}
         </b>
         {`: ${this.props.userDetails.data.description}`}
       </DialogContentText>
@@ -295,7 +294,6 @@ export class Users extends React.Component {
    * @return {TableRow} The tablerow associated with the user
    */
   renderUserRow = (user) => {
-      console.log(user);
     return <TableRow key={user.id}>
       <TableCell>
         {user.id}
