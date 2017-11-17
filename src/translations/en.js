@@ -7,10 +7,15 @@ export default {
   Preferences: 'Preferences',
   Logout: 'Logout',
   Login: 'Login',
+  Metrics: 'Metrics',
+  Tos: 'Terms of Service',
+  Reports: 'Reports',
 
   // Users view
   userId: 'ID',
+  username: 'Username',
   email: 'E-mail',
+  password: 'Password',
   scope: 'Role',
   scope_admin: 'Admin',
   scope_user: 'User',
@@ -62,11 +67,10 @@ export default {
   language: 'App language',
   selectedLanguage: 'Selected language',
   resetState: 'Reset app state',
-  resetStateExplanation:
-    'Use this if you experience problems with the app. Only affects your session.',
+  resetStateExplanation:'Use this if you experience problems with the app. Only affects your session.',
   resetStateButton: 'Clear app state',
 
-  // Miscellaneous
+  // Miscellaneousbanni
   ok: 'Ok',
   yup: 'Yup',
   ban: 'Ban',

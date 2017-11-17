@@ -128,7 +128,7 @@ editUser: (user, editUserInfo) => {
       }, () => {
         dispatch(rest.actions.users());
       }))
-    
+
   },
 
   /**
@@ -213,7 +213,7 @@ export class Users extends React.Component {
 
     /**
    * Open the edit user modal
-   *
+   *ielto on astunut voimaan n
    * @param  {object} user the to be edited user
    * @return {void}
    */
@@ -229,7 +229,7 @@ export class Users extends React.Component {
     <div>
        <TextField
           id="username"
-          label="Username"
+          label= {this.props.intl.formatMessage({ id: 'username' })}
           value= {this.state.editUserInfo.username}
           onChange ={(event) =>{
             this.setState({ editUserInfo: {...this.state.editUserInfo, username: event.target.value}})}}
@@ -238,23 +238,22 @@ export class Users extends React.Component {
         <br/>
         <TextField
           id="email"
-          label="E-Mail"
+          label= {this.props.intl.formatMessage({ id: 'email' })}
           value= {this.state.editUserInfo.email}
           onChange ={(event) =>{
             this.setState({ editUserInfo: {...this.state.editUserInfo, email: event.target.value}})}}
           margin="normal"
         />
         <br/>
-        <InputLabel htmlFor="password">Password</InputLabel>
-        <br/>
-        <Input
-          id="password"
-          value= {this.state.editUserInfo.password}
-          type="password"
-          value={this.state.password}
-          onChange ={(event) =>{
-            this.setState({ editUserInfo: {...this.state.editUserInfo, password: event.target.value}})}}
-        />
+          <TextField
+             id="password"
+             type="password"
+             label= {this.props.intl.formatMessage({ id: 'password' })}
+             value= {this.state.editUserInfo.password}
+             onChange ={(event) =>{
+               this.setState({ editUserInfo: {...this.state.editUserInfo, password: event.target.value}})}}
+             margin="normal"
+           />
     </div>
 
   renderUserDetailsDesc = () =>
