@@ -4,24 +4,9 @@ import { push } from 'react-router-redux';
 import { connect } from 'react-redux';
 
 import Card, { CardContent, CardActions, CardMedia } from 'material-ui/Card';
-
-import Button from 'material-ui/Button';
 import Typography from 'material-ui/Typography';
 
 import CardGridWrapper from '../components/CardGridWrapper';
-
-import theme from '../utils/theme';
-
-import routes from '../utils/routes';
-import Users from '../modules/Users';
-import Preferences from '../modules/Preferences';
-import Login from '../modules/Login';
-import Logout from '../modules/Logout';
-import Tags from '../modules/Tags';
-import Metrics from '../modules/Metrics';
-import Events from '../modules/Events';
-import Reports from '../modules/Reports';
-import Banned from '../modules/Banned';
 
 const styles = {
   cards: {
@@ -122,7 +107,6 @@ export class Home extends React.Component {
         {this.renderUserCard()}
         {this.renderMetricsCard()}
         {this.renderTagsCard()}
-        {this.renderEventsCard()}
       </CardGridWrapper>
     );
   }

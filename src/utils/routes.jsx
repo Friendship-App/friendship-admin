@@ -41,6 +41,7 @@ import CopyrightIcon from 'material-ui-icons/Copyright';
 import PreferencesIcon from 'material-ui-icons/Settings';
 import LoginIcon from 'material-ui-icons/AccountCircle';
 import LogoutIcon from 'material-ui-icons/ExitToApp';
+import ReportIcon from 'material-ui-icons/Report';
 
 
 // Components
@@ -52,9 +53,7 @@ import Login from '../modules/Login';
 import Logout from '../modules/Logout';
 import Tags from '../modules/Tags';
 import Metrics from '../modules/Metrics';
-import Events from '../modules/Events';
 import Reports from '../modules/Reports';
-import Banned from '../modules/Banned';
 
 // Routes
 const routeConfigs = [
@@ -90,26 +89,12 @@ const routeConfigs = [
     requiresLogin: true,
   },
   {
-    path: '/events',
-    name: 'Events',
-    component: Events,
-    icon: HomeIcon,
-    separator: true,
-    requiresLogin: true,
-  },
-  {
     path: '/reports',
     name: 'Reports',
     component: Reports,
-    icon: HomeIcon,
+    icon: ReportIcon,
     separator: true,
     requiresLogin: true,
-  },
-  {
-    path: '/banned',
-    name: 'Banned',
-    component: Banned,
-    icon: HomeIcon,
   },
   {
   path: '/tos',

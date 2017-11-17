@@ -3,25 +3,31 @@ export default {
   navigation: 'Navigaatio',
   Home: 'Koti',
   Users: 'Käyttäjät',
+  Tags: 'Tags',
   Preferences: 'Asetukset',
   Logout: 'Kirjaudu ulos',
   Login: 'Kirjaudu sisään',
 
   // Users view
   userId: 'ID',
-  email: 'Sähköpostiosoite',
-  scope: 'Rooli',
-  scope_admin: 'Admin',
-  scope_user: 'Käyttäjä',
-  description: 'Kuvaus',
-  showUserDetails: 'Lisätiedot',
+  username: '???'
+  userEmail: 'Sähköpostiosoite',
+  userScope: 'Rooli',
+  userScope_admin: 'Admin',
+  userScope_user: 'Käyttäjä',
+  userDescription: 'Kuvaus',
+  userShowUserDetails: 'Lisätiedot',
   userDetails: 'Käyttäjän lisätiedot',
   userActions: 'Teot',
   userDetails_activate: 'Aktivoi',
+  userDetails_deactivate: 'Deactivate',
+  active: 'Active',
+  inactive: 'Inactive',
+  banned: 'Banned',
 
   //Delete User
   deleteUser_title: 'Poista käyttäjä',
-  deleteUser_description: 'Haluatko varmasti poistaa käyttäjän?',
+  deleteUser_description: 'HUOMIO! Tämän käyttäjän poistaminen poistaa hänet lopullisesti sovelluksesta. Oletko varma että haluat poistaa käyättäjän lopullisesti?',
   deleteUser_ok: 'Yes',
   deleteUser_cancel: 'Peruuta',
   deleteUser_delete: 'Poista',
@@ -43,7 +49,21 @@ export default {
   banUser_indicator_months: 'Kuukautta',
   banUser_indicator_years: 'Vuotta',
 
- // Terms of service 
+  // Tag view
+  tagId: '',
+  tagName: '',
+  tagLoves: '',
+  tagHates: '',
+  tagCreator: '',
+  tagStatus: '',
+  tagCreationDate: '',
+  tagRelatedEvent: '',
+  
+  // Delete tag
+  deleteTag_title: 'Poista tägi',
+  deleteTag_description: 'HUOMIO! Tämän tägin poistaminen poistaa sen lopullisesti sovelluksesta. Oletko varma että haluat poistaa tägin lopullisesti?',
+
+ // Terms of service
   terms_of_service_titel: 'Terms of Service',
   terms_of_service_description: 'Are you sure you want to change the terms of service?',
 
@@ -67,5 +87,5 @@ export default {
   ban: 'Ban',
   cancel: 'Peruuta',
   close: 'Sulje',
-  edit: 'insert finnish please',
+  edit: 'Muokkaa',
 };

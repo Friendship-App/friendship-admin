@@ -4,14 +4,7 @@ import PropTypes from 'prop-types';
 import TextField from 'material-ui/TextField';
 import Paper from 'material-ui/Paper';
 import Grid from 'material-ui/Grid';
-import Typography from 'material-ui/Typography';
 import Button from 'material-ui/Button';
-import IconButton from 'material-ui/IconButton';
-
-import { FormGroup, FormControlLabel } from 'material-ui/Form';
-import Checkbox from 'material-ui/Checkbox';
-
-import FilterListIcon from 'material-ui-icons/FilterList';
 
 import theme from '../utils/theme';
 

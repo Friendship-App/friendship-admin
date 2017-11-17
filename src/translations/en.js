@@ -3,29 +3,31 @@ export default {
   navigation: 'Navigation',
   Home: 'Home',
   Users: 'Users',
+  Tags: 'Tags',
   Preferences: 'Preferences',
   Logout: 'Logout',
   Login: 'Login',
 
   // Users view
   userId: 'ID',
-  email: 'E-mail',
-  scope: 'Role',
-  banned: 'Banned',
-  active: 'Activated',
-  inactive: 'Not activated',
-  scope_admin: 'Admin',
-  scope_user: 'User',
-  description: 'Description',
-  showUserDetails: 'Details',
+  username: 'Username',
+  userEmail: 'E-mail',
+  userScope: 'Role',
+  userScope_admin: 'Admin',
+  userScope_user: 'User',
+  userDescription: 'Description',
+  userShowUserDetails: 'Details',
   userDetails: 'User details',
   userActions: 'Actions',
   userDetails_activate: 'Activate',
   userDetails_deactivate: 'Deactivate',
+  active: 'Active',
+  inactive: 'Inactive',
+  banned: 'Banned',
 
   // Delete User
   deleteUser_title: 'Delete user',
-  deleteUser_description: 'Are you sure you want to delete this user?',
+  deleteUser_description: 'ATTENTION! Deleting this user will remove him permanently from the application. Are you sure you want to permanently delete this user?',
   deleteUser_ok: 'Yup',
   deleteUser_cancel: 'Cancel',
   deleteUser_delete: 'Delete',
@@ -47,7 +49,21 @@ export default {
   banUser_indicator_months: 'Month(s)',
   banUser_indicator_years: 'Year(s)',
 
-  // Terms of service 
+  // Tag view
+  tagId: 'Id',
+  tagName: 'Name',
+  tagLoves: 'Loves',
+  tagHates: 'Hates',
+  tagCreator: 'Creator',
+  tagStatus: 'Status',
+  tagCreationDate: 'Creation date',
+  tagRelatedEvent: 'Related event',
+
+  // Delete tag
+  deleteTag_title: 'Delete tag',
+  deleteTag_description: 'ATTENTION! Deleting this tag will remove it permanently from the application. Are you sure you want to permanently delete this tag?',
+
+  // Terms of service
   terms_of_service_titel: 'Terms of Service',
   terms_of_service_description: 'Are you sure you want to change the terms of service?',
 
