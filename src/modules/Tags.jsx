@@ -102,20 +102,20 @@ renderTagDetailsDesc = () =>
     </DialogContentText>
   </div>;
 
-  renderUserDeleteDesc = () =>
+  renderTagDeleteDesc = () =>
     <div>
         <DialogContentText>
             <strong>
-                {this.props.intl.formatMessage({ id: 'deleteUser_description' })}
+                {this.props.intl.formatMessage({ id: 'deleteTag_description' })}
             </strong>
         </DialogContentText>
     </div>;
 
   /**
-   * Render the user row in the user list
+   * Render the tag row in the tag list
    *
    * @param  {object} tag The tag that has to be rendered
-   * @return {TableRow} The tablerow associated with the user
+   * @return {TableRow} The tablerow associated with the tag
    */
    renderTagRow = (tag) =>
     <TableRow key={tag.id}>
@@ -155,8 +155,8 @@ renderTagDetailsDesc = () =>
     renderDialogs = () =>
     <div>
       <DialogWithButtons
-          title={this.props.intl.formatMessage({ id: 'deleteUser_title' })}
-          description={this.renderUserDeleteDesc()}
+          title={this.props.intl.formatMessage({ id: 'deleteTag_title' })}
+          description={this.renderTagDeleteDesc()}
           submitAction={this.props.intl.formatMessage({ id: 'deleteUser_ok' })}
           cancelAction={this.props.intl.formatMessage({ id: 'deleteUser_cancel' })}
           isOpen={this.state.deleteTagDialogOpen}
