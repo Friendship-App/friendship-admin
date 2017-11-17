@@ -11,6 +11,9 @@ import Table, {
   TableCell,
 } from 'material-ui/Table';
 
+
+import { FormControlLabel } from 'material-ui/Form';
+import Switch from 'material-ui/Switch';
 import { LinearProgress } from 'material-ui/Progress';
 import ListIcon from 'material-ui-icons/List';
 import DeleteIcon from 'material-ui-icons/Delete';
@@ -51,16 +54,29 @@ const mapDispatchToProps = dispatch => ({
    },
 
    /**
-    * Delete a spcific user
+    * Delete a spcific tag
     *
-    * @param  {object} tag The to be deleted user
+    * @param  {object} tag The to be deleted tag
     * @return {void}
     */
    deleteTagUser: (tag) => {
        dispatch(rest.actions.tagDetails.delete({ tagId: tag.id }, null, () => {
            dispatch(rest.actions.taglist());
        }));
+   },
+
+   /**
+    * Activate the tag
+    * @param  {object} tag    The the be activated tag
+    * @param  {boolean} checked true: the tag is activated|false: the tag is not activated
+    * @return {void}
+    */
+   activateTag: (tag, checked) => {
+     dispatch(rest.actions.tagDetails.patch({ tagrId: tag.id }, { body: JSON.stringify({active: checked})}, () => {
+       dispatch(rest.actions.tags());
+     }))
    }
+
 });
 
 
@@ -135,12 +151,24 @@ renderTagDetailsDesc = () =>
         {tag.creator}
       </TableCell>
       <TableCell>
+        {tag.status ? "1" : "2"}
+      </TableCell>
+      <TableCell>
         {tag.createdAt}
       </TableCell>
       <TableCell>
         {tag.relatedEvents}
       </TableCell>
-      <TableCell>
+      <TableCell numeric>
+        <FormControlLabel
+          control={
+            <Switch
+              checked={tag.status}
+              onChange={(event, checked) => this.props.activateTag(tag, checked) }
+            />
+          }
+          label={this.props.intl.formatMessage({ id: 'userDetails_activate' })}
+        />
         <Button
             color="primary"
             onClick={() => {
@@ -188,22 +216,25 @@ renderTagDetailsDesc = () =>
               {this.props.intl.formatMessage({ id: 'tagId' })}
             </TableCell>
             <TableCell>
-              {this.props.intl.formatMessage({ id: 'name' })}
+              {this.props.intl.formatMessage({ id: 'tagName' })}
             </TableCell>
             <TableCell>
-              {this.props.intl.formatMessage({ id: 'Loves' })}
+              {this.props.intl.formatMessage({ id: 'tagLoves' })}
             </TableCell>
             <TableCell>
-              {this.props.intl.formatMessage({ id: 'Hates' })}
+              {this.props.intl.formatMessage({ id: 'tagHates' })}
             </TableCell>
             <TableCell>
-              {this.props.intl.formatMessage({ id: 'Creator' })}
+              {this.props.intl.formatMessage({ id: 'tagCreator' })}
             </TableCell>
             <TableCell>
-              {this.props.intl.formatMessage({ id: 'Creation date' })}
+              {this.props.intl.formatMessage({ id: 'tagStatus' })}
             </TableCell>
             <TableCell>
-              {this.props.intl.formatMessage({ id: 'related events' })}
+              {this.props.intl.formatMessage({ id: 'tagCreationdate' })}
+            </TableCell>
+            <TableCell>
+              {this.props.intl.formatMessage({ id: 'tagRelatedEvent' })}
             </TableCell>
           </TableRow>
         </TableHead>

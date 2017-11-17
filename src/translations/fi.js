@@ -9,12 +9,12 @@ export default {
 
   // Users view
   userId: 'ID',
-  email: 'Sähköpostiosoite',
-  scope: 'Rooli',
-  scope_admin: 'Admin',
-  scope_user: 'Käyttäjä',
-  description: 'Kuvaus',
-  showUserDetails: 'Lisätiedot',
+  userEmail: 'Sähköpostiosoite',
+  userScope: 'Rooli',
+  userScope_admin: 'Admin',
+  userScope_user: 'Käyttäjä',
+  userDescription: 'Kuvaus',
+  userShowUserDetails: 'Lisätiedot',
   userDetails: 'Käyttäjän lisätiedot',
   userActions: 'Teot',
   userDetails_activate: 'Aktivoi',
@@ -43,6 +43,16 @@ export default {
   banUser_indicator_months: 'Kuukautta',
   banUser_indicator_years: 'Vuotta',
 
+  // Tag view
+  tagId: '',
+  tagName: '',
+  tagLoves: '',
+  tagHates: '',
+  tagCreator: '',
+  tagStatus: '',
+  tagCreationDate: '',
+  tagRelatedEvent: '',
+  
   // Delete tag
   deleteTag_title: 'Poista tägi',
   deleteTag_description: 'HUOMIO! Tämän tägin poistaminen poistaa sen lopullisesti sovelluksesta. Oletko varma että haluat poistaa tägin lopullisesti?',

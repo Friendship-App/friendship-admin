@@ -119,7 +119,7 @@ const mapDispatchToProps = dispatch => ({
 editUser: (user, editUserInfo) => {
     const info = {
       username: editUserInfo.username,
-      email: editUserInfo.email,
+      userEmail: editUserInfo.userEmail,
       password: editUserInfo.password,
     }
 
@@ -128,20 +128,9 @@ editUser: (user, editUserInfo) => {
       }, () => {
         dispatch(rest.actions.users());
       }))
-    
+
   },
 
-  /**
-   * Activate the user
-   * @param  {object} user    The the be activated user
-   * @param  {boolean} checked true: the user is activated|false: the user is not activated
-   * @return {void}
-   */
-  activateUser: (user, checked) => {
-    dispatch(rest.actions.userDetails.patch({ userId: user.id }, { body: JSON.stringify({active: checked})}, () => {
-      dispatch(rest.actions.users());
-    }))
-  }
 });
 
 export class Users extends React.Component {
@@ -164,7 +153,7 @@ export class Users extends React.Component {
     toBeEditedUser: null,
     editUserInfo: {
       username: '',
-      email:  '',
+      userEmail:  '',
       password: '',
     },
   };
@@ -237,11 +226,11 @@ export class Users extends React.Component {
         />
         <br/>
         <TextField
-          id="email"
+          id="userEmail"
           label="E-Mail"
-          value= {this.state.editUserInfo.email}
+          value= {this.state.editUserInfo.userEmail}
           onChange ={(event) =>{
-            this.setState({ editUserInfo: {...this.state.editUserInfo, email: event.target.value}})}}
+            this.setState({ editUserInfo: {...this.state.editUserInfo, userEmail: event.target.value}})}}
           margin="normal"
         />
         <br/>
@@ -273,9 +262,9 @@ export class Users extends React.Component {
       </DialogContentText>
       <DialogContentText>
         <b>
-          {this.props.intl.formatMessage({ id: 'email' })}
+          {this.props.intl.formatMessage({ id: 'userEmail' })}
         </b>
-        {`: ${this.props.userDetails.data.email}`}
+        {`: ${this.props.userDetails.data.userEmail}`}
       </DialogContentText>
       <DialogContentText>
         <b>
@@ -291,14 +280,14 @@ export class Users extends React.Component {
       </DialogContentText>
       <DialogContentText>
         <b>
-          {this.props.intl.formatMessage({ id: 'description' })}
+          {this.props.intl.formatMessage({ id: 'userDescription' })}
         </b>
-        {`: ${this.props.userDetails.data.description}`}
+        {`: ${this.props.userDetails.data.userDescription}`}
       </DialogContentText>
     </div>;
 
   /**
-   * Render the user delete dialog description
+   * Render the user delete dialog userDescription
    *
    * @return {Node}
    */
@@ -306,7 +295,7 @@ export class Users extends React.Component {
     <div>
         <DialogContentText>
             <strong>
-                {this.props.intl.formatMessage({ id: 'deleteUser_description' })}
+                {this.props.intl.formatMessage({ id: 'deleteUser_userDescription' })}
             </strong>
         </DialogContentText>
     </div>;
@@ -356,7 +345,7 @@ export class Users extends React.Component {
         {user.username}
       </TableCell>
       <TableCell>
-        {user.email}
+        {user.userEmail}
       </TableCell>
       <TableCell>
         {user.status}
@@ -385,7 +374,7 @@ export class Users extends React.Component {
           }}
         >
           <ListIcon style={{ paddingRight: 10 }} />
-          {this.props.intl.formatMessage({ id: 'showUserDetails' })}
+          {this.props.intl.formatMessage({ id: 'userShowUserDetails' })}
         </Button>
         <Button
             color="primary"
@@ -403,7 +392,7 @@ export class Users extends React.Component {
         </Button>
         <Button color="primary" onClick={() => {
             this.props.refreshUser(user);
-            this.setState({editUserInfo: {username: user.username, email: user.email}});
+            this.setState({editUserInfo: {username: user.username, userEmail: user.userEmail}});
             this.openEditUserModal(user);
           }}>
           <CreateIcon style={{ paddingRight: 10 }} />
@@ -420,7 +409,7 @@ export class Users extends React.Component {
     <div>
       <DialogWithButtons
         title={this.props.intl.formatMessage({ id: 'userDetails' })}
-        description={this.renderUserDetailsDesc()}
+        userDescription={this.renderUserDetailsDesc()}
         submitAction={this.props.intl.formatMessage({ id: 'close' })}
         isOpen={this.state.dialogOpen}
         loading={this.props.userDetails.loading}
@@ -429,7 +418,7 @@ export class Users extends React.Component {
       />
       <DialogWithButtons
           title={this.props.intl.formatMessage({ id: 'deleteUser_title' })}
-          description={this.renderUserDeleteDesc()}
+          userDescription={this.renderUserDeleteDesc()}
           submitAction={this.props.intl.formatMessage({ id: 'deleteUser_ok' })}
           cancelAction={this.props.intl.formatMessage({ id: 'deleteUser_cancel' })}
           isOpen={this.state.deleteUserDialogOpen}
@@ -443,7 +432,7 @@ export class Users extends React.Component {
         <DialogWithButtons
           textField={{label: this.props.intl.formatMessage({ id: 'banUser_reason' }), fullWidth: true}}
           title={this.props.intl.formatMessage({ id: 'banUser_title' })}
-          description={this.renderUserBanDesc()}
+          userDescription={this.renderUserBanDesc()}
           submitAction={this.props.intl.formatMessage({ id: 'banUser_ok' })}
           cancelAction={this.props.intl.formatMessage({ id: 'banUser_cancel' })}
           isOpen={this.state.banUserDialogOpen}
@@ -459,7 +448,7 @@ export class Users extends React.Component {
           />
         <DialogWithButtons
           title={this.props.intl.formatMessage({ id: 'edit' })}
-          description={this.renderEditUser()}
+          userDescription={this.renderEditUser()}
           submitAction={this.props.intl.formatMessage({ id: 'ok' })}
           cancelAction={this.props.intl.formatMessage({ id: 'cancel' })}
           isOpen={this.state.editUserDialogOpen}
@@ -493,7 +482,7 @@ export class Users extends React.Component {
                 {this.props.intl.formatMessage({ id: 'username' })}
               </TableCell>
               <TableCell>
-                {this.props.intl.formatMessage({ id: 'email' })}
+                {this.props.intl.formatMessage({ id: 'userEmail' })}
               </TableCell>
               <TableCell>
                 {this.props.intl.formatMessage({ id: 'status' })}
