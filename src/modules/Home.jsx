@@ -4,22 +4,9 @@ import { push } from 'react-router-redux';
 import { connect } from 'react-redux';
 
 import Card, { CardContent, CardActions, CardMedia } from 'material-ui/Card';
-
-import Button from 'material-ui/Button';
 import Typography from 'material-ui/Typography';
 
 import CardGridWrapper from '../components/CardGridWrapper';
-
-import theme from '../utils/theme';
-
-import routes from '../utils/routes';
-import Users from '../modules/Users';
-import Preferences from '../modules/Preferences';
-import Login from '../modules/Login';
-import Logout from '../modules/Logout';
-import Tags from '../modules/Tags';
-import Metrics from '../modules/Metrics';
-import Reports from '../modules/Reports';
 
 const styles = {
   cards: {
