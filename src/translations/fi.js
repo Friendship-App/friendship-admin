@@ -10,7 +10,7 @@ export default {
 
   // Users view
   userId: 'ID',
-  username: '???'
+  username: '???',
   userEmail: 'Sähköpostiosoite',
   userScope: 'Rooli',
   userScope_admin: 'Admin',
