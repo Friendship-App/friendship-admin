@@ -6,6 +6,10 @@ export default {
   Preferences: 'Asetukset',
   Logout: 'Kirjaudu ulos',
   Login: 'Kirjaudu sisään',
+  Tags: 'Tägit',
+  Metrics: 'Metriikka',
+  Tos: 'Käyttöehdot',
+  Reports: 'Ilmoitukset',
 
   // Users view
   userId: 'ID',
@@ -16,8 +20,11 @@ export default {
   userScope_admin: 'Admin',
   userScope_user: 'Käyttäjä',
   userDescription: 'Kuvaus',
+  userStatus: '???',
+  userReports: '???',
   userShowUserDetails: 'Lisätiedot',
   userDetails: 'Käyttäjän lisätiedot',
+  userCreatedAt: '???',
   userActions: 'Teot',
   userDetails_activate: 'Aktivoi',
   userDetails_deactivate: 'Deactivate',
@@ -80,7 +87,7 @@ export default {
   resetStateExplanation:'Käytä tätä toimintoa jos huomaat ongelmia sovelluksen toiminnassa. Vaikuttaa ainoastaan sinun sessioosi.',
   resetStateButton: 'Nollaa tila',
 
-  // Miscellaneous
+  // Miscellaneousbanni
   ok: 'Ok',
   yup: 'Yup',
   ban: 'Ban',

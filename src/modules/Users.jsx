@@ -12,17 +12,11 @@ import Table, {
   TableRow,
   TableCell
 } from 'material-ui/Table';
-import {FormControlLabel} from 'material-ui/Form';
 import Switch from 'material-ui/Switch';
-import {MenuItem} from 'material-ui/Menu';
-import {FormControl, FormHelperText} from 'material-ui/Form';
-import Input, {InputLabel} from 'material-ui/Input';
+import {FormControl, FormHelperText, FormControlLabel} from 'material-ui/Form';
 
 import {LinearProgress} from 'material-ui/Progress';
 import {MenuItem} from 'material-ui/Menu';
-import {FormControl, FormHelperText} from 'material-ui/Form';
-import Input, {InputLabel} from 'material-ui/Input';
-import {LinearProgress} from 'material-ui/Progress';
 import ListIcon from 'material-ui-icons/List';
 import DeleteIcon from 'material-ui-icons/Delete';
 import WarningIcon from 'material-ui-icons/Warning';
@@ -160,19 +154,7 @@ const mapDispatchToProps = dispatch => ({
       }
     }))
   },
-
-    /**
-     * Activate the user
-     * @param  {object} user    The the be activated user
-     * @param  {boolean} checked true: the user is activated|false: the user is not activated
-     * @return {void}
-     */
-  activateUser: (user, checked) => {
-    dispatch(rest.actions.userDetails.patch({userId: user.id}, {body: JSON.stringify({active: checked})}, () => {
-      dispatch(rest.actions.users());
-    }))
-  }
-}
+});
 
 export class Users extends React.Component {
   // Component initial state.
@@ -359,7 +341,7 @@ export class Users extends React.Component {
           id="expire-time"
           label={this.props.intl.formatMessage({id: 'banUser_amount'})}
           margin="normal"
-          type={"number"}
+          type="number"
           onChange={(event) => {
             this.setState({
               banInfo: {
@@ -559,16 +541,16 @@ export class Users extends React.Component {
                 {this.props.intl.formatMessage({id: 'username'})}
               </TableCell>
               <TableCell>
-                {this.props.intl.formatMessage({id: 'email'})}
+                {this.props.intl.formatMessage({id: 'userEmail'})}
               </TableCell>
               <TableCell>
-                {this.props.intl.formatMessage({id: 'status'})}
+                {this.props.intl.formatMessage({id: 'userStatus'})}
               </TableCell>
               <TableCell>
-                {this.props.intl.formatMessage({id: 'reports'})}
+                {this.props.intl.formatMessage({id: 'userReports'})}
               </TableCell>
               <TableCell>
-                {this.props.intl.formatMessage({id: 'createdAt'})}
+                {this.props.intl.formatMessage({id: 'userCreatedAt'})}
               </TableCell>
               <TableCell/>
             </TableRow>
