@@ -1,20 +1,14 @@
 import React from 'react';
-
 import Button from 'material-ui/Button';
 import TextField from 'material-ui/TextField';
-
 import Card, { CardActions, CardHeader, CardContent } from 'material-ui/Card';
 import Avatar from 'material-ui/Avatar';
 import AccountCircleIcon from 'material-ui-icons/AccountCircle';
-
 import { LinearProgress } from 'material-ui/Progress';
-
 import { connect } from 'react-redux';
 import { replace } from 'react-router-redux';
 import { updateIntl } from 'react-intl-redux';
-
 import CardGridWrapper from '../components/CardGridWrapper';
-
 import { getLocaleForUser, languages } from '../utils/intl';
 import rest from '../utils/rest';
 import theme from '../utils/theme';
@@ -30,6 +24,7 @@ const mapDispatchToProps = dispatch => ({
   doLogin(creds) {
     dispatch(rest.actions.auth({}, { body: JSON.stringify(creds) }));
 
+      // gets information on users and sets language
     const storedLocale = getLocaleForUser(creds.email);
     if (storedLocale && languages[storedLocale]) {
       dispatch(
@@ -96,6 +91,7 @@ export class Login extends React.Component {
             title="frontend-kit"
             subheader="Please log in:"
           />
+          {/* Creation on the card box element */}
           <CardContent style={{ display: 'flex', flexDirection: 'column' }}>
             <TextField
               type="text"
@@ -118,6 +114,7 @@ export class Login extends React.Component {
               }}
               marginForm
             />
+            {/* Definition of what goes on the card element */}
             <TextField
               type="password"
               label="Password"
@@ -137,12 +134,14 @@ export class Login extends React.Component {
               marginForm
             />
           </CardContent>
+          {/* CSS styling */}
           <CardActions
             style={{
               margin: theme.spacing.unit,
               marginTop: '0px',
             }}
           >
+            {/* Login button */}
             <Button
               raised
               style={{

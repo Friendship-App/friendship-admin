@@ -1,18 +1,17 @@
 
-
 import React from 'react';
-
 import Card, { CardContent, CardActions, CardMedia } from 'material-ui/Card';
-
 import Button from 'material-ui/Button';
 import Typography from 'material-ui/Typography';
-
 import CardGridWrapper from '../components/CardGridWrapper';
-
 import theme from '../utils/theme';
-
 import chilicorn from '../assets/chilicorn/chilicorn_no_text-256.png';
 import placeholder from '../assets/placeholder.png';
+
+// This page will be used at a later date to display the metrics.
+// The following code is what is loaded by default,
+// and therefore not relevant to our app.
+
 
 const styles = {
   chilicornHeader: {

@@ -1,7 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { injectIntl } from 'react-intl';
-
 import Button from 'material-ui/Button';
 import TextField from 'material-ui/TextField'
 import Table, {
@@ -10,17 +9,13 @@ import Table, {
   TableRow,
   TableCell,
 } from 'material-ui/Table';
-
 import { LinearProgress } from 'material-ui/Progress';
 import ListIcon from 'material-ui-icons/List';
 import DeleteIcon from 'material-ui-icons/Delete';
 import WarningIcon from 'material-ui-icons/Warning';
-
 import { DialogContentText } from 'material-ui/Dialog';
 import DialogWithButtons from '../components/DialogWithButtons';
-
 import FilterTags from './FilterTags';
-
 import rest from '../utils/rest';
 
 const mapStateToProps = state => ({
@@ -41,7 +36,7 @@ const mapDispatchToProps = dispatch => ({
   },
 
   /**
-   * Refresh a spcific tag
+   * Refresh a specific tag
    *
    * @param  {Object} tag The tag to be refreshed
    * @return {void}
@@ -51,9 +46,9 @@ const mapDispatchToProps = dispatch => ({
    },
 
    /**
-    * Delete a spcific user
+    * Delete a specific tag
     *
-    * @param  {object} tag The to be deleted user
+    * @param  {object} tag The to be deleted tag
     * @return {void}
     */
    deleteTagUser: (tag) => {
@@ -66,14 +61,14 @@ const mapDispatchToProps = dispatch => ({
 
 export class Tags extends React.Component {
   // Component initial state.
-  // Here we keep track of whether the user details dialog is open.
+  // Here we keep track of whether the tag details dialog is open.
   state = {
     dialogOpen: false,
     deleteUserDialogOpen: false,
     toBeDeletedUser: null,
   };
 
-// Refresh user list when component is first mounted
+// Refresh tag list when component is first mounted
 componentDidMount() {
   const { refresh } = this.props;
   refresh();
@@ -141,6 +136,7 @@ renderTagDetailsDesc = () =>
         {tag.relatedEvents}
       </TableCell>
       <TableCell>
+        {/* Creation of tag delete button */}
         <Button
             color="primary"
             onClick={() => {
@@ -154,9 +150,12 @@ renderTagDetailsDesc = () =>
 
     renderDialogs = () =>
     <div>
+      {/* Dialog when you wish to delete a tag */}
       <DialogWithButtons
           title={this.props.intl.formatMessage({ id: 'deleteTag_title' })}
           description={this.renderTagDeleteDesc()}
+          // 'deleteUser_ok' and 'deleteUser_cancel' contains 'User' in the 'Tag' page because
+          // The result of these messages ID's is page neutral 
           submitAction={this.props.intl.formatMessage({ id: 'deleteUser_ok' })}
           cancelAction={this.props.intl.formatMessage({ id: 'deleteUser_cancel' })}
           isOpen={this.state.deleteTagDialogOpen}

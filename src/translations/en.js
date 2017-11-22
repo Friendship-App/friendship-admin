@@ -48,8 +48,17 @@ export default {
   deleteTag_title: 'Delete tag',
   deleteTag_description: 'ATTENTION! Deleting this tag will remove it permanently from the application. Are you sure you want to permanently delete this tag?',
 
+  // Reports view
+  deleteReport_delete: 'Delete',
+  deleteReport_description: 'Are you sure you want to delete this report?',
+  reportedUser_details: 'Reported User details',
+  deleteReport: 'Delete Report',
+  showReportDetails: 'Report Details',
+  reportDescription: 'This is what the user submitted for their report',
+
+
   // Terms of service
-  terms_of_service_titel: 'Terms of Service',
+  terms_of_service_title: 'Terms of Service',
   terms_of_service_description: 'Are you sure you want to change the terms of service?',
 
   // Scope user

@@ -1,7 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { injectIntl } from 'react-intl';
-
 import Button from 'material-ui/Button';
 import TextField from 'material-ui/TextField'
 import Table, {
@@ -17,18 +16,14 @@ import { FormControl, FormHelperText } from 'material-ui/Form';
 import Select from 'material-ui/Select';
 import IconButton from 'material-ui/IconButton';
 import Input, { InputLabel } from 'material-ui/Input';
-
 import { LinearProgress } from 'material-ui/Progress';
 import ListIcon from 'material-ui-icons/List';
 import DeleteIcon from 'material-ui-icons/Delete';
 import WarningIcon from 'material-ui-icons/Warning';
 import CreateIcon from 'material-ui-icons/Create';
-
 import { DialogContentText } from 'material-ui/Dialog';
 import DialogWithButtons from '../components/DialogWithButtons';
-
 import NumberFormat from 'react-number-format';
-
 import rest from '../utils/rest';
 
 // Here we 'connect' the component to the Redux store. This means that the component will receive
@@ -68,7 +63,7 @@ const mapDispatchToProps = dispatch => ({
   },
 
   /**
-   * Refresh a spcific user
+   * Refresh a specific user
    *
    * @param  {Object} user The user to be refreshed
    * @return {void}
@@ -78,7 +73,7 @@ const mapDispatchToProps = dispatch => ({
   },
 
   /**
-   * Delete a spcific user
+   * Delete a specific user
    *
    * @param  {object} user The to be deleted user
    * @return {void}
@@ -128,7 +123,7 @@ editUser: (user, editUserInfo) => {
       }, () => {
         dispatch(rest.actions.users());
       }))
-    
+
   },
 
   /**
@@ -147,6 +142,7 @@ editUser: (user, editUserInfo) => {
 export class Users extends React.Component {
   // Component initial state.
   // Here we keep track of whether the user details dialog is open.
+  // As you can see, nothing is visible by default
   state = {
     dialogOpen: false,
     deleteUserDialogOpen: false,
@@ -418,6 +414,7 @@ export class Users extends React.Component {
    */
   renderDialogs = () =>
     <div>
+      {/*  Details dialog*/}
       <DialogWithButtons
         title={this.props.intl.formatMessage({ id: 'userDetails' })}
         description={this.renderUserDetailsDesc()}
@@ -427,6 +424,7 @@ export class Users extends React.Component {
         submit={() => this.setState({ dialogOpen: false })}
         close={() => this.setState({ dialogOpen: false })}
       />
+      {/*  Delete dialog*/}
       <DialogWithButtons
           title={this.props.intl.formatMessage({ id: 'deleteUser_title' })}
           description={this.renderUserDeleteDesc()}
@@ -440,6 +438,7 @@ export class Users extends React.Component {
           }}
           close={() => this.setState({ deleteUserDialogOpen: false})}
           />
+          {/*  Ban dialog*/}
         <DialogWithButtons
           textField={{label: this.props.intl.formatMessage({ id: 'banUser_reason' }), fullWidth: true}}
           title={this.props.intl.formatMessage({ id: 'banUser_title' })}
@@ -457,6 +456,7 @@ export class Users extends React.Component {
             this.setState({banInfo: {reason: '',  expire: {amount: '', indicator: ''}}, banUserDialogOpen: false});
           }}
           />
+          {/* Edit user dialog */}
         <DialogWithButtons
           title={this.props.intl.formatMessage({ id: 'edit' })}
           description={this.renderEditUser()}
