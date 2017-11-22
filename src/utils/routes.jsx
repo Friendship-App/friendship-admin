@@ -62,7 +62,7 @@ const routeConfigs = [
     name: 'Home',
     component: Home,
     icon: HomeIcon,
-    requiresLogin: false,
+    requiresLogin: true,
   },
   {
     path: '/users',
