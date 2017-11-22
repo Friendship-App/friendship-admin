@@ -1,14 +1,11 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { injectIntl } from 'react-intl';
-
 import Button from 'material-ui/Button';
 import { withStyles } from 'material-ui/styles';
 import TextField from 'material-ui/TextField';
-
 import DialogWithButtons from '../components/DialogWithButtons';
 import { DialogContentText } from 'material-ui/Dialog';
-
 import rest from '../utils/rest';
 
 const mapStateToProps = state => ({
@@ -17,7 +14,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   /**
-  * Refresh the user list
+  * Refresh the tos
   *
   * @return {void}
   */
@@ -65,19 +62,12 @@ export class Tos extends React.Component {
       saveTosDialogOpen: false,
     }
   }
- 
+
   handleChange = name => event => {
     this.setState({
       [name]: event.target.value,
     });
   };
-
-  // Refresh user list when component is first mounted
-  componentDidMount() {
-    const { refresh } = this.props;
-
-    refresh();
-  }
 
   render() {
 
@@ -85,9 +75,9 @@ export class Tos extends React.Component {
       <div>
         {this.renderDialog()}
         <div>
-          <TextField 
+          <TextField
           id="multiline-flexible"
-          label={this.props.intl.formatMessage({ id: 'terms_of_service_titel' })}
+          label={this.props.intl.formatMessage({ id: 'terms_of_service_title' })}
           style={textareaStyle}
           multiline
           value={this.state.multiline}
@@ -95,7 +85,8 @@ export class Tos extends React.Component {
           onChange={this.handleChange('multiline')}
         />
         </div>
-        <Button 
+        {/* Creation of  */}
+        <Button
           compact color="primary"
           style={buttonStyle}
           onClick={() => {
@@ -128,10 +119,12 @@ export class Tos extends React.Component {
       </DialogContentText>
   </div>;
 
+
   renderDialog () {
     return (
+      // pop up that handles editing of tos
       <DialogWithButtons
-      title={this.props.intl.formatMessage({ id: 'terms_of_service_titel' })}
+      title={this.props.intl.formatMessage({ id: 'terms_of_service_title' })}
       description={this.renderConfirmationDesc()}
       submitAction={this.props.intl.formatMessage({ id: 'ok' })}
       cancelAction={this.props.intl.formatMessage({ id: 'cancel' })}

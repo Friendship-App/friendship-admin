@@ -10,27 +10,26 @@ import Table, {
   TableBody,
   TableHead,
   TableRow,
-  TableCell,
+  TableCell
 } from 'material-ui/Table';
 import {FormControlLabel} from 'material-ui/Form';
 import Switch from 'material-ui/Switch';
 import { MenuItem } from 'material-ui/Menu';
 import { FormControl, FormHelperText } from 'material-ui/Form';
-import Select from 'material-ui/Select';
-import IconButton from 'material-ui/IconButton';
 import Input, { InputLabel } from 'material-ui/Input';
 
 import { LinearProgress } from 'material-ui/Progress';
+import {MenuItem} from 'material-ui/Menu';
+import {FormControl, FormHelperText} from 'material-ui/Form';
+import Input, {InputLabel} from 'material-ui/Input';
+import {LinearProgress} from 'material-ui/Progress';
 import ListIcon from 'material-ui-icons/List';
 import DeleteIcon from 'material-ui-icons/Delete';
 import WarningIcon from 'material-ui-icons/Warning';
 import CreateIcon from 'material-ui-icons/Create';
-
-import { DialogContentText } from 'material-ui/Dialog';
+import {DialogContentText} from 'material-ui/Dialog';
 import DialogWithButtons from '../components/DialogWithButtons';
-
-import NumberFormat from 'react-number-format';
-
+import Filter from '../components/Filter';
 import rest from '../utils/rest';
 
 // Here we 'connect' the component to the Redux store. This means that the component will receive
@@ -53,7 +52,7 @@ import rest from '../utils/rest';
 // is used for localization.
 
 const mapStateToProps = state => ({
-  users: state.users,
+  users: state.filteredUsers || state.users,
   usersLoading: state.users.loading,
   userDetails: state.userDetails,
 });
@@ -76,7 +75,7 @@ const mapDispatchToProps = dispatch => ({
    * @return {void}
    */
   refreshUser: user => {
-    dispatch(rest.actions.userDetails({ userId: user.id }));
+    dispatch(rest.actions.userDetails({userId: user.id}));
   },
 
   /**
@@ -85,10 +84,15 @@ const mapDispatchToProps = dispatch => ({
    * @param  {object} user The to be deleted user
    * @return {void}
    */
-  deleteUser: (user) => {
-      dispatch(rest.actions.userDetails.delete({ userId: user.id }, null, () => {
-          dispatch(rest.actions.users());
-      }));
+  deleteUser: (user, filter) => {
+    dispatch(rest.actions.userDetails.delete({userId: user.id}, null, () => {
+      if (filter.username || filter.email) {
+        dispatch(rest.actions.users.get({filter: filter}));
+      }
+      else {
+        dispatch(rest.actions.users());
+      }
+    }));
   },
 
   /**
@@ -98,17 +102,22 @@ const mapDispatchToProps = dispatch => ({
    * @param  {object} banInfo The information about the ban
    * @return {void}
    */
-  banUser: (user, banInfo) => {
+  banUser: (user, banInfo, filter) => {
     const info = {
       reason: banInfo.reason,
       expire: banInfo.expire.amount === '' || banInfo.expire.indicator === '' ? 'x' : banInfo.expire.amount + ':' + banInfo.expire.indicator
     }
 
-    dispatch(rest.actions.banUser({ userId: user.id }, {
-        body: JSON.stringify(info)
-      }, () => {
+    dispatch(rest.actions.banUser({userId: user.id}, {
+      body: JSON.stringify(info)
+    }, () => {
+      if(filter.username || filter.email) {
+        dispatch(rest.actions.users.get({filter: filter}));
+      }
+      else {
         dispatch(rest.actions.users());
-      }))
+      }
+    }))
   },
 
   /**
@@ -118,16 +127,35 @@ const mapDispatchToProps = dispatch => ({
    * @param  {object} editUserInfo The information about the edit
    * @return {void}
    */
-editUser: (user, editUserInfo) => {
+  activateUser: (user, checked, filter) => {
+    dispatch(rest.actions.userDetails.patch({userId: user.id}, {body: JSON.stringify({active: checked})}, () => {
+      if( filter.username || filter.email ) {
+        dispatch(rest.actions.users.get({filter: filter}));
+      }
+      else {
+        dispatch(rest.actions.users());
+      }
+    }))
+  },
+
+  filterUsers: (filter) => {
+    dispatch(rest.actions.users.get({filter: filter}));
+  },
+
+  editUser: (user, editUserInfo, filter) => {
     const info = {
       username: editUserInfo.username,
       email: editUserInfo.email,
-      password: editUserInfo.password,
+      password: editUserInfo.password
     }
 
-    dispatch(rest.actions.editUser({ userId: user.id }, {
-        body: JSON.stringify(info)
-      }, () => {
+    dispatch(rest.actions.editUser({userId: user.id}, {
+      body: JSON.stringify(info)
+    }, () => {
+      if(filter.username || filter.email) {
+        dispatch(rest.actions.users.get({filter: filter}));
+      }
+      else {
         dispatch(rest.actions.users());
       }
     }))
@@ -150,6 +178,7 @@ export class Users extends React.Component {
   // Here we keep track of whether the user details dialog is open.
   state = {
     dialogOpen: false,
+    filterUserDialogOpen: false,
     deleteUserDialogOpen: false,
     toBeDeletedUser: null,
     banUserDialogOpen: false,
@@ -166,18 +195,19 @@ export class Users extends React.Component {
       username: '',
       email: ''
     },
+
     editUserDialogOpen: false,
     toBeEditedUser: null,
     editUserInfo: {
       username: '',
-      email:  '',
-      password: '',
-    },
+      email: '',
+      password: ''
+    }
   };
 
   // Refresh user list when component is first mounted
   componentDidMount() {
-    const { refresh } = this.props;
+    const {refresh} = this.props;
 
     refresh();
   }
@@ -199,8 +229,8 @@ export class Users extends React.Component {
    */
   openDeleteModal = (user) => {
     this.setState({
-        deleteUserDialogOpen: true,
-        toBeDeletedUser: user
+      deleteUserDialogOpen: true,
+      toBeDeletedUser: user
     });
   }
 
@@ -217,7 +247,7 @@ export class Users extends React.Component {
     })
   }
 
-    /**
+  /**
    * Open the edit user modal
    *
    * @param  {object} user the to be edited user
@@ -244,7 +274,7 @@ export class Users extends React.Component {
         <br/>
         <TextField
           id="email"
-          label= {this.props.intl.formatMessage({ id: 'email' })}
+          label= {this.props.intl.formatMessage({ id: 'userEmail' })}
           value= {this.state.editUserInfo.email}
           onChange ={(event) =>{
             this.setState({ editUserInfo: {...this.state.editUserInfo, email: event.target.value}})}}
@@ -266,41 +296,42 @@ export class Users extends React.Component {
     <div>
       <DialogContentText>
         <b>
-          {this.props.intl.formatMessage({ id: 'userId' })}
+          {this.props.intl.formatMessage({id: 'userId'})}
         </b>
         {`: ${this.props.userDetails.data.id}`}
       </DialogContentText>
       <DialogContentText>
         <b>
-          {this.props.intl.formatMessage({ id: 'username' })}
+          {this.props.intl.formatMessage({id: 'username'})}
         </b>
         {`: ${this.props.userDetails.data.username}`}
       </DialogContentText>
       <DialogContentText>
         <b>
-          {this.props.intl.formatMessage({ id: 'email' })}
+          {this.props.intl.formatMessage({id: 'userEmail'})}
         </b>
         {`: ${this.props.userDetails.data.email}`}
       </DialogContentText>
       <DialogContentText>
         <b>
-          {this.props.intl.formatMessage({ id: 'status' })}
+          {this.props.intl.formatMessage({id: 'status'})}
         </b>
-        {`: ${this.props.userDetails.data.status}`}
+        {`: ${this.props.userDetails.data.isbanned === '1' ? this.props.intl.formatMessage({id: 'status_banned'}) : this.props.userDetails.data.status}`}
       </DialogContentText>
       <DialogContentText>
         <b>
-          {this.props.intl.formatMessage({ id: 'createdAt' })}
+          {this.props.intl.formatMessage({id: 'createdAt'})}
         </b>
-        {`: ${this.props.userDetails.data.createdAt}`}
+        {`: ${moment(this.props.userDetails.data.createdAt).format('DD-MM-YYYY hh:mm')}`}
       </DialogContentText>
       <DialogContentText>
         <b>
-          {this.props.intl.formatMessage({ id: 'description' })}
+          {this.props.intl.formatMessage({id: 'userDescription'})}
         </b>
         {`: ${this.props.userDetails.data.description}`}
       </DialogContentText>
-    </div>;
+    </div>
+  ;
 
   /**
    * Render the user delete dialog description
@@ -309,12 +340,13 @@ export class Users extends React.Component {
    */
   renderUserDeleteDesc = () =>
     <div>
-        <DialogContentText>
-            <strong>
-                {this.props.intl.formatMessage({ id: 'deleteUser_description' })}
-            </strong>
-        </DialogContentText>
-    </div>;
+      <DialogContentText>
+        <strong>
+          {this.props.intl.formatMessage({id: 'deleteUser_description'})}
+        </strong>
+      </DialogContentText>
+    </div>
+  ;
 
   renderUserBanDesc = () =>
     <div style={{display: 'flex'}}>
@@ -404,25 +436,25 @@ export class Users extends React.Component {
           color="primary"
           onClick={() => {
             this.props.refreshUser(user);
-            this.setState({ dialogOpen: true });
+            this.setState({dialogOpen: true});
           }}
         >
           <ListIcon style={{paddingRight: 10}}/>
           {this.props.intl.formatMessage({id: 'userShowUserDetails'})}
         </Button>
         <Button
-            color="primary"
-            onClick={() => {
-                this.openDeleteModal(user)
-            }}>
-            <DeleteIcon style={{ paddingRight: 10 }} />
-            {this.props.intl.formatMessage({ id: 'deleteUser_delete' })}
+          color="primary"
+          onClick={() => {
+            this.openDeleteModal(user)
+          }}>
+          <DeleteIcon style={{paddingRight: 10}}/>
+          {this.props.intl.formatMessage({id: 'deleteUser_delete'})}
         </Button>
         <Button color="primary" onClick={() => {
-            this.openBanModal(user)
-          }}>
-          <WarningIcon style={{ paddingRight: 10 }} />
-          {this.props.intl.formatMessage({ id: 'banUser_ban' })}
+          this.openBanModal(user)
+        }}>
+          <WarningIcon style={{paddingRight: 10}}/>
+          {this.props.intl.formatMessage({id: 'banUser_ban'})}
         </Button>
         <Button color="primary" onClick={() => {
           this.props.refreshUser(user);
@@ -433,7 +465,8 @@ export class Users extends React.Component {
           {this.props.intl.formatMessage({id: 'edit'})}
         </Button>
       </TableCell>
-    </TableRow>;
+    </TableRow>
+  }
 
   /**
    * Render the dialogs
@@ -442,53 +475,53 @@ export class Users extends React.Component {
   renderDialogs = () =>
     <div>
       <DialogWithButtons
-        title={this.props.intl.formatMessage({ id: 'userDetails' })}
+        title={this.props.intl.formatMessage({id: 'userDetails'})}
         description={this.renderUserDetailsDesc()}
-        submitAction={this.props.intl.formatMessage({ id: 'close' })}
+        submitAction={this.props.intl.formatMessage({id: 'close'})}
         isOpen={this.state.dialogOpen}
         loading={this.props.userDetails.loading}
-        submit={() => this.setState({ dialogOpen: false })}
-        close={() => this.setState({ dialogOpen: false })}
+        submit={() => this.setState({dialogOpen: false})}
+        close={() => this.setState({dialogOpen: false})}
       />
       <DialogWithButtons
-          title={this.props.intl.formatMessage({ id: 'deleteUser_title' })}
-          description={this.renderUserDeleteDesc()}
-          submitAction={this.props.intl.formatMessage({ id: 'deleteUser_ok' })}
-          cancelAction={this.props.intl.formatMessage({ id: 'deleteUser_cancel' })}
-          isOpen={this.state.deleteUserDialogOpen}
-          submit={() => {
-              this.props.deleteUser(this.state.toBeDeletedUser);
-              this.setState({ deleteUserDialogOpen: false})
+        title={this.props.intl.formatMessage({id: 'deleteUser_title'})}
+        description={this.renderUserDeleteDesc()}
+        submitAction={this.props.intl.formatMessage({id: 'deleteUser_ok'})}
+        cancelAction={this.props.intl.formatMessage({id: 'deleteUser_cancel'})}
+        isOpen={this.state.deleteUserDialogOpen}
+        submit={() => {
+          this.props.deleteUser(this.state.toBeDeletedUser, this.state.filter);
+          this.setState({deleteUserDialogOpen: false})
 
-          }}
-          close={() => this.setState({ deleteUserDialogOpen: false})}
-          />
-        <DialogWithButtons
-          textField={{label: this.props.intl.formatMessage({ id: 'banUser_reason' }), fullWidth: true}}
-          title={this.props.intl.formatMessage({ id: 'banUser_title' })}
-          description={this.renderUserBanDesc()}
-          submitAction={this.props.intl.formatMessage({ id: 'banUser_ok' })}
-          cancelAction={this.props.intl.formatMessage({ id: 'banUser_cancel' })}
-          isOpen={this.state.banUserDialogOpen}
-          submit={(data) => {
-             this.setState({ banInfo: {...this.state.banInfo, reason: data.value} }, () => {
-               this.props.banUser(this.state.toBeBannedUser, this.state.banInfo);
-               this.setState({banInfo: {reason: '',  expire: {amount: '', indicator: ''}}, banUserDialogOpen: false});
-             })
-          }}
-          close={() => {
-            this.setState({banInfo: {reason: '',  expire: {amount: '', indicator: ''}}, banUserDialogOpen: false});
-          }}
-          />
-        <DialogWithButtons
-          title={this.props.intl.formatMessage({ id: 'edit' })}
-          description={this.renderEditUser()}
-          submitAction={this.props.intl.formatMessage({ id: 'ok' })}
-          cancelAction={this.props.intl.formatMessage({ id: 'cancel' })}
-          isOpen={this.state.editUserDialogOpen}
-          submit={() => {
-              this.props.editUser(this.state.toBeEditedUser, this.state.editUserInfo);
-              this.setState({ editUserDialogOpen: false})
+        }}
+        close={() => this.setState({deleteUserDialogOpen: false})}
+      />
+      <DialogWithButtons
+        textField={{label: this.props.intl.formatMessage({id: 'banUser_reason'}), fullWidth: true}}
+        title={this.props.intl.formatMessage({id: 'banUser_title'}) + ' ' + (this.state.toBeBannedUser ? this.state.toBeBannedUser.username : '')}
+        description={this.renderUserBanDesc()}
+        submitAction={this.props.intl.formatMessage({id: 'banUser_ok'})}
+        cancelAction={this.props.intl.formatMessage({id: 'banUser_cancel'})}
+        isOpen={this.state.banUserDialogOpen}
+        submit={(data) => {
+          this.setState({banInfo: {...this.state.banInfo, reason: data.value}}, () => {
+            this.props.banUser(this.state.toBeBannedUser, this.state.banInfo, this.state.filter);
+            this.setState({banInfo: {reason: '', expire: {amount: '', indicator: ''}}, banUserDialogOpen: false});
+          })
+        }}
+        close={() => {
+          this.setState({banInfo: {reason: '', expire: {amount: '', indicator: ''}}, banUserDialogOpen: false});
+        }}
+      />
+      <DialogWithButtons
+        title={this.props.intl.formatMessage({id: 'edit'})}
+        description={this.renderEditUser()}
+        submitAction={this.props.intl.formatMessage({id: 'ok'})}
+        cancelAction={this.props.intl.formatMessage({id: 'cancel'})}
+        isOpen={this.state.editUserDialogOpen}
+        submit={() => {
+          this.props.editUser(this.state.toBeEditedUser, this.state.editUserInfo, this.state.filter);
+          this.setState({editUserDialogOpen: false})
 
           }}
           close={() => this.setState({ editUserDialogOpen: false})}
@@ -505,7 +538,13 @@ export class Users extends React.Component {
       <div>
         {this.renderDialogs()}
         {this.renderProgressBar()}
-
+        <Filter
+          onFilter={(value, fields) => {
+            this.setState({filter: {username: value, email: value, ...fields}}, () => {
+              this.props.filterUsers({username: value, email: value});
+            });
+          }}
+        />
         <Table>
           <TableHead>
             <TableRow>
@@ -530,11 +569,12 @@ export class Users extends React.Component {
               <TableCell />
             </TableRow>
           </TableHead>
+
           <TableBody>
             {// Loop over each user and render a <TableRow>
-            this.props.users.data.map(user =>
-              this.renderUserRow(user)
-            )}
+              this.props.users.data.map(user =>
+                this.renderUserRow(user)
+              )}
           </TableBody>
         </Table>
       </div>
