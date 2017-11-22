@@ -3,14 +3,14 @@ export default {
   navigation: 'Navigaatio',
   Home: 'Koti',
   Users: 'Käyttäjät',
-  Tags: 'Tags',
   Preferences: 'Asetukset',
   Logout: 'Kirjaudu ulos',
   Login: 'Kirjaudu sisään',
 
   // Users view
   userId: 'ID',
-  username: '???',
+  username: 'Käyttäjänimi',
+  password: 'Salasana',
   userEmail: 'Sähköpostiosoite',
   userScope: 'Rooli',
   userScope_admin: 'Admin',
@@ -28,7 +28,7 @@ export default {
   //Delete User
   deleteUser_title: 'Poista käyttäjä',
   deleteUser_description: 'HUOMIO! Tämän käyttäjän poistaminen poistaa hänet lopullisesti sovelluksesta. Oletko varma että haluat poistaa käyättäjän lopullisesti?',
-  deleteUser_ok: 'Yes',
+  deleteUser_ok: 'Kyllä',
   deleteUser_cancel: 'Peruuta',
   deleteUser_delete: 'Poista',
 
@@ -58,13 +58,13 @@ export default {
   tagStatus: '',
   tagCreationDate: '',
   tagRelatedEvent: '',
-  
+
   // Delete tag
   deleteTag_title: 'Poista tägi',
   deleteTag_description: 'HUOMIO! Tämän tägin poistaminen poistaa sen lopullisesti sovelluksesta. Oletko varma että haluat poistaa tägin lopullisesti?',
 
  // Terms of service
-  terms_of_service_titel: 'Terms of Service',
+  terms_of_service_titel: 'Käyttöehdot',
   terms_of_service_description: 'Are you sure you want to change the terms of service?',
 
   // Scope user
@@ -77,8 +77,7 @@ export default {
   language: 'Sovelluksen kieli',
   selectedLanguage: 'Valittu kieli',
   resetState: 'Nollaa sovelluksen tila',
-  resetStateExplanation:
-    'Käytä tätä toimintoa jos huomaat ongelmia sovelluksen toiminnassa. Vaikuttaa ainoastaan sinun sessioosi.',
+  resetStateExplanation:'Käytä tätä toimintoa jos huomaat ongelmia sovelluksen toiminnassa. Vaikuttaa ainoastaan sinun sessioosi.',
   resetStateButton: 'Nollaa tila',
 
   // Miscellaneous
@@ -88,4 +87,5 @@ export default {
   cancel: 'Peruuta',
   close: 'Sulje',
   edit: 'Muokkaa',
+  save: 'Tallenna'
 };
