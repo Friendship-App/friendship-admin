@@ -10,15 +10,20 @@ export default {
 
   // Users view
   userId: 'ID',
-  email: 'E-mail',
-  scope: 'Role',
-  scope_admin: 'Admin',
-  scope_user: 'User',
-  description: 'Description',
-  showUserDetails: 'Details',
+  username: 'Username',
+  userEmail: 'E-mail',
+  userScope: 'Role',
+  userScope_admin: 'Admin',
+  userScope_user: 'User',
+  userDescription: 'Description',
+  userShowUserDetails: 'Details',
   userDetails: 'User details',
   userActions: 'Actions',
   userDetails_activate: 'Activate',
+  userDetails_deactivate: 'Deactivate',
+  active: 'Active',
+  inactive: 'Inactive',
+  banned: 'Banned',
 
   // Delete User
   deleteUser_title: 'Delete user',
@@ -43,6 +48,16 @@ export default {
   banUser_indicator_weeks: 'Week(s)',
   banUser_indicator_months: 'Month(s)',
   banUser_indicator_years: 'Year(s)',
+
+  // Tag view
+  tagId: 'Id',
+  tagName: 'Name',
+  tagLoves: 'Loves',
+  tagHates: 'Hates',
+  tagCreator: 'Creator',
+  tagStatus: 'Status',
+  tagCreationDate: 'Creation date',
+  tagRelatedEvent: 'Related event',
 
   // Delete tag
   deleteTag_title: 'Delete tag',

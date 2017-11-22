@@ -6,11 +6,25 @@ export default {
     unit: 8,
   },
 
+  tablerow: {
+    banned: {
+      backgroundColor: red
+    }
+  },
+
   // App color palette
   palette: {
     primary: blueGrey,
     secondary: orange,
     error: red,
     type: 'light',
+  },
+
+  paper: {
+    padding: 8,
+  },
+
+  root: {
+    flexGrow: 1,
   },
 };
