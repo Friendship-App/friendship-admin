@@ -3,7 +3,6 @@ import {connect} from 'react-redux';
 import {injectIntl} from 'react-intl';
 import moment from 'moment';
 import theme from '../utils/theme';
-
 import Button from 'material-ui/Button';
 import TextField from 'material-ui/TextField'
 import Table, {
@@ -17,19 +16,14 @@ import Switch from 'material-ui/Switch';
 import {MenuItem} from 'material-ui/Menu';
 import {FormControl, FormHelperText} from 'material-ui/Form';
 import Input, {InputLabel} from 'material-ui/Input';
-
 import {LinearProgress} from 'material-ui/Progress';
 import ListIcon from 'material-ui-icons/List';
 import DeleteIcon from 'material-ui-icons/Delete';
 import WarningIcon from 'material-ui-icons/Warning';
 import CreateIcon from 'material-ui-icons/Create';
-
 import {DialogContentText} from 'material-ui/Dialog';
 import DialogWithButtons from '../components/DialogWithButtons';
-
 import Filter from '../components/Filter';
-
-
 import rest from '../utils/rest';
 
 // Here we 'connect' the component to the Redux store. This means that the component will receive
