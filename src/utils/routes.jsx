@@ -63,6 +63,7 @@ const routeConfigs = [
     component: Home,
     icon: HomeIcon,
     requiresLogin: true,
+    hideWhenScope: [null],
   },
   {
     path: '/users',
@@ -71,6 +72,7 @@ const routeConfigs = [
     icon: UsersIcon,
     separator: true,
     requiresLogin: true,
+    hideWhenScope: [null],
   },
   {
     path: '/tags',
@@ -79,6 +81,7 @@ const routeConfigs = [
     icon: LoyaltyIcon,
     separator: true,
     requiresLogin: true,
+    hideWhenScope: [null],
   },
   {
     path: '/metrics',
@@ -87,6 +90,7 @@ const routeConfigs = [
     icon: HomeIcon,
     separator: true,
     requiresLogin: true,
+    hideWhenScope: [null],
   },
   {
     path: '/reports',
@@ -95,6 +99,7 @@ const routeConfigs = [
     icon: ReportIcon,
     separator: true,
     requiresLogin: true,
+    hideWhenScope: [null],
   },
   {
   path: '/tos',
@@ -103,6 +108,7 @@ const routeConfigs = [
   icon: CopyrightIcon,
   separator: true,
   requiresLogin: true,
+  hideWhenScope: [null],
   },
   {
     path: '/preferences',
@@ -110,6 +116,7 @@ const routeConfigs = [
     component: Preferences,
     icon: PreferencesIcon,
     requiresLogin: true,
+    hideWhenScope: [null],
   },
   {
     path: '/login',
