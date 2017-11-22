@@ -14,11 +14,11 @@ import Table, {
 } from 'material-ui/Table';
 import {FormControlLabel} from 'material-ui/Form';
 import Switch from 'material-ui/Switch';
-import { MenuItem } from 'material-ui/Menu';
-import { FormControl, FormHelperText } from 'material-ui/Form';
-import Input, { InputLabel } from 'material-ui/Input';
+import {MenuItem} from 'material-ui/Menu';
+import {FormControl, FormHelperText} from 'material-ui/Form';
+import Input, {InputLabel} from 'material-ui/Input';
 
-import { LinearProgress } from 'material-ui/Progress';
+import {LinearProgress} from 'material-ui/Progress';
 import {MenuItem} from 'material-ui/Menu';
 import {FormControl, FormHelperText} from 'material-ui/Form';
 import Input, {InputLabel} from 'material-ui/Input';
@@ -54,7 +54,7 @@ import rest from '../utils/rest';
 const mapStateToProps = state => ({
   users: state.filteredUsers || state.users,
   usersLoading: state.users.loading,
-  userDetails: state.userDetails,
+  userDetails: state.userDetails
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -86,7 +86,7 @@ const mapDispatchToProps = dispatch => ({
    */
   deleteUser: (user, filter) => {
     dispatch(rest.actions.userDetails.delete({userId: user.id}, null, () => {
-      if (filter.username || filter.email) {
+      if(filter.username || filter.email){
         dispatch(rest.actions.users.get({filter: filter}));
       }
       else {
@@ -111,7 +111,7 @@ const mapDispatchToProps = dispatch => ({
     dispatch(rest.actions.banUser({userId: user.id}, {
       body: JSON.stringify(info)
     }, () => {
-      if(filter.username || filter.email) {
+      if(filter.username || filter.email){
         dispatch(rest.actions.users.get({filter: filter}));
       }
       else {
@@ -129,7 +129,7 @@ const mapDispatchToProps = dispatch => ({
    */
   activateUser: (user, checked, filter) => {
     dispatch(rest.actions.userDetails.patch({userId: user.id}, {body: JSON.stringify({active: checked})}, () => {
-      if( filter.username || filter.email ) {
+      if(filter.username || filter.email){
         dispatch(rest.actions.users.get({filter: filter}));
       }
       else {
@@ -152,26 +152,27 @@ const mapDispatchToProps = dispatch => ({
     dispatch(rest.actions.editUser({userId: user.id}, {
       body: JSON.stringify(info)
     }, () => {
-      if(filter.username || filter.email) {
+      if(filter.username || filter.email){
         dispatch(rest.actions.users.get({filter: filter}));
       }
       else {
         dispatch(rest.actions.users());
       }
     }))
+  },
 
-  /**
-   * Activate the user
-   * @param  {object} user    The the be activated user
-   * @param  {boolean} checked true: the user is activated|false: the user is not activated
-   * @return {void}
-   */
+    /**
+     * Activate the user
+     * @param  {object} user    The the be activated user
+     * @param  {boolean} checked true: the user is activated|false: the user is not activated
+     * @return {void}
+     */
   activateUser: (user, checked) => {
-    dispatch(rest.actions.userDetails.patch({ userId: user.id }, { body: JSON.stringify({active: checked})}, () => {
+    dispatch(rest.actions.userDetails.patch({userId: user.id}, {body: JSON.stringify({active: checked})}, () => {
       dispatch(rest.actions.users());
     }))
   }
-});
+}
 
 export class Users extends React.Component {
   // Component initial state.
@@ -213,11 +214,11 @@ export class Users extends React.Component {
   }
 
   renderProgressBar() {
-    const { usersLoading } = this.props;
+    const {usersLoading} = this.props;
     return usersLoading
-      ? <div style={{ marginBottom: '-5px' }}>
-          <LinearProgress />
-        </div>
+      ? <div style={{marginBottom: '-5px'}}>
+        <LinearProgress/>
+      </div>
       : null;
   }
 
@@ -263,33 +264,36 @@ export class Users extends React.Component {
 
   renderEditUser = () =>
     <div>
-       <TextField
-          id="username"
-          label= {this.props.intl.formatMessage({ id: 'username' })}
-          value= {this.state.editUserInfo.username}
-          onChange ={(event) =>{
-            this.setState({ editUserInfo: {...this.state.editUserInfo, username: event.target.value}})}}
-          margin="normal"
-        />
-        <br/>
-        <TextField
-          id="email"
-          label= {this.props.intl.formatMessage({ id: 'userEmail' })}
-          value= {this.state.editUserInfo.email}
-          onChange ={(event) =>{
-            this.setState({ editUserInfo: {...this.state.editUserInfo, email: event.target.value}})}}
-          margin="normal"
-        />
-        <br/>
-          <TextField
-             id="password"
-             type="password"
-             label= {this.props.intl.formatMessage({ id: 'password' })}
-             value= {this.state.editUserInfo.password}
-             onChange ={(event) =>{
-               this.setState({ editUserInfo: {...this.state.editUserInfo, password: event.target.value}})}}
-             margin="normal"
-           />
+      <TextField
+        id="username"
+        label={this.props.intl.formatMessage({id: 'username'})}
+        value={this.state.editUserInfo.username}
+        onChange={(event) => {
+          this.setState({editUserInfo: {...this.state.editUserInfo, username: event.target.value}})
+        }}
+        margin="normal"
+      />
+      <br/>
+      <TextField
+        id="email"
+        label={this.props.intl.formatMessage({id: 'userEmail'})}
+        value={this.state.editUserInfo.email}
+        onChange={(event) => {
+          this.setState({editUserInfo: {...this.state.editUserInfo, email: event.target.value}})
+        }}
+        margin="normal"
+      />
+      <br/>
+      <TextField
+        id="password"
+        type="password"
+        label={this.props.intl.formatMessage({id: 'password'})}
+        value={this.state.editUserInfo.password}
+        onChange={(event) => {
+          this.setState({editUserInfo: {...this.state.editUserInfo, password: event.target.value}})
+        }}
+        margin="normal"
+      />
     </div>
 
   renderUserDetailsDesc = () =>
@@ -523,10 +527,10 @@ export class Users extends React.Component {
           this.props.editUser(this.state.toBeEditedUser, this.state.editUserInfo, this.state.filter);
           this.setState({editUserDialogOpen: false})
 
-          }}
-          close={() => this.setState({ editUserDialogOpen: false})}
-          />
-      </div>;
+        }}
+        close={() => this.setState({editUserDialogOpen: false})}
+      />
+    </div>;
 
   /**
    * Render the user list
@@ -549,24 +553,24 @@ export class Users extends React.Component {
           <TableHead>
             <TableRow>
               <TableCell>
-                {this.props.intl.formatMessage({ id: 'userId' })}
+                {this.props.intl.formatMessage({id: 'userId'})}
               </TableCell>
               <TableCell>
-                {this.props.intl.formatMessage({ id: 'username' })}
+                {this.props.intl.formatMessage({id: 'username'})}
               </TableCell>
               <TableCell>
-                {this.props.intl.formatMessage({ id: 'email' })}
+                {this.props.intl.formatMessage({id: 'email'})}
               </TableCell>
               <TableCell>
-                {this.props.intl.formatMessage({ id: 'status' })}
+                {this.props.intl.formatMessage({id: 'status'})}
               </TableCell>
               <TableCell>
-                {this.props.intl.formatMessage({ id: 'reports' })}
+                {this.props.intl.formatMessage({id: 'reports'})}
               </TableCell>
               <TableCell>
-                {this.props.intl.formatMessage({ id: 'createdAt' })}
+                {this.props.intl.formatMessage({id: 'createdAt'})}
               </TableCell>
-              <TableCell />
+              <TableCell/>
             </TableRow>
           </TableHead>
 
