@@ -59,6 +59,10 @@ export default {
   tagCreationDate: 'Creation date',
   tagRelatedEvent: 'Related event',
 
+  metrics_day: 'Day',
+  metrics_users_registered_day: 'Users registered that day',
+  metrics_users_total: 'Users in total',
+
   // Delete tag
   deleteTag_title: 'Delete tag',
   deleteTag_description: 'ATTENTION! Deleting this tag will remove it permanently from the application. Are you sure you want to permanently delete this tag?',

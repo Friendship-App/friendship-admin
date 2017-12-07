@@ -1,8 +1,8 @@
-import reduxApi, { transformers } from 'redux-api';
+import reduxApi, {transformers} from 'redux-api';
 import adapterFetch from 'redux-api/lib/adapters/fetch';
 import jwtDecode from 'jwt-decode';
 
-import { showError } from '../modules/ErrorSnackbar';
+import {showError} from '../modules/ErrorSnackbar';
 
 let store;
 
@@ -23,7 +23,7 @@ Information about request: `state.teams.error`, `state.teams.sync`, `state.teams
 
 let apiRoot;
 
-if (process.env.NODE_ENV === 'development') {
+if(process.env.NODE_ENV === 'development'){
   apiRoot = 'http://localhost:3888';
 } else {
   apiRoot = 'https://friendshipbackend.herokuapp.com';
@@ -33,34 +33,34 @@ const rest = reduxApi({
   users: {
     url: `${apiRoot}/users`,
     transformer: transformers.array,
-    crud: true,
+    crud: true
   },
   tags: {
     url: `${apiRoot}/tags`,
     transformer: transformers.array,
-    crud: true,
+    crud: true
   },
   reports: {
     url: `${apiRoot}/reports`,
     transformer: transformers.array,
-    crud: true,
+    crud: true
   },
   taglist: {
     url: `${apiRoot}/tags_user/taglist`,
     transformer: transformers.array,
-    crud: true,
+    crud: true
   },
   tagDetails: {
     url: `${apiRoot}/tags/:tagId`,
-    crud: true,
+    crud: true
   },
   userDetails: {
     url: `${apiRoot}/users/:userId`,
-    crud: true,
+    crud: true
   },
   reportDetails: {
     url: `${apiRoot}/reports/:reportId`,
-    crud: true,
+    crud: true
   },
   banUser: {
     url: `${apiRoot}/users/:userId/ban`,
@@ -72,7 +72,7 @@ const rest = reduxApi({
   latestTos: {
     url: `${apiRoot}/tos/latest`,
     reducerName: "tos",
-    crud: true,
+    crud: true
   },
   createTos: {
     url: `${apiRoot}/tos`,
@@ -89,79 +89,57 @@ const rest = reduxApi({
     }
   },
 
-  //not in use at the moment
-  /* 
-  allTos: {
-    url: `${apiRoot}/tos/allTos`,
-    transformer: transformers.array,
+  metricsRegisteredUsers: {
+    url: `${apiRoot}/metrics/registeredusers`,
     crud: true,
-  },
-  editTos: {
-    url: `${apiRoot}/tos/:terms_of_serviceId`,
-    reducerName: "tos",
     options: {
-      method: 'POST'
+      method: 'GET'
     }
-  },*/
-
-
-  // Add more API endpoints here! Examples below:
-
-  /*
-  // Endpoints which return an array (data defaults to [])
-  teams: {
-    url: `${apiRoot}/teams`,
-    transformer: transformers.array,
-    crud: true,
   },
-  companies: {
-    url: `${apiRoot}/companies`,
-    transformer: transformers.array,
-    crud: true,
-  }
 
-  // Endpoint which returns an object (data defaults to {})
-  profile: {
-    url: `${apiRoot}/profile`,
-    crud: true,
-  }
-  */
+  metricsmsgperconversation: {
+    url: `${apiRoot}/metrics/msgperconversation`,
+    crud: false,
+    options: {
+      method: 'GET'
+    }
+  },
 
   auth: {
     url: `${apiRoot}/users/authenticate`,
     transformer: (data = {}) => {
-      if (data.token) {
+      if(data.token){
         return {
           ...data,
-          decoded: jwtDecode(data.token),
+          decoded: jwtDecode(data.token)
         };
       }
       return data;
     },
 
     options: {
-      method: 'POST',
-    },
-  },
+      method: 'POST'
+    }
+  }
 })
   .use('options', (url, params, getState) => {
-    const { auth: { data: { token } } } = getState();
+    const {auth: {data: {token}}} = getState();
 
     const headers = {
       Accept: 'application/json',
-      'Content-Type': 'application/json',
+      'Content-Type': 'application/json'
     };
 
     // Add token to request headers
-    if (token) {
-      return { headers: { ...headers, Authorization: `Bearer ${token}` } };
+    if(token){
+      return {headers: {...headers, Authorization: `Bearer ${token}`}};
     }
 
-    return { headers };
+    return {headers};
   })
   .use('fetch', adapterFetch(fetch))
   .use('responseHandler', err => {
-    if (err) {
+    if(err){
       let msg = 'Error';
 
       // error code
@@ -175,8 +153,8 @@ const rest = reduxApi({
       store.dispatch(
         showError({
           msg,
-          details: JSON.stringify(err, Object.getOwnPropertyNames(err), 4),
-        }),
+          details: JSON.stringify(err, Object.getOwnPropertyNames(err), 4)
+        })
       );
 
       throw err;
