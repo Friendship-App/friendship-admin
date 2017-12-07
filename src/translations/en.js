@@ -7,6 +7,9 @@ export default {
   Preferences: 'Preferences',
   Logout: 'Logout',
   Login: 'Login',
+  Tos: 'Terms of service',
+  Reports: 'Reports',
+  Metrics: 'Metrics',
 
   // Users view
   userId: 'ID',

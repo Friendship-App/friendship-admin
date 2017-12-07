@@ -3,10 +3,13 @@ export default {
   navigation: 'Navigaatio',
   Home: 'Koti',
   Users: 'Käyttäjät',
-  Tags: 'Tags',
   Preferences: 'Asetukset',
   Logout: 'Kirjaudu ulos',
   Login: 'Kirjaudu sisään',
+  Tags: 'Tägit',
+  Metrics: 'Metriikka',
+  Tos: 'Käyttöehdot',
+  Reports: 'Ilmoitukset',
 
   // Users view
   userId: 'ID',
@@ -72,6 +75,10 @@ export default {
   scopeUser_desciption: 'Haluatko varmasti vaihtaa käyttäjän alaa?',
   scopeUser_ok: 'Kyllä',
   scopeUser_cancel: 'Peruuta',
+
+  metrics_day: 'Päivä',
+  metrics_users_registered_day: 'Rekisteröityneitä käyttäjiä päivänä',
+  metrics_users_total: 'Käyttäjiä yhteensä',
 
   // Preferences view
   language: 'Sovelluksen kieli',
