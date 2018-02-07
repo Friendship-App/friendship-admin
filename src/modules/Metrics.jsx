@@ -33,7 +33,7 @@ class Metrics extends React.Component {
   }
 
   render() {
-    console.log(this.props.registeredUsers);
+    console.log(this.props);
     return (
       <CardGridWrapper classes={theme.palette} width={100}>
         <Paper className={theme.paper}>
@@ -49,13 +49,14 @@ class Metrics extends React.Component {
               </TableRow>
             </TableHead>
             <TableBody>
-              {this.props.registeredUsers.map(record => {
-                return <TableRow key={record.id}>
-                  <TableCell>{moment(record.timestamp).format('DD-MM-YYYY')}</TableCell>
-                  <TableCell>{record.registered_today}</TableCell>
-                  <TableCell>{record.users_count}</TableCell>
-                </TableRow>;
-              })}
+              {this.props.length > 0 ? (
+                this.props.registeredUsers.map(record => {
+                  return <TableRow key={record.id}>
+                    <TableCell>{moment(record.timestamp).format('DD-MM-YYYY')}</TableCell>
+                    <TableCell>{record.registered_today}</TableCell>
+                    <TableCell>{record.users_count}</TableCell>
+                  </TableRow>;
+                })) : null}            
             </TableBody>
           </Table>
         </Paper>
