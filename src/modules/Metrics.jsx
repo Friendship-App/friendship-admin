@@ -1,6 +1,6 @@
 import React from 'react';
 import theme from "../utils/theme";
-import {Paper, Table, TableBody, TableCell, TableHead, TableRow, Typography} from "material-ui";
+import {Paper, Table, TableBody, TableCell, TableHead, TableRow, Typography, CircularProgress } from "material-ui";
 import {connect} from "react-redux";
 import {injectIntl} from "react-intl";
 import rest from "../utils/rest";
@@ -8,7 +8,7 @@ import moment from "moment";
 import {CardGridWrapper} from "../components/CardGridWrapper";
 
 const mapStateToProps = state => ({
-  registeredUsers: state.metricsRegisteredUsers.data.data
+  registeredUsers: state.metricsRegisteredUsers
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -33,7 +33,28 @@ class Metrics extends React.Component {
   }
 
   render() {
-    console.log(this.props);
+    // console.log(this.props.registeredUsers);   
+    // console.log(this.props.registeredUsers.loading);   
+
+    // check if the data is in loading or syncing before render the rows
+    const renderMetricsRow = () => {
+      if (this.props.registeredUsers.loading) {
+        return <CircularProgress />
+      }
+      else {
+        if (this.props.registeredUsers.sync){          
+          return this.props.registeredUsers.data.map(record => {
+            // console.log('record');
+            return <TableRow key={record.id}>
+              <TableCell>{moment(record.timestamp).format('DD-MM-YYYY')}</TableCell>
+              <TableCell>{record.registered_today}</TableCell>
+              <TableCell>{record.users_count}</TableCell>
+            </TableRow>           
+          })  
+        }      
+      } 
+    }
+
     return (
       <CardGridWrapper classes={theme.palette} width={100}>
         <Paper className={theme.paper}>
@@ -49,14 +70,7 @@ class Metrics extends React.Component {
               </TableRow>
             </TableHead>
             <TableBody>
-              {this.props.length > 0 ? (
-                this.props.registeredUsers.map(record => {
-                  return <TableRow key={record.id}>
-                    <TableCell>{moment(record.timestamp).format('DD-MM-YYYY')}</TableCell>
-                    <TableCell>{record.registered_today}</TableCell>
-                    <TableCell>{record.users_count}</TableCell>
-                  </TableRow>;
-                })) : null}            
+              {renderMetricsRow()}
             </TableBody>
           </Table>
         </Paper>

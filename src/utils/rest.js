@@ -91,6 +91,7 @@ const rest = reduxApi({
 
   metricsRegisteredUsers: {
     url: `${apiRoot}/metrics/registeredusers`,
+    transformer: transformers.array,
     crud: true,
     options: {
       method: 'GET'
