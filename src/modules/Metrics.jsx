@@ -38,10 +38,10 @@ class Metrics extends React.Component {
 
     // check if the data is in loading or syncing before render the rows
     const renderMetricsRow = () => {
-      if (this.props.registeredUsers.loading) {
-        return <CircularProgress />
-      }
-      else {
+      // if (this.props.registeredUsers.loading) {
+      //   return <CircularProgress />
+      // }
+      // else {
         if (this.props.registeredUsers.sync){          
           return this.props.registeredUsers.data.map(record => {
             // console.log('record');
@@ -52,7 +52,7 @@ class Metrics extends React.Component {
             </TableRow>           
           })  
         }      
-      } 
+      // } 
     }
 
     return (
