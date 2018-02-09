@@ -8,7 +8,8 @@ import moment from "moment";
 import {CardGridWrapper} from "../components/CardGridWrapper";
 
 const mapStateToProps = state => ({
-  registeredUsers: state.metricsRegisteredUsers
+  registeredUsers: state.metricsRegisteredUsers,
+  activeUsersCounts: state.metricsActiveUsers,
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -21,6 +22,7 @@ const mapDispatchToProps = dispatch => ({
   refresh: () => {
     dispatch(rest.actions.metricsRegisteredUsers());
     //dispatch(rest.actions.metricsmsgperconversation());
+    dispatch(rest.actions.metricsActiveUsers());
   },
 });
 
@@ -55,6 +57,18 @@ class Metrics extends React.Component {
       // } 
     }
 
+    const renderActiveUsersRow = () => {
+      if (this.props.activeUsersCounts.sync) {
+        return this.props.activeUsersCounts.data.map(record => {
+          return <TableRow key={record.id}>
+            <TableCell>{moment(record.timestamp).format('DD-MM-YYYY')}</TableCell>
+            <TableCell>{record.registered_today}</TableCell>
+            <TableCell>{record.users_count}</TableCell>
+          </TableRow>  
+        })
+      }
+    }
+
     return (
       <CardGridWrapper classes={theme.palette} width={100}>
         <Paper className={theme.paper}>
@@ -71,6 +85,23 @@ class Metrics extends React.Component {
             </TableHead>
             <TableBody>
               {renderMetricsRow()}
+            </TableBody>
+          </Table>
+        </Paper>
+        <Paper>
+        <Typography type="headline" component="h3">
+            Active Users
+          </Typography>
+          <Table>
+            <TableHead>
+              <TableRow>
+                <TableCell>{this.props.intl.formatMessage({id: 'metrics_day'})}</TableCell>
+                <TableCell>{this.props.intl.formatMessage({id: 'metrics_users_registered_day'})}</TableCell>
+                <TableCell>{this.props.intl.formatMessage({id: 'metrics_users_total'})}</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {renderActiveUsersRow()}
             </TableBody>
           </Table>
         </Paper>
