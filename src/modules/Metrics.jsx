@@ -62,7 +62,6 @@ class Metrics extends React.Component {
         return this.props.activeUsersCounts.data.map(record => {
           return <TableRow key={record.id}>
             <TableCell>{moment(record.timestamp).format('DD-MM-YYYY')}</TableCell>
-            <TableCell>{record.registered_today}</TableCell>
             <TableCell>{record.users_count}</TableCell>
           </TableRow>  
         })
@@ -96,7 +95,6 @@ class Metrics extends React.Component {
             <TableHead>
               <TableRow>
                 <TableCell>{this.props.intl.formatMessage({id: 'metrics_day'})}</TableCell>
-                <TableCell>{this.props.intl.formatMessage({id: 'metrics_users_registered_day'})}</TableCell>
                 <TableCell>{this.props.intl.formatMessage({id: 'metrics_users_total'})}</TableCell>
               </TableRow>
             </TableHead>
