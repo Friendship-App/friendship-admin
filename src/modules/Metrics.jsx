@@ -1,15 +1,17 @@
 import React from 'react';
 import theme from "../utils/theme";
-import {Paper, Table, TableBody, TableCell, TableHead, TableRow, Typography, CircularProgress } from "material-ui";
-import {connect} from "react-redux";
-import {injectIntl} from "react-intl";
+import { Paper, Table, TableBody, TableCell, TableHead, TableRow, Typography, CircularProgress } from "material-ui";
+import { connect } from "react-redux";
+import { injectIntl } from "react-intl";
 import rest from "../utils/rest";
 import moment from "moment";
-import {CardGridWrapper} from "../components/CardGridWrapper";
+import { CardGridWrapper } from "../components/CardGridWrapper";
+import { CSVLink } from 'react-csv';
 
 const mapStateToProps = state => ({
   registeredUsers: state.metricsRegisteredUsers,
   activeUsersCounts: state.metricsActiveUsers,
+  last30DaysUsers:state.last30DaysUsers,
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -23,15 +25,20 @@ const mapDispatchToProps = dispatch => ({
     dispatch(rest.actions.metricsRegisteredUsers());
     //dispatch(rest.actions.metricsmsgperconversation());
     dispatch(rest.actions.metricsActiveUsers());
+  
   },
+  get30DaysUsers:() => {
+    dispatch(rest.actions.last30DaysUsers());
+  }
+  
 });
 
 class Metrics extends React.Component {
 
   componentDidMount() {
-    const {refresh} = this.props;
-
-    refresh();
+    const { refresh,get30DaysUsers } = this.props;
+    get30DaysUsers();
+     refresh();
   }
 
   render() {
@@ -44,15 +51,15 @@ class Metrics extends React.Component {
       //   return <CircularProgress />
       // }
       // else {
-        if (this.props.registeredUsers.sync){          
-          return this.props.registeredUsers.data.map(record => {
-            // console.log('record');
-            return <TableRow key={record.id}>
-              <TableCell>{moment(record.timestamp).format('DD-MM-YYYY')}</TableCell>
-              <TableCell>{record.users_count}</TableCell>
-            </TableRow>           
-          })  
-        }      
+      if (this.props.registeredUsers.sync) {
+        return this.props.registeredUsers.data.map(record => {
+          // console.log('record');
+          return <TableRow key={record.id}>
+            <TableCell>{moment(record.timestamp).format('DD-MM-YYYY')}</TableCell>
+            <TableCell>{record.users_count}</TableCell>
+          </TableRow>
+        })
+      }
       // } 
     }
 
@@ -62,22 +69,25 @@ class Metrics extends React.Component {
           return <TableRow key={record.id}>
             <TableCell>{moment(record.timestamp).format('DD-MM-YYYY')}</TableCell>
             <TableCell>{record.users_count}</TableCell>
-          </TableRow>  
+          </TableRow>
         })
       }
     }
+    //getting data from users that logged in last 30 days 
+    let data = this.props.last30DaysUsers.data;
+    
 
     return (
       <CardGridWrapper classes={theme.palette} width={100}>
-        <Paper className={theme.paper}>
+      <Paper className={theme.paper}>
           <Typography type="headline" component="h3">
             Registered users
           </Typography>
           <Table>
             <TableHead>
               <TableRow>
-                <TableCell>{this.props.intl.formatMessage({id: 'metrics_day'})}</TableCell>
-                <TableCell>{this.props.intl.formatMessage({id: 'metrics_users_total'})}</TableCell>
+                <TableCell>{this.props.intl.formatMessage({ id: 'metrics_day' })}</TableCell>
+                <TableCell>{this.props.intl.formatMessage({ id: 'metrics_users_total' })}</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -86,14 +96,14 @@ class Metrics extends React.Component {
           </Table>
         </Paper>
         <Paper>
-        <Typography type="headline" component="h3">
+          <Typography type="headline" component="h3">
             Active Users
           </Typography>
           <Table>
             <TableHead>
               <TableRow>
-                <TableCell>{this.props.intl.formatMessage({id: 'metrics_day'})}</TableCell>
-                <TableCell>{this.props.intl.formatMessage({id: 'metrics_users_total'})}</TableCell>
+                <TableCell>{this.props.intl.formatMessage({ id: 'metrics_day' })}</TableCell>
+                <TableCell>{this.props.intl.formatMessage({ id: 'metrics_users_total' })}</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -101,6 +111,10 @@ class Metrics extends React.Component {
             </TableBody>
           </Table>
         </Paper>
+        <div> <CSVLink data={data}>
+        Download CSV file,
+      </CSVLink>
+      </div>
       </CardGridWrapper>
     );
   }
