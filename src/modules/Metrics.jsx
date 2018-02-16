@@ -9,7 +9,8 @@ import {CardGridWrapper} from "../components/CardGridWrapper";
 import {CSVLink, CSVDownload} from 'react-csv';
 
 const mapStateToProps = state => ({
-  registeredUsers: state.metricsRegisteredUsers
+  registeredUsers: state.metricsRegisteredUsers,
+  activeUsersCounts: state.metricsActiveUsers,
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -22,6 +23,7 @@ const mapDispatchToProps = dispatch => ({
   refresh: () => {
     dispatch(rest.actions.metricsRegisteredUsers());
     //dispatch(rest.actions.metricsmsgperconversation());
+    dispatch(rest.actions.metricsActiveUsers());
   },
 });
 
@@ -37,27 +39,37 @@ class Metrics extends React.Component {
     // console.log(this.props.registeredUsers.loading);   
 
     // check if the data is in loading or syncing before render the rows
-    const renderMetricsRow = () => {
-      if (this.props.registeredUsers.loading) {
-        return <CircularProgress />
-      }
-      else {
+    const renderMetricsRow = () => {     
+      // if (this.props.registeredUsers.loading) {
+      //   return <CircularProgress />
+      // }
+      // else {
         if (this.props.registeredUsers.sync){
           const csvData = [
             ['Timestamp', 'Registered today', 'Users count'] ,
             [this.props.registeredUsers.data.timestamp, this.props.registeredUsers.data.registered_today , this.props.registeredUsers.data.users_count]
-          ];          
+          ];             
           return this.props.registeredUsers.data.map(record => {
             // console.log('record');
             return <TableRow key={record.id}>
               <TableCell>{moment(record.timestamp).format('DD-MM-YYYY')}</TableCell>
-              <TableCell>{record.registered_today}</TableCell>
               <TableCell>{record.users_count}</TableCell>
               <TableCell><CSVLink data={csvData}>Download report</CSVLink></TableCell>
             </TableRow>           
           })  
         }      
-      } 
+      // } 
+    }
+
+    const renderActiveUsersRow = () => {
+      if (this.props.activeUsersCounts.sync) {
+        return this.props.activeUsersCounts.data.map(record => {
+          return <TableRow key={record.id}>
+            <TableCell>{moment(record.timestamp).format('DD-MM-YYYY')}</TableCell>
+            <TableCell>{record.users_count}</TableCell>
+          </TableRow>  
+        })
+      }
     }
 
     return (
@@ -70,12 +82,27 @@ class Metrics extends React.Component {
             <TableHead>
               <TableRow>
                 <TableCell>{this.props.intl.formatMessage({id: 'metrics_day'})}</TableCell>
-                <TableCell>{this.props.intl.formatMessage({id: 'metrics_users_registered_day'})}</TableCell>
                 <TableCell>{this.props.intl.formatMessage({id: 'metrics_users_total'})}</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
               {renderMetricsRow()}
+            </TableBody>
+          </Table>
+        </Paper>
+        <Paper>
+        <Typography type="headline" component="h3">
+            Active Users
+          </Typography>
+          <Table>
+            <TableHead>
+              <TableRow>
+                <TableCell>{this.props.intl.formatMessage({id: 'metrics_day'})}</TableCell>
+                <TableCell>{this.props.intl.formatMessage({id: 'metrics_users_total'})}</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {renderActiveUsersRow()}
             </TableBody>
           </Table>
         </Paper>
