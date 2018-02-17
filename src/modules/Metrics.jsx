@@ -1,6 +1,7 @@
 import React from 'react';
 import theme from "../utils/theme";
-import { Paper, Table, TableBody, TableCell, TableHead, TableRow, Typography, CircularProgress } from "material-ui";
+import { Paper, Table, TableBody, TableCell, TableHead, TableRow, Typography, CircularProgress,FlatButton} from "material-ui";
+import ArrowDropDownCircle from 'material-ui-icons/ArrowDropDownCircle';
 import { connect } from "react-redux";
 import { injectIntl } from "react-intl";
 import rest from "../utils/rest";
@@ -10,8 +11,7 @@ import { CSVLink } from 'react-csv';
 
 const mapStateToProps = state => ({
   registeredUsers: state.metricsRegisteredUsers,
-  activeUsersCounts: state.metricsActiveUsers,
-  last30DaysUsers:state.last30DaysUsers,
+  activeUsersCounts: state.metricsActiveUsers
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -26,9 +26,6 @@ const mapDispatchToProps = dispatch => ({
     //dispatch(rest.actions.metricsmsgperconversation());
     dispatch(rest.actions.metricsActiveUsers());
   
-  },
-  get30DaysUsers:() => {
-    dispatch(rest.actions.last30DaysUsers());
   }
   
 });
@@ -36,9 +33,8 @@ const mapDispatchToProps = dispatch => ({
 class Metrics extends React.Component {
 
   componentDidMount() {
-    const { refresh,get30DaysUsers } = this.props;
-    get30DaysUsers();
-     refresh();
+    const {refresh}=this.props; 
+    refresh();
   }
 
   render() {
@@ -56,7 +52,7 @@ class Metrics extends React.Component {
           // console.log('record');
           return <TableRow key={record.id}>
             <TableCell>{moment(record.timestamp).format('DD-MM-YYYY')}</TableCell>
-            <TableCell>{record.users_count}</TableCell>
+            <TableCell>{record.registered}</TableCell>
           </TableRow>
         })
       }
@@ -68,14 +64,11 @@ class Metrics extends React.Component {
         return this.props.activeUsersCounts.data.map(record => {
           return <TableRow key={record.id}>
             <TableCell>{moment(record.timestamp).format('DD-MM-YYYY')}</TableCell>
-            <TableCell>{record.users_count}</TableCell>
+            <TableCell>{record.lastactive}</TableCell>
           </TableRow>
         })
       }
-    }
-    //getting data from users that logged in last 30 days 
-    let data = this.props.last30DaysUsers.data;
-    
+    }  
 
     return (
       <CardGridWrapper classes={theme.palette} width={100}>
@@ -95,6 +88,11 @@ class Metrics extends React.Component {
             </TableBody>
           </Table>
         </Paper>
+        <div>
+          <CSVLink data={this.props.registeredUsers.data} filename={'registered-users.csv'}>
+            Download Registered-Users Metrics
+          </CSVLink>
+        </div>
         <Paper>
           <Typography type="headline" component="h3">
             Active Users
@@ -111,8 +109,8 @@ class Metrics extends React.Component {
             </TableBody>
           </Table>
         </Paper>
-        <div> <CSVLink data={data}>
-        Download CSV file,
+        <div> <CSVLink data={this.props.activeUsersCounts.data} filename={'lastActive-users.csv'}>
+        Download Active-Users Metrics
       </CSVLink>
       </div>
       </CardGridWrapper>

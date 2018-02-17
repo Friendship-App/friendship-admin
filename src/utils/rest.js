@@ -35,11 +35,6 @@ const rest = reduxApi({
     transformer: transformers.array,
     crud: true
   },
-  last30DaysUsers:{
-    url:`${apiRoot}/users/30days`,
-    transformer: transformers.array,
-    crud: true
-  },
   tags: {
     url: `${apiRoot}/tags`,
     transformer: transformers.array,
