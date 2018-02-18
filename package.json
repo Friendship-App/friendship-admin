@@ -11,6 +11,7 @@
     "offline-plugin": "^4.8.3",
     "prop-types": "^15.5.10",
     "react": "^15.6.1",
+    "react-csv": "^1.0.12",
     "react-dom": "^15.6.1",
     "react-intl": "^2.4.0",
     "react-intl-redux": "^0.6.0",

@@ -6,6 +6,7 @@ import {injectIntl} from "react-intl";
 import rest from "../utils/rest";
 import moment from "moment";
 import {CardGridWrapper} from "../components/CardGridWrapper";
+import {CSVLink, CSVDownload} from 'react-csv';
 
 const mapStateToProps = state => ({
   registeredUsers: state.metricsRegisteredUsers,
@@ -30,7 +31,6 @@ class Metrics extends React.Component {
 
   componentDidMount() {
     const {refresh} = this.props;
-
     refresh();
   }
 
@@ -39,17 +39,22 @@ class Metrics extends React.Component {
     // console.log(this.props.registeredUsers.loading);   
 
     // check if the data is in loading or syncing before render the rows
-    const renderMetricsRow = () => {
+    const renderMetricsRow = () => {     
       // if (this.props.registeredUsers.loading) {
       //   return <CircularProgress />
       // }
       // else {
-        if (this.props.registeredUsers.sync){          
+        if (this.props.registeredUsers.sync){
+          const csvData = [
+            ['Timestamp', 'Registered today', 'Users count'] ,
+            [this.props.registeredUsers.data.timestamp, this.props.registeredUsers.data.registered_today , this.props.registeredUsers.data.users_count]
+          ];             
           return this.props.registeredUsers.data.map(record => {
             // console.log('record');
             return <TableRow key={record.id}>
               <TableCell>{moment(record.timestamp).format('DD-MM-YYYY')}</TableCell>
               <TableCell>{record.users_count}</TableCell>
+              <TableCell><CSVLink data={csvData}>Download report</CSVLink></TableCell>
             </TableRow>           
           })  
         }      
