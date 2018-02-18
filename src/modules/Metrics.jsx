@@ -116,9 +116,10 @@ class Metrics extends React.Component {
             </TableBody>
           </Table>
         </Paper>
-        <div> <CSVLink data={this.props.activeUsersCounts.data} filename={'lastActive-users.csv'}>
-        Download Active-Users Metrics
-      </CSVLink>
+        <div> 
+          <CSVLink data={this.props.activeUsersCounts.data} filename={'lastActive-users.csv'}>
+            Download Active-Users Metrics
+          </CSVLink>
       </div>
       </CardGridWrapper>
     );
