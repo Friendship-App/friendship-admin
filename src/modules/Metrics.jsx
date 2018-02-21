@@ -67,7 +67,7 @@ class Metrics extends React.Component {
         return this.props.activeUsersCounts.data.map(record => {
           return <TableRow key={record.id}>
             <TableCell>{moment(record.timestamp).format('DD-MM-YYYY')}</TableCell>
-            <TableCell>{record.lastactive}</TableCell>
+            <TableCell>{record.users_count}</TableCell>
           </TableRow>
         })
       }
