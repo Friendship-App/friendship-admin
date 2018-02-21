@@ -49,17 +49,13 @@ class Metrics extends React.Component {
       // }
       // else {
 
-        if (this.props.registeredUsers.sync){
-          const csvData = [
-            ['Timestamp', 'Registered today', 'Users count'] ,
-            [this.props.registeredUsers.data.timestamp, this.props.registeredUsers.data.registered_today , this.props.registeredUsers.data.users_count]
-          ];             
-          return this.props.registeredUsers.data.map(record => {
-            // console.log('record');
+        if (this.props.registeredUsers.sync){          
+          return this.props.registeredUsers.data.map((record,index) => {
+            // console.log(record);
             return <TableRow key={record.id}>
               <TableCell>{moment(record.timestamp).format('DD-MM-YYYY')}</TableCell>
               <TableCell>{record.users_count}</TableCell>
-              <TableCell><CSVLink data={csvData}>Download report</CSVLink></TableCell>
+              <TableCell><CSVLink data={Array(this.props.registeredUsers.data[index])} filename={`report-${moment(record.timestamp).format('DD-MM-YYYY')}`}>Download report</CSVLink></TableCell>
             </TableRow>           
           })  
         }
