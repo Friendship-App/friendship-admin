@@ -1,16 +1,18 @@
 import React from 'react';
 import theme from "../utils/theme";
-import {Paper, Table, TableBody, TableCell, TableHead, TableRow, Typography, CircularProgress } from "material-ui";
-import {connect} from "react-redux";
-import {injectIntl} from "react-intl";
+import { Paper, Table, TableBody, TableCell, TableHead, TableRow, Typography, CircularProgress,FlatButton} from "material-ui";
+import ArrowDropDownCircle from 'material-ui-icons/ArrowDropDownCircle';
+import { connect } from "react-redux";
+import { injectIntl } from "react-intl";
 import rest from "../utils/rest";
 import moment from "moment";
 import {CardGridWrapper} from "../components/CardGridWrapper";
 import {CSVLink, CSVDownload} from 'react-csv';
 
+
 const mapStateToProps = state => ({
   registeredUsers: state.metricsRegisteredUsers,
-  activeUsersCounts: state.metricsActiveUsers,
+  activeUsersCounts: state.metricsActiveUsers
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -24,7 +26,9 @@ const mapDispatchToProps = dispatch => ({
     dispatch(rest.actions.metricsRegisteredUsers());
     //dispatch(rest.actions.metricsmsgperconversation());
     dispatch(rest.actions.metricsActiveUsers());
-  },
+  
+  }
+  
 });
 
 class Metrics extends React.Component {
@@ -44,20 +48,17 @@ class Metrics extends React.Component {
       //   return <CircularProgress />
       // }
       // else {
-        if (this.props.registeredUsers.sync){
-          const csvData = [
-            ['Timestamp', 'Registered today', 'Users count'] ,
-            [this.props.registeredUsers.data.timestamp, this.props.registeredUsers.data.registered_today , this.props.registeredUsers.data.users_count]
-          ];             
-          return this.props.registeredUsers.data.map(record => {
-            // console.log('record');
+
+        if (this.props.registeredUsers.sync){          
+          return this.props.registeredUsers.data.map((record,index) => {
+            // console.log(record);
             return <TableRow key={record.id}>
               <TableCell>{moment(record.timestamp).format('DD-MM-YYYY')}</TableCell>
               <TableCell>{record.users_count}</TableCell>
-              <TableCell><CSVLink data={csvData}>Download report</CSVLink></TableCell>
+              <TableCell><CSVLink data={Array(this.props.registeredUsers.data[index])} filename={`report-${moment(record.timestamp).format('DD-MM-YYYY')}`}>Download report</CSVLink></TableCell>
             </TableRow>           
           })  
-        }      
+        }
       // } 
     }
 
@@ -67,22 +68,22 @@ class Metrics extends React.Component {
           return <TableRow key={record.id}>
             <TableCell>{moment(record.timestamp).format('DD-MM-YYYY')}</TableCell>
             <TableCell>{record.users_count}</TableCell>
-          </TableRow>  
+          </TableRow>
         })
       }
-    }
+    }  
 
     return (
       <CardGridWrapper classes={theme.palette} width={100}>
-        <Paper className={theme.paper}>
+      <Paper className={theme.paper}>
           <Typography type="headline" component="h3">
             Registered users
           </Typography>
           <Table>
             <TableHead>
               <TableRow>
-                <TableCell>{this.props.intl.formatMessage({id: 'metrics_day'})}</TableCell>
-                <TableCell>{this.props.intl.formatMessage({id: 'metrics_users_total'})}</TableCell>
+                <TableCell>{this.props.intl.formatMessage({ id: 'metrics_day' })}</TableCell>
+                <TableCell>{this.props.intl.formatMessage({ id: 'metrics_users_total' })}</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -90,15 +91,20 @@ class Metrics extends React.Component {
             </TableBody>
           </Table>
         </Paper>
+        <div>
+          <CSVLink data={this.props.registeredUsers.data} filename={'registered-users.csv'}>
+            Download Registered-Users Metrics
+          </CSVLink>
+        </div>
         <Paper>
-        <Typography type="headline" component="h3">
+          <Typography type="headline" component="h3">
             Active Users
           </Typography>
           <Table>
             <TableHead>
               <TableRow>
-                <TableCell>{this.props.intl.formatMessage({id: 'metrics_day'})}</TableCell>
-                <TableCell>{this.props.intl.formatMessage({id: 'metrics_users_total'})}</TableCell>
+                <TableCell>{this.props.intl.formatMessage({ id: 'metrics_day' })}</TableCell>
+                <TableCell>{this.props.intl.formatMessage({ id: 'metrics_users_total' })}</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -106,6 +112,11 @@ class Metrics extends React.Component {
             </TableBody>
           </Table>
         </Paper>
+        <div> 
+          <CSVLink data={this.props.activeUsersCounts.data} filename={'lastActive-users.csv'}>
+            Download Active-Users Metrics
+          </CSVLink>
+      </div>
       </CardGridWrapper>
     );
   }

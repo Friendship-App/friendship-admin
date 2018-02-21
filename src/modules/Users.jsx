@@ -3,6 +3,7 @@ import {connect} from 'react-redux';
 import {injectIntl} from 'react-intl';
 import moment from 'moment';
 import theme from '../utils/theme';
+import {CSVLink} from 'react-csv';
 
 import Button from 'material-ui/Button';
 import TextField from 'material-ui/TextField'
@@ -573,6 +574,9 @@ export class Users extends React.Component {
               )}
           </TableBody>
         </Table>
+        <CSVLink data={this.props.users.data} filename={'user-list.csv'}>
+          Download User List
+        </CSVLink>
       </div>
     );
   }
