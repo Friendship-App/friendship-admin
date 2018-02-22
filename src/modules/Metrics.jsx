@@ -1,6 +1,6 @@
 import React from 'react';
 import theme from "../utils/theme";
-import { Paper, Table, TableBody, TableCell, TableHead, TableRow, Typography, CircularProgress,FlatButton} from "material-ui";
+import { Paper, Table, TableBody, TableCell, TableHead, TableRow, Typography, CircularProgress,Button} from "material-ui";
 import ArrowDropDownCircle from 'material-ui-icons/ArrowDropDownCircle';
 import { connect } from "react-redux";
 import { injectIntl } from "react-intl";
@@ -90,12 +90,17 @@ class Metrics extends React.Component {
               {renderMetricsRow()}
             </TableBody>
           </Table>
+          <br/>
+          <div style={{textAlign:'center'}}>
+          <Button color="secondary">
+            <CSVLink data={this.props.registeredUsers.data} filename={'registered-users.csv'}>
+              Download Registered-Users Metrics
+            </CSVLink>
+            <ArrowDropDownCircle/>
+            </Button>
+          </div>
+          <br/>
         </Paper>
-        <div>
-          <CSVLink data={this.props.registeredUsers.data} filename={'registered-users.csv'}>
-            Download Registered-Users Metrics
-          </CSVLink>
-        </div>
         <Paper>
           <Typography type="headline" component="h3">
             Active Users
@@ -111,12 +116,17 @@ class Metrics extends React.Component {
               {renderActiveUsersRow()}
             </TableBody>
           </Table>
+          <br/>
+          <div style={{textAlign:'center'}}>
+          <Button> 
+            <CSVLink data={this.props.activeUsersCounts.data} filename={'lastActive-users.csv'}>
+              Download Active-Users Metrics
+            </CSVLink>
+            <ArrowDropDownCircle/>
+          </Button>
+        </div>
+        <br/>
         </Paper>
-        <div> 
-          <CSVLink data={this.props.activeUsersCounts.data} filename={'lastActive-users.csv'}>
-            Download Active-Users Metrics
-          </CSVLink>
-      </div>
       </CardGridWrapper>
     );
   }
