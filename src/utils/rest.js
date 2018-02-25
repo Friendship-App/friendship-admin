@@ -107,9 +107,10 @@ const rest = reduxApi({
     }
   },
 
-  metricsmsgperconversation: {
-    url: `${apiRoot}/metrics/msgperconversation`,
-    crud: false,
+  metricsActiveConversations: {
+    url: `${apiRoot}/metrics/activeconversations`,
+    transformer: transformers.array,
+    crud: true,
     options: {
       method: 'GET'
     }

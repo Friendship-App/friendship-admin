@@ -12,7 +12,8 @@ import {CSVLink, CSVDownload} from 'react-csv';
 
 const mapStateToProps = state => ({
   registeredUsers: state.metricsRegisteredUsers,
-  activeUsersCounts: state.metricsActiveUsers
+  activeUsersCounts: state.metricsActiveUsers,
+  activeConversationCounts: state.metricsActiveConversations,
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -24,11 +25,9 @@ const mapDispatchToProps = dispatch => ({
    */
   refresh: () => {
     dispatch(rest.actions.metricsRegisteredUsers());
-    //dispatch(rest.actions.metricsmsgperconversation());
     dispatch(rest.actions.metricsActiveUsers());
-  
+    dispatch(rest.actions.metricsActiveConversations());
   }
-  
 });
 
 class Metrics extends React.Component {
@@ -68,6 +67,17 @@ class Metrics extends React.Component {
           return <TableRow key={record.id}>
             <TableCell>{moment(record.timestamp).format('DD-MM-YYYY')}</TableCell>
             <TableCell>{record.users_count}</TableCell>
+          </TableRow>
+        })
+      }
+    }
+    
+    const renderActiveConversationRow = () => {
+      if (this.props.activeConversationCounts.sync) {
+        return this.props.activeConversationCounts.data.map(record => {
+          return <TableRow key={record.id}>
+            <TableCell>{moment(record.timestamp).format('DD-MM-YYYY')}</TableCell>
+            <TableCell>{record.conversations_count}</TableCell>
           </TableRow>
         })
       }
@@ -116,7 +126,34 @@ class Metrics extends React.Component {
           <CSVLink data={this.props.activeUsersCounts.data} filename={'lastActive-users.csv'}>
             Download Active-Users Metrics
           </CSVLink>
-      </div>
+        </div>
+        
+
+
+        <Paper>
+          <Typography type="headline" component="h3">
+            Active Conversations
+          </Typography>
+          <Table>
+            <TableHead>
+              <TableRow>
+                <TableCell>{this.props.intl.formatMessage({ id: 'metrics_day' })}</TableCell>
+                <TableCell>{this.props.intl.formatMessage({ id: 'metrics_users_total' })}</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {renderActiveConversationRow()}
+            </TableBody>
+          </Table>
+        </Paper>
+        <div> 
+          <CSVLink data={this.props.activeConversationCounts.data} filename={'lastActive-Conversation.csv'}>
+            Download Active-Conversation Metrics
+          </CSVLink>
+        </div>
+
+
+
       </CardGridWrapper>
     );
   }
