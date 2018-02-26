@@ -61,6 +61,13 @@ export default {
   tagStatus: '',
   tagCreationDate: '',
   tagRelatedEvent: '',
+
+  // Metrics View TRANSLATE ME PLEASE
+  metrics_day: 'Day',
+  metrics_users_registered_day: 'Users registered that day',
+  metrics_users_total: 'Users in total',
+  metrics_active_conversation_total: 'Active conversations in total',
+  metrics_average_conversation_length: 'Average conversation length',
   
   // Delete tag
   deleteTag_title: 'Poista tägi',

@@ -115,6 +115,14 @@ const rest = reduxApi({
       method: 'GET'
     }
   },
+  metricsAverageConversationsLength: {
+    url: `${apiRoot}/metrics/conversationslength`,
+    transformer: transformers.array,
+    crud: true,
+    options: {
+      method: 'GET'
+    }
+  },
 
   auth: {
     url: `${apiRoot}/users/authenticate`,

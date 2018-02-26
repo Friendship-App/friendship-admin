@@ -14,6 +14,7 @@ const mapStateToProps = state => ({
   registeredUsers: state.metricsRegisteredUsers,
   activeUsersCounts: state.metricsActiveUsers,
   activeConversationCounts: state.metricsActiveConversations,
+  averageConversationsLength: state.metricsAverageConversationsLength,
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -27,6 +28,8 @@ const mapDispatchToProps = dispatch => ({
     dispatch(rest.actions.metricsRegisteredUsers());
     dispatch(rest.actions.metricsActiveUsers());
     dispatch(rest.actions.metricsActiveConversations());
+    dispatch(rest.actions.metricsAverageConversationsLength());
+
   }
 });
 
@@ -83,6 +86,17 @@ class Metrics extends React.Component {
       }
     }  
 
+    const renderAverageConversationRow = () => {
+      if (this.props.averageConversationsLength.sync) {
+        return this.props.averageConversationsLength.data.map(record => {
+          return <TableRow key={record.id}>
+            <TableCell>{moment(record.timestamp).format('DD-MM-YYYY')}</TableCell>
+            <TableCell>{record.conversations_length}</TableCell>
+          </TableRow>
+        })
+      }
+    }  
+
     return (
       <CardGridWrapper classes={theme.palette} width={100}>
       <Paper className={theme.paper}>
@@ -127,9 +141,6 @@ class Metrics extends React.Component {
             Download Active-Users Metrics
           </CSVLink>
         </div>
-        
-
-
         <Paper>
           <Typography type="headline" component="h3">
             Active Conversations
@@ -138,7 +149,7 @@ class Metrics extends React.Component {
             <TableHead>
               <TableRow>
                 <TableCell>{this.props.intl.formatMessage({ id: 'metrics_day' })}</TableCell>
-                <TableCell>{this.props.intl.formatMessage({ id: 'metrics_users_total' })}</TableCell>
+                <TableCell>{this.props.intl.formatMessage({ id: 'metrics_active_conversation_total' })}</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -151,7 +162,27 @@ class Metrics extends React.Component {
             Download Active-Conversation Metrics
           </CSVLink>
         </div>
-
+        <Paper>
+          <Typography type="headline" component="h3">
+            Average Conversations Length
+          </Typography>
+          <Table>
+            <TableHead>
+              <TableRow>
+                <TableCell>{this.props.intl.formatMessage({ id: 'metrics_day' })}</TableCell>
+                <TableCell>{this.props.intl.formatMessage({ id: 'metrics_average_conversation_length' })}</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {renderAverageConversationRow()}
+            </TableBody>
+          </Table>
+        </Paper>
+        <div> 
+          <CSVLink data={this.props.averageConversationsLength.data} filename={'Average-Conversation-Length.csv'}>
+            Average-Conversation-Length Metrics
+          </CSVLink>
+        </div>
 
 
       </CardGridWrapper>
