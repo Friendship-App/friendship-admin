@@ -58,7 +58,6 @@ class Metrics extends React.Component {
             return <TableRow key={record.id}>
               <TableCell>{moment(record.timestamp).format('DD-MM-YYYY')}</TableCell>
               <TableCell>{record.users_count}</TableCell>
-              <TableCell><CSVLink data={Array(this.props.registeredUsers.data[index])} filename={`report-${moment(record.timestamp).format('DD-MM-YYYY')}`}>Download report</CSVLink></TableCell>
             </TableRow>           
           })  
         }
