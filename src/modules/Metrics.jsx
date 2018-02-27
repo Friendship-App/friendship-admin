@@ -1,7 +1,7 @@
 import React from 'react';
 import theme from "../utils/theme";
 import { Paper, Table, TableBody, TableCell, TableHead, TableRow, Typography, CircularProgress,Button} from "material-ui";
-import ArrowDropDownCircle from 'material-ui-icons/ArrowDropDownCircle';
+import FileDownload from 'material-ui-icons/ArrowDropDownCircle';
 import { connect } from "react-redux";
 import { injectIntl } from "react-intl";
 import rest from "../utils/rest";
@@ -118,9 +118,9 @@ class Metrics extends React.Component {
           <div style={{textAlign:'center'}}>
           <Button color="secondary">
             <CSVLink data={this.props.registeredUsers.data} filename={'registered-users.csv'}>
-              Download Registered-Users Metrics
+              Download Registered Users Metrics 
             </CSVLink>
-            <ArrowDropDownCircle/>
+            <FileDownload/>
             </Button>
           </div>
           <br/>
@@ -144,9 +144,9 @@ class Metrics extends React.Component {
           <div style={{textAlign:'center'}}>
           <Button> 
             <CSVLink data={this.props.activeUsersCounts.data} filename={'lastActive-users.csv'}>
-              Download Active-Users Metrics
+              Download Active Users Metrics 
             </CSVLink>
-            <ArrowDropDownCircle/>
+            <FileDownload/>
           </Button>
         </div>
         <br/>
@@ -170,16 +170,16 @@ class Metrics extends React.Component {
           <div style={{textAlign:'center'}}>
           <Button> 
             <CSVLink data={this.props.activeConversations.data} filename={'active-conversations.csv'}>
-              Download Active Conversations Metrics
+              Download Active Conversations Metrics 
             </CSVLink>
-            <ArrowDropDownCircle/>
+            <FileDownload/>
           </Button>
         </div>
         <br/>
         </Paper>
         <Paper>
           <Typography type="headline" component="h3">
-            Conversation Length
+            Conversation Length 
           </Typography>
           <Table>
             <TableHead>
@@ -196,9 +196,9 @@ class Metrics extends React.Component {
           <div style={{textAlign:'center'}}>
           <Button> 
             <CSVLink data={this.props.conversationsLength.data} filename={'conversations-length.csv'}>
-              Download Conversation Length Metrics
+              Download Conversation Length Metrics 
             </CSVLink>
-            <ArrowDropDownCircle/>
+            <FileDownload/>
           </Button>
         </div>
         <br/>
