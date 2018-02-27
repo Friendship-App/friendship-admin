@@ -1,7 +1,7 @@
 import React from 'react';
 import theme from "../utils/theme";
 import { Paper, Table, TableBody, TableCell, TableHead, TableRow, Typography, CircularProgress,Button} from "material-ui";
-import FileDownload from 'material-ui-icons/ArrowDropDownCircle';
+import FileDownload from 'material-ui-icons/FileDownload';
 import { connect } from "react-redux";
 import { injectIntl } from "react-intl";
 import rest from "../utils/rest";
