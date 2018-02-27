@@ -91,6 +91,34 @@ const rest = reduxApi({
 
   metricsRegisteredUsers: {
     url: `${apiRoot}/metrics/registeredusers`,
+    transformer: transformers.array,
+    crud: true,
+    options: {
+      method: 'GET'
+    }
+  },
+
+  metricsActiveUsers: {
+    url: `${apiRoot}/metrics/activeusers`,
+    transformer: transformers.array,
+    crud: true,
+    options: {
+      method: 'GET'
+    }
+  },
+
+  metricsActiveConversations: {
+    url: `${apiRoot}/metrics/activeconversations`,
+    transformer: transformers.array,
+    crud: true,
+    options: {
+      method: 'GET'
+    }
+  },
+
+  metricsConversationsLength: {
+    url: `${apiRoot}/metrics/conversationslength`,
+    transformer: transformers.array,
     crud: true,
     options: {
       method: 'GET'
