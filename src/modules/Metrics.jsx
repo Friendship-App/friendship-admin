@@ -1,6 +1,6 @@
 import React from 'react';
 import theme from "../utils/theme";
-import { Paper, Table, TableBody, TableCell, TableHead, TableRow, Typography, CircularProgress,FlatButton} from "material-ui";
+import { Paper, Table, TableBody, TableCell, TableHead, TableRow, Typography, CircularProgress,Button} from "material-ui";
 import ArrowDropDownCircle from 'material-ui-icons/ArrowDropDownCircle';
 import { connect } from "react-redux";
 import { injectIntl } from "react-intl";
@@ -12,7 +12,9 @@ import {CSVLink, CSVDownload} from 'react-csv';
 
 const mapStateToProps = state => ({
   registeredUsers: state.metricsRegisteredUsers,
-  activeUsersCounts: state.metricsActiveUsers
+  activeUsersCounts: state.metricsActiveUsers,
+  activeConversations:state.metricsActiveConversations,
+  conversationsLength:state.metricsConversationsLength
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -26,7 +28,8 @@ const mapDispatchToProps = dispatch => ({
     dispatch(rest.actions.metricsRegisteredUsers());
     //dispatch(rest.actions.metricsmsgperconversation());
     dispatch(rest.actions.metricsActiveUsers());
-  
+    dispatch(rest.actions.metricsActiveConversations());
+    dispatch(rest.actions.metricsConversationsLength());
   }
   
 });
@@ -71,7 +74,29 @@ class Metrics extends React.Component {
           </TableRow>
         })
       }
-    }  
+    }
+    
+    const renderActiveConversations=()=>{
+      if (this.props.activeConversations.sync) {
+        return this.props.activeConversations.data.map((record)=>{
+          return <TableRow key={record.id}>
+            <TableCell>{moment(record.timestamp).format('DD-MM-YYYY')}</TableCell>
+            <TableCell>{record.conversations_count}</TableCell>
+          </TableRow>
+        })
+      }
+    }
+
+    const renderConversationLength=()=>{
+      if (this.props.conversationsLength.sync) {
+        return this.props.conversationsLength.data.map((record)=>{
+          return <TableRow key={record.id}>
+            <TableCell>{moment(record.timestamp).format('DD-MM-YYYY')}</TableCell>
+            <TableCell>{record.conversations_length}</TableCell>
+          </TableRow>
+        })
+      }
+    }
 
     return (
       <CardGridWrapper classes={theme.palette} width={100}>
@@ -90,12 +115,17 @@ class Metrics extends React.Component {
               {renderMetricsRow()}
             </TableBody>
           </Table>
+          <br/>
+          <div style={{textAlign:'center'}}>
+          <Button color="secondary">
+            <CSVLink data={this.props.registeredUsers.data} filename={'registered-users.csv'}>
+              Download Registered-Users Metrics
+            </CSVLink>
+            <ArrowDropDownCircle/>
+            </Button>
+          </div>
+          <br/>
         </Paper>
-        <div>
-          <CSVLink data={this.props.registeredUsers.data} filename={'registered-users.csv'}>
-            Download Registered-Users Metrics
-          </CSVLink>
-        </div>
         <Paper>
           <Typography type="headline" component="h3">
             Active Users
@@ -111,12 +141,69 @@ class Metrics extends React.Component {
               {renderActiveUsersRow()}
             </TableBody>
           </Table>
+          <br/>
+          <div style={{textAlign:'center'}}>
+          <Button> 
+            <CSVLink data={this.props.activeUsersCounts.data} filename={'lastActive-users.csv'}>
+              Download Active-Users Metrics
+            </CSVLink>
+            <ArrowDropDownCircle/>
+          </Button>
+        </div>
+        <br/>
         </Paper>
-        <div> 
-          <CSVLink data={this.props.activeUsersCounts.data} filename={'lastActive-users.csv'}>
-            Download Active-Users Metrics
-          </CSVLink>
-      </div>
+        <Paper>
+          <Typography type="headline" component="h3">
+            Active Conversations
+          </Typography>
+          <Table>
+            <TableHead>
+              <TableRow>
+                <TableCell>{this.props.intl.formatMessage({ id: 'metrics_day' })}</TableCell>
+                <TableCell>{this.props.intl.formatMessage({ id: 'metrics_conversation_total' })}</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {renderActiveConversations()}
+            </TableBody>
+          </Table>
+          <br/>
+          <div style={{textAlign:'center'}}>
+          <Button> 
+            <CSVLink data={this.props.activeConversations.data} filename={'active-conversations.csv'}>
+              Download Active Conversations Metrics
+            </CSVLink>
+            <ArrowDropDownCircle/>
+          </Button>
+        </div>
+        <br/>
+        </Paper>
+        <Paper>
+          <Typography type="headline" component="h3">
+            Conversation Length
+          </Typography>
+          <Table>
+            <TableHead>
+              <TableRow>
+                <TableCell>{this.props.intl.formatMessage({ id: 'metrics_day' })}</TableCell>
+                <TableCell>{this.props.intl.formatMessage({ id: 'metrics_conversation_length' })}</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {renderConversationLength()}
+            </TableBody>
+          </Table>
+          <br/>
+          <div style={{textAlign:'center'}}>
+          <Button> 
+            <CSVLink data={this.props.conversationsLength.data} filename={'conversations-length.csv'}>
+              Download Conversation Length Metrics
+            </CSVLink>
+            <ArrowDropDownCircle/>
+          </Button>
+        </div>
+        <br/>
+        </Paper>
       </CardGridWrapper>
     );
   }
