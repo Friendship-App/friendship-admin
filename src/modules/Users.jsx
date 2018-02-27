@@ -11,7 +11,7 @@ import Table, {
   TableBody,
   TableHead,
   TableRow,
-  TableCell
+  TableCell,
 } from 'material-ui/Table';
 import {FormControlLabel} from 'material-ui/Form';
 import Switch from 'material-ui/Switch';
@@ -24,6 +24,7 @@ import ListIcon from 'material-ui-icons/List';
 import DeleteIcon from 'material-ui-icons/Delete';
 import WarningIcon from 'material-ui-icons/Warning';
 import CreateIcon from 'material-ui-icons/Create';
+import ArrowDropDownCircle from 'material-ui-icons/ArrowDropDownCircle';
 
 import {DialogContentText} from 'material-ui/Dialog';
 import DialogWithButtons from '../components/DialogWithButtons';
@@ -574,9 +575,16 @@ export class Users extends React.Component {
               )}
           </TableBody>
         </Table>
+        <br/>
+        <div style={{textAlign:'center'}}>
+        <Button color="primary">
         <CSVLink data={this.props.users.data} filename={'user-list.csv'}>
           Download User List
         </CSVLink>
+        <ArrowDropDownCircle/>
+        </Button>
+        </div>
+        <br/>
       </div>
     );
   }
