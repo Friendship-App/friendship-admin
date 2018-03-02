@@ -107,8 +107,8 @@ class Metrics extends React.Component {
     }
 
     return (
-      <CardGridWrapper classes={theme.palette} width={200}>
-      <Paper className={theme.paper}>
+      <CardGridWrapper classes={theme.palette} width={100}>
+      <Paper style = {theme.paper}>
           <Typography type="headline" component="h3">
             Metrics
           </Typography>
@@ -163,10 +163,8 @@ class Metrics extends React.Component {
             <FileDownload/>
           </Button>
         </div>
-          <br/>
-        </Paper>
-
-        
+          <br/>   
+        </Paper>   
       </CardGridWrapper>
     );
   }
