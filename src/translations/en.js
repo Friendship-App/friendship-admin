@@ -62,9 +62,12 @@ export default {
   tagCreationDate: 'Creation date',
   tagRelatedEvent: 'Related event',
 
+  // Metrics
   metrics_day: 'Day',
   metrics_users_registered_day: 'Users registered that day',
-  metrics_users_total: 'Users in total',
+  metrics_users_total: 'Active users',
+  metrics_conversation_total: 'Conversations in total',
+  metrics_conversation_length: 'Conversations length',
 
   // Delete tag
   deleteTag_title: 'Delete tag',

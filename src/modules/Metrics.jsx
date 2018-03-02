@@ -11,6 +11,7 @@ import {CSVLink, CSVDownload} from 'react-csv';
 
 
 const mapStateToProps = state => ({
+  allMetrics: state.metricsAllMetrics,
   registeredUsers: state.metricsRegisteredUsers,
   activeUsersCounts: state.metricsActiveUsers,
   activeConversations:state.metricsActiveConversations,
@@ -25,8 +26,8 @@ const mapDispatchToProps = dispatch => ({
    * @return {void}
    */
   refresh: () => {
+    dispatch(rest.actions.metricsAllMetrics());
     dispatch(rest.actions.metricsRegisteredUsers());
-    //dispatch(rest.actions.metricsmsgperconversation());
     dispatch(rest.actions.metricsActiveUsers());
     dispatch(rest.actions.metricsActiveConversations());
     dispatch(rest.actions.metricsConversationsLength());
@@ -46,28 +47,36 @@ class Metrics extends React.Component {
     // console.log(this.props.registeredUsers.loading);   
 
     // check if the data is in loading or syncing before render the rows
+
     const renderMetricsRow = () => {     
-      // if (this.props.registeredUsers.loading) {
-      //   return <CircularProgress />
-      // }
-      // else {
+      if (this.props.allMetrics.sync){          
+        return this.props.allMetrics.data.map((record,index) => {
+          // console.log(record);
+          return <TableRow key={record.id}>
+            <TableCell>{moment(record.date).format('DD-MM-YYYY')}</TableCell>
+            <TableCell>{record.number_of_users_registered}</TableCell>
+            <TableCell>{record.number_of_active_users}</TableCell>
+            <TableCell>{record.number_of_active_conversations}</TableCell>
+            <TableCell>{record.average_conversations_length}</TableCell>
+          </TableRow>           
+        })  
+      }
+  }
 
-        if (this.props.registeredUsers.sync){          
-          return this.props.registeredUsers.data.map((record,index) => {
-            // console.log(record);
-            return <TableRow key={record.id}>
-              <TableCell>{moment(record.timestamp).format('DD-MM-YYYY')}</TableCell>
-              <TableCell>{record.users_count}</TableCell>
-            </TableRow>           
-          })  
-        }
-      // } 
-    }
-
-    const renderActiveUsersRow = () => {
+    const renderRegisteredUsersRow = () => {
       if (this.props.activeUsersCounts.sync) {
         return this.props.activeUsersCounts.data.map(record => {
-          return <TableRow key={record.id}>
+          return <TableRow key={record.id}> 
+            <TableCell>{moment(record.timestamp).format('DD-MM-YYYY')}</TableCell>
+            <TableCell>{record.users_count}</TableCell>
+          </TableRow>
+        })
+      }
+    }
+    const renderActiveUsersRow = () => {
+      if (this.props.registeredUsers.sync) {
+        return this.props.registeredUsers.data.map(record => {
+          return <TableRow key={record.id}> 
             <TableCell>{moment(record.timestamp).format('DD-MM-YYYY')}</TableCell>
             <TableCell>{record.users_count}</TableCell>
           </TableRow>
@@ -98,16 +107,19 @@ class Metrics extends React.Component {
     }
 
     return (
-      <CardGridWrapper classes={theme.palette} width={100}>
+      <CardGridWrapper classes={theme.palette} width={200}>
       <Paper className={theme.paper}>
           <Typography type="headline" component="h3">
-            Registered users
+            Metrics
           </Typography>
           <Table>
             <TableHead>
               <TableRow>
                 <TableCell>{this.props.intl.formatMessage({ id: 'metrics_day' })}</TableCell>
+                <TableCell>{this.props.intl.formatMessage({ id: 'metrics_users_registered_day' })}</TableCell>
                 <TableCell>{this.props.intl.formatMessage({ id: 'metrics_users_total' })}</TableCell>
+                <TableCell>{this.props.intl.formatMessage({ id: 'metrics_conversation_total' })}</TableCell>
+                <TableCell>{this.props.intl.formatMessage({ id: 'metrics_conversation_length' })}</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -115,6 +127,7 @@ class Metrics extends React.Component {
             </TableBody>
           </Table>
           <br/>
+
           <div style={{textAlign:'center'}}>
           <Button color="secondary">
             <CSVLink data={this.props.registeredUsers.data} filename={'registered-users.csv'}>
@@ -123,24 +136,7 @@ class Metrics extends React.Component {
             <FileDownload/>
             </Button>
           </div>
-          <br/>
-        </Paper>
-        <Paper>
-          <Typography type="headline" component="h3">
-            Active Users
-          </Typography>
-          <Table>
-            <TableHead>
-              <TableRow>
-                <TableCell>{this.props.intl.formatMessage({ id: 'metrics_day' })}</TableCell>
-                <TableCell>{this.props.intl.formatMessage({ id: 'metrics_users_total' })}</TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {renderActiveUsersRow()}
-            </TableBody>
-          </Table>
-          <br/>
+
           <div style={{textAlign:'center'}}>
           <Button> 
             <CSVLink data={this.props.activeUsersCounts.data} filename={'lastActive-users.csv'}>
@@ -149,25 +145,8 @@ class Metrics extends React.Component {
             <FileDownload/>
           </Button>
         </div>
-        <br/>
-        </Paper>
-        <Paper>
-          <Typography type="headline" component="h3">
-            Active Conversations
-          </Typography>
-          <Table>
-            <TableHead>
-              <TableRow>
-                <TableCell>{this.props.intl.formatMessage({ id: 'metrics_day' })}</TableCell>
-                <TableCell>{this.props.intl.formatMessage({ id: 'metrics_conversation_total' })}</TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {renderActiveConversations()}
-            </TableBody>
-          </Table>
-          <br/>
-          <div style={{textAlign:'center'}}>
+
+        <div style={{textAlign:'center'}}>
           <Button> 
             <CSVLink data={this.props.activeConversations.data} filename={'active-conversations.csv'}>
               Download Active Conversations Metrics 
@@ -175,25 +154,8 @@ class Metrics extends React.Component {
             <FileDownload/>
           </Button>
         </div>
-        <br/>
-        </Paper>
-        <Paper>
-          <Typography type="headline" component="h3">
-            Conversation Length 
-          </Typography>
-          <Table>
-            <TableHead>
-              <TableRow>
-                <TableCell>{this.props.intl.formatMessage({ id: 'metrics_day' })}</TableCell>
-                <TableCell>{this.props.intl.formatMessage({ id: 'metrics_conversation_length' })}</TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {renderConversationLength()}
-            </TableBody>
-          </Table>
-          <br/>
-          <div style={{textAlign:'center'}}>
+
+        <div style={{textAlign:'center'}}>
           <Button> 
             <CSVLink data={this.props.conversationsLength.data} filename={'conversations-length.csv'}>
               Download Conversation Length Metrics 
@@ -201,8 +163,10 @@ class Metrics extends React.Component {
             <FileDownload/>
           </Button>
         </div>
-        <br/>
+          <br/>
         </Paper>
+
+        
       </CardGridWrapper>
     );
   }
