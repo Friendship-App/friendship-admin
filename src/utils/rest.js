@@ -124,6 +124,15 @@ const rest = reduxApi({
       method: 'GET'
     }
   },
+  
+  metricsAllMetrics: {
+    url: `${apiRoot}/metrics`,
+    transformer: transformers.array,
+    crud: true,
+    options: {
+      method: 'GET'
+    }
+  },
 
   metricsmsgperconversation: {
     url: `${apiRoot}/metrics/msgperconversation`,
