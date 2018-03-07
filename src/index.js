@@ -74,7 +74,7 @@ export default class App extends React.Component {
   }
 
   renderApp = () => (
-    <div style={{ height: '100vh', display: 'flex', flexDirection: 'column' }}>
+    <div style={{ height: '100vh',width:'fit-content', display: 'flex', flexDirection: 'column' }}>
       <NavigationDrawer />
       <Header />
 
