@@ -1,29 +1,29 @@
-import React from 'react';
+import React from "react";
 
-import Button from 'material-ui/Button';
-import TextField from 'material-ui/TextField';
+import Button from "material-ui/Button";
+import TextField from "material-ui/TextField";
 
-import Card, { CardActions, CardHeader, CardContent } from 'material-ui/Card';
-import Avatar from 'material-ui/Avatar';
-import AccountCircleIcon from 'material-ui-icons/AccountCircle';
+import Card, { CardActions, CardHeader, CardContent } from "material-ui/Card";
+import Avatar from "material-ui/Avatar";
+import AccountCircleIcon from "material-ui-icons/AccountCircle";
 
-import { LinearProgress } from 'material-ui/Progress';
+import { LinearProgress } from "material-ui/Progress";
 
-import { connect } from 'react-redux';
-import { replace } from 'react-router-redux';
-import { updateIntl } from 'react-intl-redux';
+import { connect } from "react-redux";
+import { replace } from "react-router-redux";
+import { updateIntl } from "react-intl-redux";
 
-import CardGridWrapper from '../components/CardGridWrapper';
+import CardGridWrapper from "../components/CardGridWrapper";
 
-import { getLocaleForUser, languages } from '../utils/intl';
-import rest from '../utils/rest';
-import theme from '../utils/theme';
+import { getLocaleForUser, languages } from "../utils/intl";
+import rest from "../utils/rest";
+import theme from "../utils/theme";
 
 const mapStateToProps = (state, ownProps) => ({
   auth: state.auth,
   redirectPath: ownProps.location.state
     ? ownProps.location.state.from.pathname
-    : '/',
+    : "/"
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -35,20 +35,20 @@ const mapDispatchToProps = dispatch => ({
       dispatch(
         updateIntl({
           locale: storedLocale,
-          messages: languages[storedLocale].translations,
-        }),
+          messages: languages[storedLocale].translations
+        })
       );
     }
   },
   redirect(path) {
     dispatch(replace(path));
-  },
+  }
 });
 
 export class Login extends React.Component {
   state = {
-    email: '',
-    password: '',
+    email: "",
+    password: ""
   };
 
   shouldComponentUpdate(props) {
@@ -64,8 +64,8 @@ export class Login extends React.Component {
     const { redirect } = this.props;
     let path = this.props.redirectPath;
 
-    if (!path || path === '/logout') {
-      path = '/';
+    if (!path || path === "/logout") {
+      path = "/";
     }
 
     redirect(path);
@@ -73,7 +73,7 @@ export class Login extends React.Component {
 
   handleChange(event, field) {
     this.setState({
-      [field]: event.target.value,
+      [field]: event.target.value
     });
   }
 
@@ -85,8 +85,9 @@ export class Login extends React.Component {
     const progress = loading ? <LinearProgress /> : null;
 
     return (
+      <div style={{width:'100vw'}}>
       <CardGridWrapper>
-        <Card>
+        <Card style={{ minWidth: "45vw" }}>
           <CardHeader
             avatar={
               <Avatar style={{ backgroundColor: theme.palette.primary[500] }}>
@@ -96,25 +97,25 @@ export class Login extends React.Component {
             title="frontend-kit"
             subheader="Please log in:"
           />
-          <CardContent style={{ display: 'flex', flexDirection: 'column' }}>
+          <CardContent style={{ display: "flex", flexDirection: "column" }}>
             <TextField
               type="text"
               label="Email"
               onChange={event => {
                 if (event.keyCode !== 13) {
-                  this.handleChange(event, 'email');
+                  this.handleChange(event, "email");
                 }
               }}
               onKeyDown={event => {
                 if (event.keyCode === 13) {
                   this.props.doLogin({
                     email: this.state.email,
-                    password: this.state.password,
+                    password: this.state.password
                   });
                 }
               }}
               inputProps={{
-                autoFocus: true,
+                autoFocus: true
               }}
               marginForm
             />
@@ -123,14 +124,14 @@ export class Login extends React.Component {
               label="Password"
               onChange={event => {
                 if (event.keyCode !== 13) {
-                  this.handleChange(event, 'password');
+                  this.handleChange(event, "password");
                 }
               }}
               onKeyDown={event => {
                 if (event.keyCode === 13) {
                   this.props.doLogin({
                     email: this.state.email,
-                    password: this.state.password,
+                    password: this.state.password
                   });
                 }
               }}
@@ -140,19 +141,19 @@ export class Login extends React.Component {
           <CardActions
             style={{
               margin: theme.spacing.unit,
-              marginTop: '0px',
+              marginTop: "0px"
             }}
           >
             <Button
               raised
               style={{
-                width: '100%',
+                width: "100%"
               }}
               color="primary"
               onClick={() =>
                 this.props.doLogin({
                   email: this.state.email,
-                  password: this.state.password,
+                  password: this.state.password
                 })}
             >
               Login
@@ -161,6 +162,7 @@ export class Login extends React.Component {
           {progress}
         </Card>
       </CardGridWrapper>
+      </div>
     );
   }
 }

@@ -15,6 +15,7 @@ const styles = {
     // backgroundSize: 'contain',
     // backgroundPosition: 'center',
     // backgroundRepeat: 'no-repeat',
+    width:'45vw',
   },
 };
 
