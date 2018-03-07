@@ -12,10 +12,8 @@ import {CSVLink, CSVDownload} from 'react-csv';
 
 const mapStateToProps = state => ({
   allMetrics: state.metricsAllMetrics,
-  registeredUsers: state.metricsRegisteredUsers,
-  activeUsersCounts: state.metricsActiveUsers,
-  activeConversations:state.metricsActiveConversations,
-  conversationsLength:state.metricsConversationsLength
+  metricsWeek:state.metricsWeek,
+  metricsMonth:state.metricsMonth
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -27,10 +25,8 @@ const mapDispatchToProps = dispatch => ({
    */
   refresh: () => {
     dispatch(rest.actions.metricsAllMetrics());
-    dispatch(rest.actions.metricsRegisteredUsers());
-    dispatch(rest.actions.metricsActiveUsers());
-    dispatch(rest.actions.metricsActiveConversations());
-    dispatch(rest.actions.metricsConversationsLength());
+    dispatch(rest.actions.metricsWeek());
+    dispatch(rest.actions.metricsMonth());
   }
   
 });
@@ -42,68 +38,89 @@ class Metrics extends React.Component {
     refresh();
   }
 
-  render() {
-    // console.log(this.props.registeredUsers);   
-    // console.log(this.props.registeredUsers.loading);   
-
-    // check if the data is in loading or syncing before render the rows
-
-    const renderMetricsRow = () => {     
-      if (this.props.allMetrics.sync){          
-        return this.props.allMetrics.data.map((record,index) => {
-          // console.log(record);
-          return <TableRow key={record.id}>
-            <TableCell>{moment(record.date).format('DD-MM-YYYY')}</TableCell>
-            <TableCell>{record.number_of_users_registered}</TableCell>
-            <TableCell>{record.number_of_active_users}</TableCell>
-            <TableCell>{record.number_of_active_conversations}</TableCell>
-            <TableCell>{record.average_conversations_length}</TableCell>
-          </TableRow>           
-        })  
-      }
+  constructor(props){
+    super(props);
+    this.state={
+      selectedState:'7days'
+    }
   }
 
-    const renderRegisteredUsersRow = () => {
-      if (this.props.activeUsersCounts.sync) {
-        return this.props.activeUsersCounts.data.map(record => {
-          return <TableRow key={record.id}> 
-            <TableCell>{moment(record.timestamp).format('DD-MM-YYYY')}</TableCell>
-            <TableCell>{record.users_count}</TableCell>
-          </TableRow>
-        })
-      }
-    }
-    const renderActiveUsersRow = () => {
-      if (this.props.registeredUsers.sync) {
-        return this.props.registeredUsers.data.map(record => {
-          return <TableRow key={record.id}> 
-            <TableCell>{moment(record.timestamp).format('DD-MM-YYYY')}</TableCell>
-            <TableCell>{record.users_count}</TableCell>
-          </TableRow>
-        })
-      }
-    }
-    
-    const renderActiveConversations=()=>{
-      if (this.props.activeConversations.sync) {
-        return this.props.activeConversations.data.map((record)=>{
-          return <TableRow key={record.id}>
-            <TableCell>{moment(record.timestamp).format('DD-MM-YYYY')}</TableCell>
-            <TableCell>{record.conversations_count}</TableCell>
-          </TableRow>
-        })
+  handleChange=(e)=>{
+    this.setState({
+      selectedState:e.target.value
+    });
+  }
+
+  render() {
+    const renderOptionRows=()=>{
+      switch (this.state.selectedState) {
+          case '30days':
+          return this.props.metricsMonth.data.map(record=>{
+            return (<TableRow key={record.id}>
+              <TableCell>{moment(record.date).format('DD-MM-YYYY')}</TableCell>
+              <TableCell>{record.number_of_users_registered}</TableCell>
+              <TableCell>{record.number_of_active_users}</TableCell>
+              <TableCell>{record.number_of_active_conversations}</TableCell>
+              <TableCell>{record.average_conversations_length}</TableCell>
+              </TableRow>)
+          })
+          case 'all':
+          return this.props.allMetrics.data.map(record=>{
+            return (<TableRow key={record.id}>
+              <TableCell>{moment(record.date).format('DD-MM-YYYY')}</TableCell>
+              <TableCell>{record.number_of_users_registered}</TableCell>
+              <TableCell>{record.number_of_active_users}</TableCell>
+              <TableCell>{record.number_of_active_conversations}</TableCell>
+              <TableCell>{record.average_conversations_length}</TableCell>
+              </TableRow>)
+          })              
+        default:
+          return this.props.metricsWeek.data.map(record=>{
+            return (<TableRow key={record.id}>
+              <TableCell>{moment(record.date).format('DD-MM-YYYY')}</TableCell>
+              <TableCell>{record.number_of_users_registered}</TableCell>
+              <TableCell>{record.number_of_active_users}</TableCell>
+              <TableCell>{record.number_of_active_conversations}</TableCell>
+              <TableCell>{record.average_conversations_length}</TableCell>
+              </TableRow>)
+          })
       }
     }
 
-    const renderConversationLength=()=>{
-      if (this.props.conversationsLength.sync) {
-        return this.props.conversationsLength.data.map((record)=>{
-          return <TableRow key={record.id}>
-            <TableCell>{moment(record.timestamp).format('DD-MM-YYYY')}</TableCell>
-            <TableCell>{record.conversations_length}</TableCell>
-          </TableRow>
-        })
-      }
+    const renderDownloadButton=()=>{
+      switch (this.state.selectedState) {
+        case '30days':
+          return (<div style={{textAlign:'center'}}>
+            <Button color="secondary">
+            <CSVLink data={this.props.metricsMonth.data} filename={'metrics_lastMonth.csv'}>
+              Download Metrics 
+            </CSVLink>
+            <FileDownload/>
+            </Button>
+            </div>
+          )
+        case 'all':
+          return (<div style={{textAlign:'center'}}>
+            <Button color="secondary">
+            <CSVLink data={this.props.allMetrics.data} filename={'all_metrics.csv'}>
+              Download Metrics 
+            </CSVLink>
+            <FileDownload/>
+            </Button>
+            </div>
+          )              
+      default:
+      return (
+        <div style={{textAlign:'center'}}>
+          <Button color="secondary">
+          <CSVLink data={this.props.metricsWeek.data} filename={'metrics_last_7days.csv'}>
+            Download Metrics 
+          </CSVLink>
+          <FileDownload/>
+          </Button>
+        </div>
+      )
+    }
     }
 
     return (
@@ -112,6 +129,12 @@ class Metrics extends React.Component {
           <Typography type="headline" component="h3">
             Metrics
           </Typography>
+          <label style={{margin:20}}>Display: </label>
+          <select value={this.state.selectedState} onChange={this.handleChange}>
+            <option value='7days'>Last 7 days</option>
+            <option value='30days'>Last 30 days</option>
+            <option value='all'>--All--</option>
+          </select>
           <Table>
             <TableHead>
               <TableRow>
@@ -123,48 +146,13 @@ class Metrics extends React.Component {
               </TableRow>
             </TableHead>
             <TableBody>
-              {renderMetricsRow()}
+              {renderOptionRows()}
             </TableBody>
           </Table>
-          <br/>
+              {renderDownloadButton()}
+        </Paper>
 
-          <div style={{textAlign:'center'}}>
-          <Button color="secondary">
-            <CSVLink data={this.props.registeredUsers.data} filename={'registered-users.csv'}>
-              Download Registered Users Metrics 
-            </CSVLink>
-            <FileDownload/>
-            </Button>
-          </div>
-
-          <div style={{textAlign:'center'}}>
-          <Button> 
-            <CSVLink data={this.props.activeUsersCounts.data} filename={'lastActive-users.csv'}>
-              Download Active Users Metrics 
-            </CSVLink>
-            <FileDownload/>
-          </Button>
-        </div>
-
-        <div style={{textAlign:'center'}}>
-          <Button> 
-            <CSVLink data={this.props.activeConversations.data} filename={'active-conversations.csv'}>
-              Download Active Conversations Metrics 
-            </CSVLink>
-            <FileDownload/>
-          </Button>
-        </div>
-
-        <div style={{textAlign:'center'}}>
-          <Button> 
-            <CSVLink data={this.props.conversationsLength.data} filename={'conversations-length.csv'}>
-              Download Conversation Length Metrics 
-            </CSVLink>
-            <FileDownload/>
-          </Button>
-        </div>
-          <br/>   
-        </Paper>   
+        
       </CardGridWrapper>
     );
   }
