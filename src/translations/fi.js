@@ -79,6 +79,8 @@ export default {
   metrics_day: 'Päivä',
   metrics_users_registered_day: 'Rekisteröityneitä käyttäjiä päivänä',
   metrics_users_total: 'Käyttäjiä yhteensä',
+  metrics_conversation_total: 'Keskusteluja yhteensä',
+  metrics_conversation_length: 'Keskustelun pituus',
 
   // Preferences view
   language: 'Sovelluksen kieli',
