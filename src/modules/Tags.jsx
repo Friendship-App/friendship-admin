@@ -2,7 +2,7 @@ import React from 'react';
 import {connect} from 'react-redux';
 import {injectIntl} from 'react-intl';
 import moment from 'moment';
-
+import Grid from 'material-ui/Grid';
 import Button from 'material-ui/Button';
 import Table, {
   TableBody,
@@ -11,6 +11,8 @@ import Table, {
   TableCell
 } from 'material-ui/Table';
 
+import Paper from 'material-ui/Paper';
+import theme from '../utils/theme';
 
 import {FormControlLabel} from 'material-ui/Form';
 import Switch from 'material-ui/Switch';
@@ -20,7 +22,7 @@ import {DialogContentText} from 'material-ui/Dialog';
 import DialogWithButtons from '../components/DialogWithButtons';
 
 import rest from '../utils/rest';
-import Filter from "../components/Filter";
+import InputHandler from "../components/InputHandler";
 
 const mapStateToProps = state => ({
   tags: state.filteredTags || state.taglist,
@@ -68,6 +70,15 @@ const mapDispatchToProps = dispatch => ({
 
   filterTags: (filter) => {
     dispatch(rest.actions.taglist.get({filter: filter}));
+  },
+
+  onAddTag: (newtag) => {
+    dispatch(rest.actions.tags(null, {
+        body: JSON.stringify(newtag)
+    }, () => {
+      dispatch(rest.actions.taglist())
+    }
+    ));
   },
 
   /**
@@ -216,13 +227,32 @@ export class Tags extends React.Component {
     return (
       <div>
         {this.renderDialogs()}
-        <Filter
-          onFilter={(value, fields) => {
-            this.setState({filter: {name: value, ...fields}}, () => {
-              this.props.filterTags({name: value});
-            });
-          }}
-        />
+        <Grid container>
+          <Grid item xs={12}>
+            <Paper style={theme.paper}>
+              {/*InputHandler handels both filtering and add new tag. is found in components*/}
+              <InputHandler
+                btnName="Go"
+                labelName="Filter"
+                onSubmit={(value, fields) => {
+                  this.setState({filter: {name: value, ...fields}}, () => {
+                    this.props.filterTags({name: value});
+                  });
+                }}
+              />
+
+              <InputHandler
+                btnName="+ Add"
+                labelName="+ Add new tag"
+                onSubmit={(value, fields) =>{
+                  this.props.onAddTag({name: value});
+                }}
+              />
+
+          </Paper>
+        </Grid>
+      </Grid>
+
         <Table>
           <TableHead>
             <TableRow>
