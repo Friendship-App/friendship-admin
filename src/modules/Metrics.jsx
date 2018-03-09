@@ -112,7 +112,7 @@ class Metrics extends React.Component {
       default:
       return (
         <div style={{textAlign:'center'}}>
-          <Button color="secondary">
+          <Button color='secondary'>
           <CSVLink data={this.props.metricsWeek.data} filename={'metrics_last_7days.csv'}>
             Download Metrics 
           </CSVLink>
@@ -124,7 +124,8 @@ class Metrics extends React.Component {
     }
 
     return (
-      <CardGridWrapper classes={theme.palette} width={100}>
+    
+      <CardGridWrapper classes={theme.palette} width={'100'}>
       <Paper style = {theme.paper}>
           <Typography type="headline" component="h3">
             Metrics
