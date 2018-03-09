@@ -15,6 +15,7 @@ const styles = {
     // backgroundSize: 'contain',
     // backgroundPosition: 'center',
     // backgroundRepeat: 'no-repeat',
+    width:'45vw',
   },
 };
 
@@ -102,12 +103,14 @@ export class Home extends React.Component {
 
   render() {
     return (
+      <div style={{width:'100vw'}}>
       <CardGridWrapper>
         {this.renderReportCard()}
         {this.renderUserCard()}
         {this.renderMetricsCard()}
         {this.renderTagsCard()}
       </CardGridWrapper>
+      </div>
     );
   }
 }

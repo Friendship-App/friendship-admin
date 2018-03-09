@@ -61,6 +61,7 @@ export class Preferences extends React.Component {
     } = this.props;
 
     return (
+      <div style={{width:'100vw'}}>
       <CardGridWrapper>
         <Card>
           <CardContent>
@@ -124,6 +125,7 @@ export class Preferences extends React.Component {
           </CardContent>
         </Card>
       </CardGridWrapper>
+      </div>
     );
   }
 }

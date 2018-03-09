@@ -21,7 +21,8 @@ export default {
   },
 
   paper: {
-    padding: 8,
+    textAlign: 'center',
+    display: 'inline-block',
   },
 
   root: {

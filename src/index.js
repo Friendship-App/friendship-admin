@@ -1,30 +1,30 @@
-import 'typeface-roboto';
+import "typeface-roboto";
 
-import Offline from 'offline-plugin/runtime';
-import React from 'react';
-import { Provider } from 'react-redux';
-import { render } from 'react-dom';
-import { ConnectedRouter } from 'react-router-redux';
+import Offline from "offline-plugin/runtime";
+import React from "react";
+import { Provider } from "react-redux";
+import { render } from "react-dom";
+import { ConnectedRouter } from "react-router-redux";
 
 // import injectTapEventPlugin from 'react-tap-event-plugin';
-import { MuiThemeProvider, createMuiTheme } from 'material-ui/styles';
+import { MuiThemeProvider, createMuiTheme } from "material-ui/styles";
 
-import { IntlProvider } from 'react-intl-redux';
+import { IntlProvider } from "react-intl-redux";
 
-import './index.css';
+import "./index.css";
 
-import ErrorSnackbar from './modules/ErrorSnackbar';
-import NavigationDrawer from './modules/NavigationDrawer';
-import Header from './modules/Header';
-import FullscreenSpinner from './components/FullscreenSpinner';
+import ErrorSnackbar from "./modules/ErrorSnackbar";
+import NavigationDrawer from "./modules/NavigationDrawer";
+import Header from "./modules/Header";
+import FullscreenSpinner from "./components/FullscreenSpinner";
 
-import routeConfigs, { IndexRoute, ConfiguredRoutes } from './utils/routes';
+import routeConfigs, { IndexRoute, ConfiguredRoutes } from "./utils/routes";
 
-import store from './utils/store';
-import persistStore from './utils/persist';
+import store from "./utils/store";
+import persistStore from "./utils/persist";
 
-import { history } from './utils/middleware/router';
-import theme from './utils/theme';
+import { history } from "./utils/middleware/router";
+import theme from "./utils/theme";
 
 const muiTheme = createMuiTheme(theme);
 
@@ -41,7 +41,7 @@ try {
 
 // offline-plugin: Apply updates immediately
 // https://github.com/NekR/offline-plugin/blob/master/docs/updates.md
-if (process.env.NODE_ENV === 'production') {
+if (process.env.NODE_ENV === "production") {
   Offline.install({
     onUpdating: () => {
       // console.log('SW Event:', 'onUpdating');
@@ -62,7 +62,7 @@ if (process.env.NODE_ENV === 'production') {
     onUpdateFailed: () => {
       // TODO: alert user
       // console.log('SW Event:', 'onUpdateFailed');
-    },
+    }
   });
 }
 
@@ -74,7 +74,14 @@ export default class App extends React.Component {
   }
 
   renderApp = () => (
-    <div style={{ height: '100vh', display: 'flex', flexDirection: 'column' }}>
+    <div
+      style={{
+        height: "100vh",
+        width: "fit-content",
+        display: "flex",
+        flexDirection: "column",
+      }}
+    >
       <NavigationDrawer />
       <Header />
 
@@ -86,7 +93,7 @@ export default class App extends React.Component {
   );
 
   renderLoading = () => (
-    <div style={{ height: '100vh', display: 'flex', flexDirection: 'column' }}>
+    <div style={{ height: "100vh", display: "flex", flexDirection: "column" }}>
       <FullscreenSpinner />
     </div>
   );
@@ -108,4 +115,4 @@ export default class App extends React.Component {
   }
 }
 
-render(<App />, document.getElementById('root'));
+render(<App />, document.getElementById("root"));

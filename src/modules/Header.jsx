@@ -141,7 +141,7 @@ export class Header extends React.Component {
         </Menu>;
 
     return (
-      <AppBar position="static">
+      <AppBar position='static'>
         <Toolbar>
           <IconButton color="contrast" onClick={() => doToggleDrawer()}>
             <MenuIcon />

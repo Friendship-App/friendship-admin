@@ -82,7 +82,7 @@ export class Tos extends React.Component {
   render() {
 
     return (
-      <div>
+      <div style={{width:'100vw'}}>
         {this.renderDialog()}
         <div>
           <TextField 

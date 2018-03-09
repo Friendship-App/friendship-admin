@@ -132,6 +132,33 @@ const rest = reduxApi({
       method: 'GET'
     }
   },
+  
+  metricsAllMetrics: {
+    url: `${apiRoot}/metrics`,
+    transformer: transformers.array,
+    crud: true,
+    options: {
+      method: 'GET'
+    }
+  },
+
+  metricsWeek:{
+    url: `${apiRoot}/metrics/week`,
+    transformer: transformers.array,
+    crud: true,
+    options: {
+      method: 'GET'
+    }
+  },
+
+  metricsMonth:{
+    url: `${apiRoot}/metrics/month`,
+    transformer: transformers.array,
+    crud: true,
+    options: {
+      method: 'GET'
+    }
+  },
 
   metricsmsgperconversation: {
     url: `${apiRoot}/metrics/msgperconversation`,
