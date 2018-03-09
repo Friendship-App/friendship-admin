@@ -38,6 +38,14 @@ const rest = reduxApi({
   tags: {
     url: `${apiRoot}/tags`,
     transformer: transformers.array,
+    crud: true,
+    options: {
+      method: 'POST'
+    }
+  },
+  newtag: {
+    url: `${apiRoot}/tags`,
+    transformer: transformers.array,
     crud: true
   },
   reports: {
