@@ -85,6 +85,7 @@ export class Login extends React.Component {
     const progress = loading ? <LinearProgress /> : null;
 
     return (
+      <div style={{width:'100vw'}}>
       <CardGridWrapper>
         <Card>
           <CardHeader
@@ -161,6 +162,7 @@ export class Login extends React.Component {
           {progress}
         </Card>
       </CardGridWrapper>
+      </div>
     );
   }
 }

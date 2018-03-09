@@ -535,7 +535,7 @@ export class Users extends React.Component {
    */
   render() {
     return (
-      <div>
+      <div style={{width:'150vw'}}>
         {this.renderDialogs()}
         {this.renderProgressBar()}
         <Grid container>
