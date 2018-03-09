@@ -29,7 +29,9 @@ import ArrowDropDownCircle from 'material-ui-icons/ArrowDropDownCircle';
 import {DialogContentText} from 'material-ui/Dialog';
 import DialogWithButtons from '../components/DialogWithButtons';
 
-import Filter from '../components/Filter';
+import Paper from 'material-ui/Paper';
+import Grid from 'material-ui/Grid';
+import InputHandler from '../components/InputHandler';
 
 
 import rest from '../utils/rest';
@@ -533,16 +535,22 @@ export class Users extends React.Component {
    */
   render() {
     return (
-      <div>
+      <div style={{width:'150vw'}}>
         {this.renderDialogs()}
         {this.renderProgressBar()}
-        <Filter
-          onFilter={(value, fields) => {
+        <Grid container>
+          <Grid item xs={12}>
+            <Paper style={theme.paper}>
+        <InputHandler
+          btnName="Go"
+          labelName="Filter"
+          onSubmit={(value, fields) => {
             this.setState({filter: {username: value, email: value, ...fields}}, () => {
               this.props.filterUsers({username: value, email: value});
             });
           }}
         />
+      </Paper></Grid></Grid>
         <Table>
           <TableHead>
             <TableRow>
