@@ -77,10 +77,10 @@ export default {
   scopeUser_cancel: 'Peruuta',
 
   metrics_day: 'Päivä',
-  metrics_users_registered_day: 'Rekisteröityneitä käyttäjiä päivänä',
-  metrics_users_total: 'Käyttäjiä yhteensä',
-  metrics_conversation_total: 'Keskusteluja yhteensä',
-  metrics_conversation_length: 'Keskustelun pituus',
+  metrics_number_of_users_registered: 'Rekisteröityneitä käyttäjiä',
+  metrics_number_of_active_users: 'Aktiivisia käyttäjiä',
+  metrics_number_of_active_conversations: 'Aktiivisia keskusteluja',
+  metrics_average_conversations_length: 'Keskimääräinen keskustelujen pituus',
 
   // Preferences view
   language: 'Sovelluksen kieli',

@@ -8,7 +8,6 @@ import {
   TableHead,
   TableRow,
   Typography,
-  CircularProgress,
   Button
 } from "material-ui";
 import FileDownload from "material-ui-icons/FileDownload";
@@ -17,7 +16,7 @@ import { injectIntl } from "react-intl";
 import rest from "../utils/rest";
 import moment from "moment";
 import { CardGridWrapper } from "../components/CardGridWrapper";
-import { CSVLink, CSVDownload } from "react-csv";
+import { CSVLink } from "react-csv";
 
 const mapStateToProps = state => ({
   allMetrics: state.metricsAllMetrics,
@@ -176,22 +175,22 @@ class Metrics extends React.Component {
                   </TableCell>
                   <TableCell>
                     {this.props.intl.formatMessage({
-                      id: "metrics_users_registered_day"
+                      id: "metrics_number_of_users_registered"
                     })}
                   </TableCell>
                   <TableCell>
                     {this.props.intl.formatMessage({
-                      id: "metrics_users_total"
+                      id: "metrics_number_of_active_users"
                     })}
                   </TableCell>
                   <TableCell>
                     {this.props.intl.formatMessage({
-                      id: "metrics_conversation_total"
+                      id: "metrics_number_of_active_conversations"
                     })}
                   </TableCell>
                   <TableCell>
                     {this.props.intl.formatMessage({
-                      id: "metrics_conversation_length"
+                      id: "metrics_average_conversations_length"
                     })}
                   </TableCell>
                 </TableRow>

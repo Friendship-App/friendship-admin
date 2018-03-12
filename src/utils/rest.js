@@ -160,8 +160,8 @@ const rest = reduxApi({
     }
   },
 
-  metricsmsgperconversation: {
-    url: `${apiRoot}/metrics/msgperconversation`,
+  metricsAverageConversationsLength: {
+    url: `${apiRoot}/metrics/conversationslength`,
     crud: false,
     options: {
       method: 'GET'

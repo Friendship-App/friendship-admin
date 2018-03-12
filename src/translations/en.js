@@ -64,10 +64,10 @@ export default {
 
   // Metrics
   metrics_day: 'Day',
-  metrics_users_registered_day: 'Users registered that day',
-  metrics_users_total: 'Active users',
-  metrics_conversation_total: 'Conversations in total',
-  metrics_conversation_length: 'Conversations length',
+  metrics_number_of_users_registered: 'Registered users',
+  metrics_number_of_active_users: 'Active users',
+  metrics_number_of_active_conversations: 'Active conversations',
+  metrics_average_conversations_length: 'Average conversations length',
 
   // Delete tag
   deleteTag_title: 'Delete tag',
