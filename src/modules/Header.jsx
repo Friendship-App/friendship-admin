@@ -141,16 +141,18 @@ export class Header extends React.Component {
         </Menu>;
 
     return (
-      <AppBar position='static'>
+      <AppBar style={{ position: 'sticky', top: 0, zIndex: 1, display: 'flex', flexDirection: 'column' }}>
         <Toolbar>
-          <IconButton color="contrast" onClick={() => doToggleDrawer()}>
+          <IconButton style={{ position: 'sticky', left: 20 }} color="contrast" onClick={() => doToggleDrawer()}>
             <MenuIcon />
-          </IconButton>
-          <Typography style={{ flex: 1 }} type="title" color="inherit">
-            <FormattedMessage id={getTitle(path)} />
-          </Typography>
+            <Typography style={{ width: 'auto' }} type="title" color="inherit">
+              <FormattedMessage id={getTitle(path)} />
+            </Typography>
+          </IconButton >
+          <Typography style={{ flex:1 }} />         
           <IconButton
-            color="contrast"
+            style={{ position: 'sticky', right: 0 }}
+            color='contrast'
             onClick={e =>
               this.setState({
                 rightMenuAnchorEl: e.currentTarget,
