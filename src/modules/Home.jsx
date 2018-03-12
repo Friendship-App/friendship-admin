@@ -15,7 +15,8 @@ const styles = {
     // backgroundSize: 'contain',
     // backgroundPosition: 'center',
     // backgroundRepeat: 'no-repeat',
-    width:'45vw',
+    // width:'45vw',
+    // display: 'flex',
   },
 };
 
@@ -41,7 +42,7 @@ export class Home extends React.Component {
         </Typography> */}
 
         <Typography component="p">
-          [number of] New Reports
+          Reports
         </Typography>
       </CardContent>
       <CardActions>
@@ -55,7 +56,7 @@ export class Home extends React.Component {
       }} >
       <CardContent>
         <Typography component="p">
-          Number of users
+          Users
         </Typography>
       </CardContent>
       <CardActions>
@@ -109,6 +110,7 @@ export class Home extends React.Component {
         {this.renderUserCard()}
         {this.renderMetricsCard()}
         {this.renderTagsCard()}
+        {this.renderEventsCard()}
       </CardGridWrapper>
       </div>
     );
