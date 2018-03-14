@@ -39,37 +39,56 @@ const mapDispatchToProps = dispatch => ({
   }
 });
 
-const dataset = {
-  //get labels from date column of backend request
-  labels: ["January", "February", "March", "April", "May", "June", "July", "August", "September", 
-"November", "December"],
-  datasets: [
-    {
-      label: "Conversations in total",
-      fillColor: "rgba(220,220,220,0.2)",
-      strokeColor: "rgba(220,220,220,1)",
-      pointColor: "rgba(220,220,220,1)",
-      pointStrokeColor: "#fff",
-      pointHighlightFill: "#fff",
-      pointHighlightStroke: "rgba(220,220,220,1)",
-      //change data onclick in the switch
-      data: [65, 59, 80, 81, 56, 55, 40]
-    },
-    {
-      label: "Average Conversations length",
-      fillColor: "rgba(151,187,205,0.2)",
-      strokeColor: "rgba(151,187,205,1)",
-      pointColor: "rgba(151,187,205,1)",
-      pointStrokeColor: "#fff",
-      pointHighlightFill: "#fff",
-      pointHighlightStroke: "rgba(151,187,205,1)",
-      //change data onclick in the switch
-      data: [28, 48, 40, 19, 86, 27, 90]
-    }
-  ]
-};
-
 class Metrics extends React.Component {
+
+  chartdata = {
+    labels: [],
+    datasets: [
+      {
+        label: 'Active conversations',
+        fill: false,
+        lineTension: 0.1,
+        backgroundColor: 'rgba(75,192,192,0.4)',
+        borderColor: 'rgba(75,192,192,1)',
+        borderCapStyle: 'butt',
+        borderDash: [],
+        borderDashOffset: 0.0,
+        borderJoinStyle: 'miter',
+        pointBorderColor: 'rgba(75,192,192,1)',
+        pointBackgroundColor: '#fff',
+        pointBorderWidth: 1,
+        pointHoverRadius: 5,
+        pointHoverBackgroundColor: 'rgba(75,192,192,1)',
+        pointHoverBorderColor: 'rgba(220,220,220,1)',
+        pointHoverBorderWidth: 2,
+        pointRadius: 1,
+        pointHitRadius: 10,
+        data: []
+      },
+      {
+        label: 'Conversations length',
+        fill: false,
+        lineTension: 0.1,
+        backgroundColor: 'rgba(75,192,192,0.4)',
+        borderColor: 'rgba(75,192,192,1)',
+        borderCapStyle: 'butt',
+        borderDash: [],
+        borderDashOffset: 0.0,
+        borderJoinStyle: 'miter',
+        pointBorderColor: 'rgba(75,192,192,1)',
+        pointBackgroundColor: '#fff',
+        pointBorderWidth: 1,
+        pointHoverRadius: 5,
+        pointHoverBackgroundColor: 'rgba(75,192,192,1)',
+        pointHoverBorderColor: 'rgba(220,220,220,1)',
+        pointHoverBorderWidth: 2,
+        pointRadius: 1,
+        pointHitRadius: 10,
+        data: []
+      }
+    ]
+  };
+  
   componentDidMount() {
     const { refresh } = this.props;
     refresh();
@@ -91,7 +110,6 @@ class Metrics extends React.Component {
   render() {
 
     const renderOptionRows = () => {
-      
       switch (this.state.selectedState) {
         case "30days":
           return this.props.metricsMonth.data.map(record => {
@@ -106,7 +124,9 @@ class Metrics extends React.Component {
                 <TableCell>{record.average_conversations_length}</TableCell>
               </TableRow>
               //map new labels
+              
               //map activeconversation and conversation length to dataset
+
             );
           });
         case "all":
@@ -122,11 +142,17 @@ class Metrics extends React.Component {
                 <TableCell>{record.average_conversations_length}</TableCell>
               </TableRow>
               //map new labels
+
               //map activeconversation and conversation length to dataset
+
             );
           });
         default:
           return this.props.metricsWeek.data.map(record => {
+            this.chartdata.labels = [moment(record.date).format("DD-MM-YYYY")];
+            this.chartdata.datasets[0].data = [record.number_of_active_conversations];
+            this.chartdata.datasets[1].data = [record.average_conversations_length];
+
             return (
               <TableRow key={record.id}>
                 <TableCell>
@@ -152,8 +178,7 @@ class Metrics extends React.Component {
               <Button color="secondary">
                 <CSVLink
                   data={this.props.metricsMonth.data}
-                  filename={"metrics_lastMonth.csv"}
-                >
+                  filename={"metrics_lastMonth.csv"}>
                   Download Metrics
                 </CSVLink>
                 <FileDownload />
@@ -241,7 +266,7 @@ class Metrics extends React.Component {
           </Paper>
         </CardGridWrapper>
         <CardGridWrapper classes={theme.palette} width={"100"}>
-          <Line data={dataset} width="850" height="400"></Line>
+          <Line data={this.chartdata} width="850" height="400" />
         </CardGridWrapper>
       </div>
     );
