@@ -295,7 +295,8 @@ export class Users extends React.Component {
     <div>
       <DialogContentText>
         <b>
-          {this.props.intl.formatMessage({id: 'userId'})}
+          {this.props.intl.formatMessage({id: 'userId gagaga'})}
+          {console.log(this.props.userDetails.data)}
         </b>
         {`: ${this.props.userDetails.data.id}`}
       </DialogContentText>

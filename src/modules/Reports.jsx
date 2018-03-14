@@ -51,6 +51,7 @@ const mapStateToProps = state => ({
   reports: state.reports,
   reportsLoading: state.reports.loading,
   userDetails: state.userDetails,
+  reportDetails: state.reportDetails,
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -222,11 +223,18 @@ export class Reports extends React.Component {
           <b>
             {this.props.intl.formatMessage({ id: 'userId' })}
           </b>
-          {`: ${this.props.userDetails.data.id}`}
+          {`: ${this.props.reportDetails.data.id}`}
+
         </DialogContentText>
         <DialogContentText>
           <b>
-            {this.props.intl.formatMessage({ id: 'username' })}
+            {this.props.intl.formatMessage({ id: 'Reported user' })}
+          </b>
+          {`: ${this.props.userDetails.data.username}`}
+        </DialogContentText>
+        <DialogContentText>
+          <b>
+            {this.props.intl.formatMessage({ id: 'Reported by' })}
           </b>
           {`: ${this.props.userDetails.data.username}`}
         </DialogContentText>
@@ -238,21 +246,15 @@ export class Reports extends React.Component {
         </DialogContentText>
         <DialogContentText>
           <b>
-            {this.props.intl.formatMessage({ id: 'status' })}
-          </b>
-          {`: ${this.props.userDetails.data.status}`}
-        </DialogContentText>
-        <DialogContentText>
-          <b>
             {this.props.intl.formatMessage({ id: 'createdAt' })}
           </b>
-          {`: ${this.props.userDetails.data.createdAt}`}
+          {`: ${this.props.reportDetails.data.createdAt}`}
         </DialogContentText>
         <DialogContentText>
           <b>
             {this.props.intl.formatMessage({ id: 'description' })}
           </b>
-          {`: ${this.props.userDetails.data.description}`}
+          {`: ${this.props.reportDetails.data.description}`}
         </DialogContentText>
       </div>;
 
@@ -289,6 +291,7 @@ export class Reports extends React.Component {
   /**
    * Render the report delete dialog description
    *
+   * @param {object} report The report that has to be rendered
    * @return {Node}
    */
    renderReportDeleteDesc = () =>
@@ -337,12 +340,12 @@ export class Reports extends React.Component {
       <Button
         color="primary"
         onClick={() => {
-          this.props.refreshUser(report.userId);
+          this.props.refreshReport(report);
           this.setState({ dialogOpen: true });
         }}
       >
         <ListIcon style={{ paddingRight: 10 }} />
-        {this.props.intl.formatMessage({ id: 'showUserDetails' })}
+        {this.props.intl.formatMessage({ id: 'Details' })}
       </Button>
       </TableCell>
     </TableRow>;
@@ -355,7 +358,7 @@ export class Reports extends React.Component {
     renderDialogs = () =>
       <div>
         <DialogWithButtons
-          title={this.props.intl.formatMessage({ id: 'Reported User details' })}
+          title={this.props.intl.formatMessage({ id: 'ReportedDetails' })}
           description={this.renderUserDetailsDesc()}
           submitAction={this.props.intl.formatMessage({ id: 'close' })}
           isOpen={this.state.dialogOpen}
