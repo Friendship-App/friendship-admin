@@ -18,6 +18,7 @@ import rest from "../utils/rest";
 import moment from "moment";
 import { CardGridWrapper } from "../components/CardGridWrapper";
 import { CSVLink, CSVDownload } from "react-csv";
+import {Line} from 'react-chartjs';
 
 const mapStateToProps = state => ({
   allMetrics: state.metricsAllMetrics,
@@ -37,6 +38,36 @@ const mapDispatchToProps = dispatch => ({
     dispatch(rest.actions.metricsMonth());
   }
 });
+
+const dataset = {
+  //get labels from date column of backend request
+  labels: ["January", "February", "March", "April", "May", "June", "July", "August", "September", 
+"November", "December"],
+  datasets: [
+    {
+      label: "Conversations in total",
+      fillColor: "rgba(220,220,220,0.2)",
+      strokeColor: "rgba(220,220,220,1)",
+      pointColor: "rgba(220,220,220,1)",
+      pointStrokeColor: "#fff",
+      pointHighlightFill: "#fff",
+      pointHighlightStroke: "rgba(220,220,220,1)",
+      //change data onclick in the switch
+      data: [65, 59, 80, 81, 56, 55, 40]
+    },
+    {
+      label: "Average Conversations length",
+      fillColor: "rgba(151,187,205,0.2)",
+      strokeColor: "rgba(151,187,205,1)",
+      pointColor: "rgba(151,187,205,1)",
+      pointStrokeColor: "#fff",
+      pointHighlightFill: "#fff",
+      pointHighlightStroke: "rgba(151,187,205,1)",
+      //change data onclick in the switch
+      data: [28, 48, 40, 19, 86, 27, 90]
+    }
+  ]
+};
 
 class Metrics extends React.Component {
   componentDidMount() {
@@ -58,7 +89,9 @@ class Metrics extends React.Component {
   };
 
   render() {
+
     const renderOptionRows = () => {
+      
       switch (this.state.selectedState) {
         case "30days":
           return this.props.metricsMonth.data.map(record => {
@@ -72,6 +105,8 @@ class Metrics extends React.Component {
                 <TableCell>{record.number_of_active_conversations}</TableCell>
                 <TableCell>{record.average_conversations_length}</TableCell>
               </TableRow>
+              //map new labels
+              //map activeconversation and conversation length to dataset
             );
           });
         case "all":
@@ -86,6 +121,8 @@ class Metrics extends React.Component {
                 <TableCell>{record.number_of_active_conversations}</TableCell>
                 <TableCell>{record.average_conversations_length}</TableCell>
               </TableRow>
+              //map new labels
+              //map activeconversation and conversation length to dataset
             );
           });
         default:
@@ -100,6 +137,8 @@ class Metrics extends React.Component {
                 <TableCell>{record.number_of_active_conversations}</TableCell>
                 <TableCell>{record.average_conversations_length}</TableCell>
               </TableRow>
+              //map new labels
+              //map activeconversation and conversation length to dataset
             );
           });
       }
@@ -200,6 +239,9 @@ class Metrics extends React.Component {
             </Table>
             {renderDownloadButton()}
           </Paper>
+        </CardGridWrapper>
+        <CardGridWrapper classes={theme.palette} width={"100"}>
+          <Line data={dataset} width="850" height="400"></Line>
         </CardGridWrapper>
       </div>
     );
