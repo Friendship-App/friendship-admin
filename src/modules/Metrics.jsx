@@ -152,7 +152,7 @@ class Metrics extends React.Component {
     };
   }
 
-  handleChange = e => {
+  handleChange = e => {  
     this.setState({
       selectedState: e.target.value
     });
