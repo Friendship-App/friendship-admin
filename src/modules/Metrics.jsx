@@ -176,22 +176,22 @@ class Metrics extends React.Component {
                   </TableCell>
                   <TableCell>
                     {this.props.intl.formatMessage({
-                      id: "metrics_users_registered_day"
+                      id: "metrics_registered_users"
                     })}
                   </TableCell>
                   <TableCell>
                     {this.props.intl.formatMessage({
-                      id: "metrics_users_total"
+                      id: "metrics_active_users"
                     })}
                   </TableCell>
                   <TableCell>
                     {this.props.intl.formatMessage({
-                      id: "metrics_conversation_total"
+                      id: "metrics_active_conversations"
                     })}
                   </TableCell>
                   <TableCell>
                     {this.props.intl.formatMessage({
-                      id: "metrics_conversation_length"
+                      id: "metrics_avg_conversation_length"
                     })}
                   </TableCell>
                 </TableRow>
