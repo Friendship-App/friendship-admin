@@ -48,7 +48,7 @@ class Metrics extends React.Component {
         label: 'Active conversations',
         fill: false,
         lineTension: 0.1,
-        backgroundColor: 'rgba(75,192,192,0.4)',
+        backgroundColor: 'rgba(7,192,192,0.4)',
         borderColor: 'rgba(75,192,192,1)',
         borderCapStyle: 'butt',
         borderDash: [],
@@ -113,6 +113,10 @@ class Metrics extends React.Component {
       switch (this.state.selectedState) {
         case "30days":
           return this.props.metricsMonth.data.map(record => {
+            this.chartdata.labels = [moment(record.date).format("DD-MM-YYYY")];
+            this.chartdata.datasets[0].data = [record.number_of_active_conversations];
+            this.chartdata.datasets[1].data = [record.average_conversations_length];
+
             return (
               <TableRow key={record.id}>
                 <TableCell>
@@ -131,6 +135,9 @@ class Metrics extends React.Component {
           });
         case "all":
           return this.props.allMetrics.data.map(record => {
+            this.chartdata.labels = [moment(record.date).format("DD-MM-YYYY")];
+            this.chartdata.datasets[0].data = [record.number_of_active_conversations];
+            this.chartdata.datasets[1].data = [record.average_conversations_length];
             return (
               <TableRow key={record.id}>
                 <TableCell>
