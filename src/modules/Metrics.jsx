@@ -149,13 +149,23 @@ class Metrics extends React.Component {
     };
   }
 
-  handleChange = e => {
+  handleChange = e => {  
     this.setState({
       selectedState: e.target.value
     });
   };
 
   render() {
+    //WIP: we need these to be empty each time we switch
+    const dataToWipe = [
+      this.convoChartData.labels, 
+      this.convoChartData.datasets[0].data,
+      this.convoChartData.datasets[1].data,
+      this.activeUsersChartData.labels,
+      this.activeUsersChartData.datasets[0].data
+    ]
+
+      dataToWipe.forEach((element) => element.length = 0);
 
     const renderOptionRows = () => {
       switch (this.state.selectedState) {
