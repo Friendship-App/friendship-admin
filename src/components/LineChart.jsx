@@ -1,11 +1,10 @@
 import React from 'react';
-import {Line} from 'react-chartjs-2';
+import {Line, defaults} from 'react-chartjs-2';
+var createReactClass = require('create-react-class');
 
 const data = {
-  labels: [],
   datasets: [
     {
-      label: '',
       fill: false,
       lineTension: 0.1,
       backgroundColor: 'rgba(75,192,192,0.4)',
@@ -22,21 +21,22 @@ const data = {
       pointHoverBorderColor: 'rgba(220,220,220,1)',
       pointHoverBorderWidth: 2,
       pointRadius: 1,
-      pointHitRadius: 10,
-      data: []
+      pointHitRadius: 10
     }
   ]
 };
 
-export default React.createClass({
+var LineChart = createReactClass({
   displayName: 'LineChart',
-
+  
   render() {
     return (
       <div>
         <h2>Metrics</h2>
-        <Line data={data}/>
+        <Line data={this.props.data}/>
       </div>
     );
   }
 });
+
+export default LineChart;

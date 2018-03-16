@@ -18,7 +18,8 @@ import rest from "../utils/rest";
 import moment from "moment";
 import { CardGridWrapper } from "../components/CardGridWrapper";
 import { CSVLink, CSVDownload } from "react-csv";
-import {Line} from 'react-chartjs';
+import { Line } from 'react-chartjs-2';
+import LineChart from '../components/LineChart';
 
 const mapStateToProps = state => ({
   allMetrics: state.metricsAllMetrics,
@@ -48,7 +49,7 @@ class Metrics extends React.Component {
         label: 'Active conversations',
         fill: false,
         lineTension: 0.1,
-        backgroundColor: 'rgba(7,192,192,0.4)',
+        backgroundColor: 'rgba(75,192,192,0.4)',
         borderColor: 'rgba(75,192,192,1)',
         borderCapStyle: 'butt',
         borderDash: [],
@@ -67,23 +68,23 @@ class Metrics extends React.Component {
       },
       {
         label: 'Conversations length',
-        fill: false,
-        lineTension: 0.1,
-        backgroundColor: 'rgba(75,192,192,0.4)',
-        borderColor: 'rgba(75,192,192,1)',
-        borderCapStyle: 'butt',
-        borderDash: [],
-        borderDashOffset: 0.0,
-        borderJoinStyle: 'miter',
-        pointBorderColor: 'rgba(75,192,192,1)',
-        pointBackgroundColor: '#fff',
-        pointBorderWidth: 1,
-        pointHoverRadius: 5,
-        pointHoverBackgroundColor: 'rgba(75,192,192,1)',
-        pointHoverBorderColor: 'rgba(220,220,220,1)',
-        pointHoverBorderWidth: 2,
-        pointRadius: 1,
-        pointHitRadius: 10,
+        // fill: false,
+        // lineTension: 0.1,
+        // backgroundColor: 'rgba(75,192,192,0.4)',
+        // borderColor: 'rgba(75,192,192,1)',
+        // borderCapStyle: 'butt',
+        // borderDash: [],
+        // borderDashOffset: 0.0,
+        // borderJoinStyle: 'miter',
+        // pointBorderColor: 'rgba(75,192,192,1)',
+        // pointBackgroundColor: '#fff',
+        // pointBorderWidth: 1,
+        // pointHoverRadius: 5,
+        // pointHoverBackgroundColor: 'rgba(75,192,192,1)',
+        // pointHoverBorderColor: 'rgba(220,220,220,1)',
+        // pointHoverBorderWidth: 2,
+        // pointRadius: 1,
+        // pointHitRadius: 10,
         data: []
       }
     ]
@@ -272,8 +273,8 @@ class Metrics extends React.Component {
             {renderDownloadButton()}
           </Paper>
         </CardGridWrapper>
-        <CardGridWrapper classes={theme.palette} width={"100"}>
-          <Line data={this.chartdata} width="850" height="400" />
+        <CardGridWrapper classes={theme.palette} width={'100'}>
+          <LineChart data={this.chartdata} width='850' height='400' />
         </CardGridWrapper>
       </div>
     );

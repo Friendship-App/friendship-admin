@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "chart.js": "^1.1.1",
+    "chart.js": "^2.7.2",
     "history": "^4.7.2",
     "jwt-decode": "^2.2.0",
     "material-ui": "1.0.0-beta.12",
@@ -13,6 +13,7 @@
     "prop-types": "^15.5.10",
     "react": "^15.6.2",
     "react-chartjs": "^1.2.0",
+    "react-chartjs-2": "^2.7.0",
     "react-csv": "^1.0.12",
     "react-dom": "^15.6.2",
     "react-intl": "^2.4.0",
