@@ -154,7 +154,7 @@ class Metrics extends React.Component {
 
     return (
       <div style={{ width: "100vw" }}>
-        <CardGridWrapper classes={theme.palette} width={"100"}>
+        <CardGridWrapper classes={theme.palette} width={"100"} style={{width: '100vw'}}>
           <Paper style={theme.paper}>
             <Typography type="headline" component="h3">
               Metrics

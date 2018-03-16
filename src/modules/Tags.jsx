@@ -225,9 +225,9 @@ export class Tags extends React.Component {
    */
   render() {
     return (
-      <div>
+      <div style={{width: '100vw'}}>
         {this.renderDialogs()}
-        <Grid container>
+        <Grid container style={{width: '100vw'}}>
           <Grid item xs={12}>
             <Paper style={theme.paper}>
               {/*InputHandler handels both filtering and add new tag. is found in components*/}
