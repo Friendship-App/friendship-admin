@@ -85,9 +85,7 @@ class Metrics extends React.Component {
           display: true,
           position: 'right',
           ticks: {
-            max: 5,
-            min: 0,
-            stepSize: 0.5
+            min: 0
           },
           gridLines: {
             display: false
@@ -163,12 +161,12 @@ class Metrics extends React.Component {
       switch (this.state.selectedState) {
         case "30days":
           return this.props.metricsMonth.data.map(record => {
-            this.convoChartData.labels = [moment(record.date).format("DD-MM-YYYY")];
-            this.convoChartData.datasets[0].data = [record.number_of_active_conversations];
-            this.convoChartData.datasets[1].data = [record.average_conversations_length];
+            this.convoChartData.labels.unshift([moment(record.date).format("DD-MM-YYYY")]);
+            this.convoChartData.datasets[0].data.unshift(record.number_of_active_conversations);
+            this.convoChartData.datasets[1].data.unshift(record.average_conversations_length);
 
-            this.activeUsersChartData.labels = [moment(record.date).format("DD-MM-YYYY")];
-            this.activeUsersChartData.datasets[0].data = [record.number_of_active_users];
+            this.activeUsersChartData.labels.unshift([moment(record.date).format("DD-MM-YYYY")]);
+            this.activeUsersChartData.datasets[0].data.unshift([record.number_of_active_users]);
 
             return (
               <TableRow key={record.id}>
@@ -185,12 +183,12 @@ class Metrics extends React.Component {
           });
         case "all":
           return this.props.allMetrics.data.map(record => {
-            this.convoChartData.labels = [moment(record.date).format("DD-MM-YYYY")];
-            this.convoChartData.datasets[0].data = [record.number_of_active_conversations];
-            this.convoChartData.datasets[1].data = [record.average_conversations_length];
+            this.convoChartData.labels.unshift([moment(record.date).format("DD-MM-YYYY")]);
+            this.convoChartData.datasets[0].data.unshift(record.number_of_active_conversations);
+            this.convoChartData.datasets[1].data.unshift(record.average_conversations_length);
 
-            this.activeUsersChartData.labels = [moment(record.date).format("DD-MM-YYYY")];
-            this.activeUsersChartData.datasets[0].data = [record.number_of_active_users];
+            this.activeUsersChartData.labels.unshift([moment(record.date).format("DD-MM-YYYY")]);
+            this.activeUsersChartData.datasets[0].data.unshift([record.number_of_active_users]);
 
             return (
               <TableRow key={record.id}>
@@ -207,20 +205,20 @@ class Metrics extends React.Component {
           });
         default:
           return this.props.metricsWeek.data.map(record => {
-            this.convoChartData.labels = [moment(record.date).format("DD-MM-YYYY")];
-            this.convoChartData.datasets[0].data = [record.number_of_active_conversations];
-            this.convoChartData.datasets[1].data = [record.average_conversations_length];
+            this.convoChartData.labels.unshift([moment(record.date).format("DD-MM-YYYY")]);
+            this.convoChartData.datasets[0].data.unshift(record.number_of_active_conversations);
+            this.convoChartData.datasets[1].data.unshift(record.average_conversations_length);
 
-            this.activeUsersChartData.labels = [moment(record.date).format("DD-MM-YYYY")];
-            this.activeUsersChartData.datasets[0].data = [record.number_of_active_users];
+            this.activeUsersChartData.labels.unshift([moment(record.date).format("DD-MM-YYYY")]);
+            this.activeUsersChartData.datasets[0].data.unshift([record.number_of_active_users]);
 
             // WIP (Olga)
-            this.bubbleChartData.labels = [moment(record.date).format("DD-MM-YYYY")];
-            this.bubbleChartData.datasets[0].data = [{
+            this.bubbleChartData.labels.unshift([moment(record.date).format("DD-MM-YYYY")]);
+            this.bubbleChartData.datasets[0].data.unshift([{
               x: moment(record.date),
               y: record.number_of_active_conversations,
-              r: record.number_of_active_users
-            }];
+              r: record.average_conversations_length
+            }]);
 
             return (
               <TableRow key={record.id}>
