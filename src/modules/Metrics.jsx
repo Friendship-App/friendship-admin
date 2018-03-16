@@ -18,7 +18,7 @@ import rest from "../utils/rest";
 import moment from "moment";
 import { CardGridWrapper } from "../components/CardGridWrapper";
 import { CSVLink, CSVDownload } from "react-csv";
-import { Line } from 'react-chartjs-2';
+import { Bubble } from 'react-chartjs-2';
 import LineChart from '../components/LineChart';
 
 const mapStateToProps = state => ({
@@ -42,12 +42,13 @@ const mapDispatchToProps = dispatch => ({
 
 class Metrics extends React.Component {
 
-  chartdata = {
+  convoChartData = {
     labels: [],
     datasets: [
       {
         label: 'Active conversations',
-        data: []
+        data: [],
+        yAxisID: 'activeconv'
       },
       {
         label: 'Conversations length',
@@ -56,7 +57,84 @@ class Metrics extends React.Component {
         pointBorderColor: 'rgba(192,75,134,1)',
         pointHoverBackgroundColor: 'rgba(192,75,134,1)',
         pointHoverBorderColor: 'rgba(192,75,134,1)',
+        data: [],
+        yAxisID: 'convlength'
+      }
+    ]
+  };
+
+  convoOptions = {
+    responsive: true,
+    scales: {
+      yAxes: [
+        {
+          id: 'activeconv',
+          type: 'linear',
+          display: true,
+          position: 'left',
+          gridLines: {
+            display: false
+          },
+          labels: {
+            show: true
+          }
+        },
+        {
+          id: 'convlength',
+          type: 'linear',
+          display: true,
+          position: 'right',
+          ticks: {
+            max: 5,
+            min: 0,
+            stepSize: 0.5
+          },
+          gridLines: {
+            display: false
+          },
+          labels: {
+            show: true
+          }
+        }
+      ]
+    }
+  };
+
+  activeUsersChartData = {
+    labels: [],
+    datasets: [
+      {
+        label: 'Active users',
         data: []
+      }
+    ]
+  }
+
+  activeUsersOptions = {
+    responsive: true,
+    scales: {
+      yAxes: [
+        {
+          type: 'linear',
+          display: true,
+          position: 'left',
+          gridLines: {
+            display: false
+          },
+          labels: {
+            show: true
+          }
+        }
+      ]
+    }
+  }
+
+  bubbleChartData = {
+    labels: [],
+    datasets: [
+      {
+        label: 'Active conversations',
+        data: [{}]
       }
     ]
   };
@@ -85,9 +163,12 @@ class Metrics extends React.Component {
       switch (this.state.selectedState) {
         case "30days":
           return this.props.metricsMonth.data.map(record => {
-            this.chartdata.labels = [moment(record.date).format("DD-MM-YYYY")];
-            this.chartdata.datasets[0].data = [record.number_of_active_conversations];
-            this.chartdata.datasets[1].data = [record.average_conversations_length];
+            this.convoChartData.labels = [moment(record.date).format("DD-MM-YYYY")];
+            this.convoChartData.datasets[0].data = [record.number_of_active_conversations];
+            this.convoChartData.datasets[1].data = [record.average_conversations_length];
+
+            this.activeUsersChartData.labels = [moment(record.date).format("DD-MM-YYYY")];
+            this.activeUsersChartData.datasets[0].data = [record.number_of_active_users];
 
             return (
               <TableRow key={record.id}>
@@ -99,17 +180,18 @@ class Metrics extends React.Component {
                 <TableCell>{record.number_of_active_conversations}</TableCell>
                 <TableCell>{record.average_conversations_length}</TableCell>
               </TableRow>
-              //map new labels
-              
-              //map activeconversation and conversation length to dataset
 
             );
           });
         case "all":
           return this.props.allMetrics.data.map(record => {
-            this.chartdata.labels = [moment(record.date).format("DD-MM-YYYY")];
-            this.chartdata.datasets[0].data = [record.number_of_active_conversations];
-            this.chartdata.datasets[1].data = [record.average_conversations_length];
+            this.convoChartData.labels = [moment(record.date).format("DD-MM-YYYY")];
+            this.convoChartData.datasets[0].data = [record.number_of_active_conversations];
+            this.convoChartData.datasets[1].data = [record.average_conversations_length];
+
+            this.activeUsersChartData.labels = [moment(record.date).format("DD-MM-YYYY")];
+            this.activeUsersChartData.datasets[0].data = [record.number_of_active_users];
+
             return (
               <TableRow key={record.id}>
                 <TableCell>
@@ -120,17 +202,25 @@ class Metrics extends React.Component {
                 <TableCell>{record.number_of_active_conversations}</TableCell>
                 <TableCell>{record.average_conversations_length}</TableCell>
               </TableRow>
-              //map new labels
-
-              //map activeconversation and conversation length to dataset
 
             );
           });
         default:
           return this.props.metricsWeek.data.map(record => {
-            this.chartdata.labels = [moment(record.date).format("DD-MM-YYYY")];
-            this.chartdata.datasets[0].data = [record.number_of_active_conversations];
-            this.chartdata.datasets[1].data = [record.average_conversations_length];
+            this.convoChartData.labels = [moment(record.date).format("DD-MM-YYYY")];
+            this.convoChartData.datasets[0].data = [record.number_of_active_conversations];
+            this.convoChartData.datasets[1].data = [record.average_conversations_length];
+
+            this.activeUsersChartData.labels = [moment(record.date).format("DD-MM-YYYY")];
+            this.activeUsersChartData.datasets[0].data = [record.number_of_active_users];
+
+            // WIP (Olga)
+            this.bubbleChartData.labels = [moment(record.date).format("DD-MM-YYYY")];
+            this.bubbleChartData.datasets[0].data = [{
+              x: moment(record.date),
+              y: record.number_of_active_conversations,
+              r: record.number_of_active_users
+            }];
 
             return (
               <TableRow key={record.id}>
@@ -142,8 +232,6 @@ class Metrics extends React.Component {
                 <TableCell>{record.number_of_active_conversations}</TableCell>
                 <TableCell>{record.average_conversations_length}</TableCell>
               </TableRow>
-              //map new labels
-              //map activeconversation and conversation length to dataset
             );
           });
       }
@@ -245,7 +333,9 @@ class Metrics extends React.Component {
           </Paper>
         </CardGridWrapper>
         <CardGridWrapper classes={theme.palette} width={'100'}>
-          <LineChart data={this.chartdata} width='850' height='400' />
+          <LineChart data={this.convoChartData} options={this.convoOptions} />
+          <LineChart data={this.activeUsersChartData} options={this.activeUsersOptions} />
+          <Bubble data={this.bubbleChartData} />
         </CardGridWrapper>
       </div>
     );

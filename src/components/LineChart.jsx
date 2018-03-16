@@ -39,12 +39,10 @@ class LineChart extends React.Component{
     this.state = passedProps;
   }
 
-
   render() {
     return (
       <div>
-        <h2>Metrics</h2>
-        <Line data={this.state}/>
+        <Line data={this.state} options={this.props.options}/>
       </div>
     );
   }
