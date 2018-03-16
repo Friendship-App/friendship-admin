@@ -1,8 +1,8 @@
 import React from 'react';
-import {Line, defaults} from 'react-chartjs-2';
-var createReactClass = require('create-react-class');
+import {Line} from 'react-chartjs-2';
 
-const data = {
+// Set default design here
+const defaults = {
   datasets: [
     {
       fill: false,
@@ -26,17 +26,28 @@ const data = {
   ]
 };
 
-var LineChart = createReactClass({
-  displayName: 'LineChart',
-  
+class LineChart extends React.Component{
+  state = {};
+
+  // Pass own chart settings in props. If nothing is passed for the property, it will keep the default value.
+  constructor (props) {
+    super(props);
+    let passedProps = this.props.data;
+    for (let i = 0; i < passedProps.datasets.length; i++) {
+      passedProps.datasets[i] = {...defaults.datasets[0], ...passedProps.datasets[i]};
+    }
+    this.state = passedProps;
+  }
+
+
   render() {
     return (
       <div>
         <h2>Metrics</h2>
-        <Line data={this.props.data}/>
+        <Line data={this.state}/>
       </div>
     );
   }
-});
+};
 
 export default LineChart;
