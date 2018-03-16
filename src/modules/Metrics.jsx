@@ -34,6 +34,10 @@ const mapDispatchToProps = dispatch => ({
    * @return {void}
    */
   refresh: () => {
+    dispatch(rest.actions.metricsRegisteredUsers());
+    dispatch(rest.actions.metricsActiveUsers());
+    dispatch(rest.actions.metricsActiveConversations());
+    dispatch(rest.actions.metricsConversationsLength());
     dispatch(rest.actions.metricsAllMetrics());
     dispatch(rest.actions.metricsWeek());
     dispatch(rest.actions.metricsMonth());
@@ -41,27 +45,6 @@ const mapDispatchToProps = dispatch => ({
 });
 
 class Metrics extends React.Component {
-
-  convoChartData = {
-    labels: [],
-    datasets: [
-      {
-        label: 'Active conversations',
-        data: [],
-        yAxisID: 'activeconv'
-      },
-      {
-        label: 'Conversations length',
-        backgroundColor: 'rgba(192,75,134,0.4)',
-        borderColor: 'rgba(192,75,134,1)',
-        pointBorderColor: 'rgba(192,75,134,1)',
-        pointHoverBackgroundColor: 'rgba(192,75,134,1)',
-        pointHoverBorderColor: 'rgba(192,75,134,1)',
-        data: [],
-        yAxisID: 'convlength'
-      }
-    ]
-  };
 
   convoOptions = {
     responsive: true,
@@ -145,7 +128,27 @@ class Metrics extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      selectedState: "7days"
+      selectedState: "7days",
+      convoChartData: {
+        labels: [],
+        datasets: [
+          {
+            label: 'Active conversations',
+            data: [],
+            yAxisID: 'activeconv'
+          },
+          {
+            label: 'Conversations length',
+            backgroundColor: 'rgba(192,75,134,0.4)',
+            borderColor: 'rgba(192,75,134,1)',
+            pointBorderColor: 'rgba(192,75,134,1)',
+            pointHoverBackgroundColor: 'rgba(192,75,134,1)',
+            pointHoverBorderColor: 'rgba(192,75,134,1)',
+            data: [],
+            yAxisID: 'convlength'
+          }
+        ]
+      }
     };
   }
 
@@ -155,19 +158,57 @@ class Metrics extends React.Component {
     });
   };
 
-  render() {
+  emptyState = (initialState) => {
+    initialState.convoChartData.labels=[];
+    initialState.convoChartData.datasets[0].data=[];
+    initialState.convoChartData.datasets[1].data=[];
+  }
 
+  renderChart = () =>{
+    let tempState=this.state;
+    switch (this.state.selectedState) {
+      case "30days":
+        this.emptyState(tempState);
+        this.props.metricsMonth.data.map(record => {
+          tempState.convoChartData.labels.unshift(moment(record.date).format("DD-MM-YYYY"));
+          tempState.convoChartData.datasets[0].data.unshift(record.number_of_active_conversations);
+          tempState.convoChartData.datasets[1].data.unshift(parseFloat(record.average_conversations_length));
+        })
+        this.setState(tempState);
+        // console.log(this.state);
+        return this.state;
+
+      case "all":
+        this.emptyState(tempState);
+        this.props.allMetrics.data.map(record => {
+          tempState.convoChartData.labels.unshift(moment(record.date).format("DD-MM-YYYY"));
+          tempState.convoChartData.datasets[0].data.unshift(record.number_of_active_conversations);
+          tempState.convoChartData.datasets[1].data.unshift(parseFloat(record.average_conversations_length));
+        })
+        this.setState(tempState);
+        // console.log(this.state);
+        return this.state;
+    
+      default:
+      this.emptyState(tempState);
+      this.props.metricsWeek.data.map(record => {
+        tempState.convoChartData.labels.unshift(moment(record.date).format("DD-MM-YYYY"));
+        tempState.convoChartData.datasets[0].data.unshift(record.number_of_active_conversations);
+        tempState.convoChartData.datasets[1].data.unshift(parseFloat(record.average_conversations_length));
+      })
+      this.setState(tempState);
+      // console.log(this.state);
+      return this.state;
+    }
+    // return this.state
+  }
+
+
+  render() {
     const renderOptionRows = () => {
       switch (this.state.selectedState) {
         case "30days":
           return this.props.metricsMonth.data.map(record => {
-            this.convoChartData.labels.unshift([moment(record.date).format("DD-MM-YYYY")]);
-            this.convoChartData.datasets[0].data.unshift(record.number_of_active_conversations);
-            this.convoChartData.datasets[1].data.unshift(record.average_conversations_length);
-
-            this.activeUsersChartData.labels.unshift([moment(record.date).format("DD-MM-YYYY")]);
-            this.activeUsersChartData.datasets[0].data.unshift([record.number_of_active_users]);
-
             return (
               <TableRow key={record.id}>
                 <TableCell>
@@ -183,13 +224,6 @@ class Metrics extends React.Component {
           });
         case "all":
           return this.props.allMetrics.data.map(record => {
-            this.convoChartData.labels.unshift([moment(record.date).format("DD-MM-YYYY")]);
-            this.convoChartData.datasets[0].data.unshift(record.number_of_active_conversations);
-            this.convoChartData.datasets[1].data.unshift(record.average_conversations_length);
-
-            this.activeUsersChartData.labels.unshift([moment(record.date).format("DD-MM-YYYY")]);
-            this.activeUsersChartData.datasets[0].data.unshift([record.number_of_active_users]);
-
             return (
               <TableRow key={record.id}>
                 <TableCell>
@@ -205,21 +239,6 @@ class Metrics extends React.Component {
           });
         default:
           return this.props.metricsWeek.data.map(record => {
-            this.convoChartData.labels.unshift([moment(record.date).format("DD-MM-YYYY")]);
-            this.convoChartData.datasets[0].data.unshift(record.number_of_active_conversations);
-            this.convoChartData.datasets[1].data.unshift(record.average_conversations_length);
-
-            this.activeUsersChartData.labels.unshift([moment(record.date).format("DD-MM-YYYY")]);
-            this.activeUsersChartData.datasets[0].data.unshift([record.number_of_active_users]);
-
-            // WIP (Olga)
-            this.bubbleChartData.labels.unshift([moment(record.date).format("DD-MM-YYYY")]);
-            this.bubbleChartData.datasets[0].data.unshift([{
-              x: moment(record.date),
-              y: record.number_of_active_conversations,
-              r: record.average_conversations_length
-            }]);
-
             return (
               <TableRow key={record.id}>
                 <TableCell>
@@ -288,6 +307,7 @@ class Metrics extends React.Component {
             <Typography type="headline" component="h3">
               Metrics
             </Typography>
+            <button onClick={this.renderChart}>Show chart</button>
             <label style={{ margin: 20 }}>Display: </label>
             <select
               value={this.state.selectedState}
@@ -328,12 +348,11 @@ class Metrics extends React.Component {
               <TableBody>{renderOptionRows()}</TableBody>
             </Table>
             {renderDownloadButton()}
+            <LineChart data={this.state.convoChartData} options={this.convoOptions}/>
           </Paper>
         </CardGridWrapper>
         <CardGridWrapper classes={theme.palette} width={'100'}>
-          <LineChart data={this.convoChartData} options={this.convoOptions} />
-          <LineChart data={this.activeUsersChartData} options={this.activeUsersOptions} />
-          <Bubble data={this.bubbleChartData} />
+          
         </CardGridWrapper>
       </div>
     );
