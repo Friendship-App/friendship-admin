@@ -14,4 +14,4 @@
 .env
 npm-debug.log
 .idea
-.iml
+*.iml
