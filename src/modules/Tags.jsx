@@ -225,7 +225,7 @@ export class Tags extends React.Component {
    */
   render() {
     return (
-      <div style={{width: '100vw'}}>
+      <div>
         {this.renderDialogs()}
         <Grid container style={{width: '100vw'}}>
           <Grid item xs={12}>
