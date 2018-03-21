@@ -153,7 +153,7 @@ class Metrics extends React.Component {
     };
 
     return (
-      <div style={{backgroundColor: 'pink'}}>
+      <div>
         <CardGridWrapper classes={theme.palette} width={"100"}>
           <Paper style={theme.paper}>
             <Typography type="headline" component="h3">
