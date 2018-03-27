@@ -42,7 +42,7 @@ class LineChart extends React.Component{
   render() {
     return (
       <div>
-        <Line data={this.state} options={this.props.options}/>
+        <Line data={this.state} options={this.props.options} />
       </div>
     );
   }
