@@ -125,30 +125,6 @@ const mapDispatchToProps = dispatch => ({
   },
 
   /**
-   * Unban the user
-   *
-   * @param  {object} user    The to be banned user
-   * @param  {object} banInfo The information about the ban
-   * @return {void}
-   */
-  unbanUser: (user, banInfo, filter) => {
-    const info = {
-      reason: banInfo.reason,
-      expire: banInfo.expire.amount === '' || banInfo.expire.indicator === '' ? 'x' : banInfo.expire.amount + ':' + banInfo.expire.indicator
-    }
-
-    dispatch(rest.actions.unbanUser({userId: user.id}, {
-      body: JSON.stringify(info)
-    }, () => {
-      if(filter.username || filter.email) {
-        dispatch(rest.actions.users.get({filter: filter}));
-      } else {
-        dispatch(rest.actions.users());
-      }
-    }))
-  },
-
-  /**
    * edits the user
    *
    * @param  {object} user    The to be edited user
@@ -200,9 +176,7 @@ export class Users extends React.Component {
     deleteUserDialogOpen: false,
     toBeDeletedUser: null,
     banUserDialogOpen: false,
-    unbanUserDialogOpen: false,
     toBeBannedUser: null,
-    toBeUnbannedUser: null,
     banInfo: {
       reason: '',
       expire: {
@@ -266,18 +240,6 @@ export class Users extends React.Component {
       toBeBannedUser: user
     })
   }
-
-  /**
-   * Open the unban user modal
-   *
-   * @param  {object} user the to be unbanned user
-   * @return {void}
-   */
-  openUnbanModal = user =>
-    this.setState({
-      unbanUserDialogOpen: true,
-      toBeUnbannedUser: user
-    })
 
   /**
    * Open the edit user modal
@@ -487,11 +449,11 @@ export class Users extends React.Component {
           <DeleteIcon style={{paddingRight: 10}}/>
           {this.props.intl.formatMessage({id: 'deleteUser_delete'})}
         </Button>
-        <Button color="primary" onClick={() =>
-          user.isbanned === '1' ? this.openUnbanModal(user) : this.openBanModal(user)
-        }>
+        <Button color="primary" onClick={() => {
+          this.openBanModal(user)
+        }}>
           <WarningIcon style={{paddingRight: 10}}/>
-          {user.isbanned === '1' ? this.props.intl.formatMessage({id: 'unbanUser_unban'}) : this.props.intl.formatMessage({id: 'banUser_ban'})}
+          {this.props.intl.formatMessage({id: 'banUser_ban'})}
         </Button>
         <Button color="primary" onClick={() => {
           this.props.refreshUser(user);
@@ -548,23 +510,6 @@ export class Users extends React.Component {
         }}
         close={() => {
           this.setState({banInfo: {reason: '', expire: {amount: '', indicator: ''}}, banUserDialogOpen: false});
-        }}
-      />
-      <DialogWithButtons
-        // textField={{label: this.props.intl.formatMessage({id: 'banUser_reason'}), fullWidth: true}}
-        title={this.props.intl.formatMessage({id: 'unbanUser_title'}) + ' ' + (this.state.toBeUnbannedUser ? this.state.toBeUnbannedUser.username : '') + '?'}
-        // description={this.renderUserBanDesc()}
-        submitAction={this.props.intl.formatMessage({id: 'unbanUser_ok'})}
-        cancelAction={this.props.intl.formatMessage({id: 'unbanUser_cancel'})}
-        isOpen={this.state.unbanUserDialogOpen}
-        submit={(data) => {
-          this.setState({banInfo: {...this.state.banInfo, reason: data.value}}, () => {
-            this.props.unbanUser(this.state.toBeUnbannedUser, this.state.banInfo, this.state.filter);
-            this.setState({banInfo: {reason: '', expire: {amount: '', indicator: ''}}, unbanUserDialogOpen: false});
-          })
-        }}
-        close={() => {
-          this.setState({banInfo: {reason: '', expire: {amount: '', indicator: ''}}, unbanUserDialogOpen: false});
         }}
       />
       <DialogWithButtons
