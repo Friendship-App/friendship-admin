@@ -248,55 +248,56 @@ class Metrics extends React.Component {
     };
 
     return (
-      <div style={{ width: "100vw" }}>
-        <CardGridWrapper classes={theme.palette} width={"100"}>
-          <Paper style={theme.paper}>
-            <Typography type="headline" component="h3">
-              Metrics
-            </Typography>
-            <label style={{ margin: 20 }}>Display: </label>
-            <select
-              value={this.state.selectedState}
-              onChange={this.handleChange}
-            >
-              <option value="7days">Last 7 days</option>
-              <option value="30days">Last 30 days</option>
-              <option value="all">--All--</option>
-            </select>
-            <Table>
-              <TableHead>
-                <TableRow>
-                  <TableCell>
-                    {this.props.intl.formatMessage({ id: "metrics_day" })}
-                  </TableCell>
-                  <TableCell>
-                    {this.props.intl.formatMessage({
-                      id: "metrics_registered_users"
-                    })}
-                  </TableCell>
-                  <TableCell>
-                    {this.props.intl.formatMessage({
-                      id: "metrics_active_users"
-                    })}
-                  </TableCell>
-                  <TableCell>
-                    {this.props.intl.formatMessage({
-                      id: "metrics_active_conversations"
-                    })}
-                  </TableCell>
-                  <TableCell>
-                    {this.props.intl.formatMessage({
-                      id: "metrics_avg_conversation_length"
-                    })}
-                  </TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>{renderOptionRows()}</TableBody>
-            </Table>
-            {renderDownloadButton()}
-          </Paper>
-        </CardGridWrapper>
-      </div>
+        <div style={{width: "100vw"}}>
+          <CardGridWrapper classes={theme.palette} width={"100"}>
+            <Paper style={theme.paper}>
+              <Typography type="headline" component="h3">
+                Metrics
+              </Typography>
+              <label style={{margin: 20}}>Display: </label>
+              <select
+                  value={this.state.selectedState}
+                  onChange={this.handleChange}
+              >
+                <option value="7days">Last 7 days</option>
+                <option value="30days">Last 30 days</option>
+                <option value="all">--All--</option>
+              </select>
+              <Table>
+                <TableHead>
+                  <TableRow>
+                    <TableCell>
+                      {this.props.intl.formatMessage({id: "metrics_day"})}
+                    </TableCell>
+                    <TableCell>
+                      {this.props.intl.formatMessage({
+                        id: "metrics_users_registered_day"
+                      })}
+                    </TableCell>
+                    <TableCell>
+                      {this.props.intl.formatMessage({
+                        id: "metrics_users_total"
+                      })}
+                    </TableCell>
+                    <TableCell>
+                      {this.props.intl.formatMessage({
+                        id: "metrics_conversation_total"
+                      })}
+                    </TableCell>
+                    <TableCell>
+                      {this.props.intl.formatMessage({
+                        id: "metrics_conversation_length"
+                      })}
+                    </TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>{renderOptionRows()}</TableBody>
+              </Table>
+              {renderDownloadButton()}
+              <LineChart data={this.state.convoChartData} options={this.convoOptions}/>
+            </Paper>
+          </CardGridWrapper>
+        </div>
     );
   }
 }

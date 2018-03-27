@@ -85,13 +85,6 @@ const rest = reduxApi({
       method: 'POST'
     }
   },
-  unbanUser : {
-    url: `${apiRoot}/users/unban/:userId`,
-    crud: true,
-    options: {
-      method: 'DELETE'
-    }
-  },
   latestTos: {
     url: `${apiRoot}/tos/latest`,
     reducerName: "tos",
