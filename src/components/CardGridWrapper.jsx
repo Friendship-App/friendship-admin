@@ -62,6 +62,7 @@ export class CardGridWrapper extends React.Component {
               container
               justify={desktopJustify}
               className={classes.desktopGrid}
+              style={{width: '100vw'}}
             >
               {React.Children.map(children, this.renderChildDesktop)}
             </Grid>
@@ -69,7 +70,7 @@ export class CardGridWrapper extends React.Component {
         </Hidden>
         <Hidden smUp>
           <div className={classes.mobileContainer}>
-            <Grid container>
+            <Grid container style={{width: '100vw'}}>
               {React.Children.map(children, this.renderChildMobile)}
             </Grid>
           </div>

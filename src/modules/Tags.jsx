@@ -88,7 +88,7 @@ const mapDispatchToProps = dispatch => ({
    * @return {void}
    */
   activateTag: (tag, checked, filter) => {
-    dispatch(rest.actions.tagDetails.patch({tagId: tag.id}, {body: JSON.stringify({activated: checked})}, () => {
+    dispatch(rest.actions.activateTag.patch({tagId: tag.id}, {body: JSON.stringify({checked: checked})}, () => {
       if (filter.name) {
         dispatch(rest.actions.taglist.get({filter: filter}));
       }
@@ -96,8 +96,11 @@ const mapDispatchToProps = dispatch => ({
         dispatch(rest.actions.taglist());
       }
     }))
-  }
+  },
+
+
 });
+
 
 
 export class Tags extends React.Component {
@@ -227,7 +230,7 @@ export class Tags extends React.Component {
     return (
       <div>
         {this.renderDialogs()}
-        <Grid container>
+        <Grid container style={{width: '100vw'}}>
           <Grid item xs={12}>
             <Paper style={theme.paper}>
               {/*InputHandler handels both filtering and add new tag. is found in components*/}
