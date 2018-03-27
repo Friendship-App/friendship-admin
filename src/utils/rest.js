@@ -48,6 +48,14 @@ const rest = reduxApi({
     transformer: transformers.array,
     crud: true
   },
+  activateTag:{
+    url:`${apiRoot}/tags/activate/:tagId`,
+    crud: true,
+    options:{
+      method: 'PATCH'
+    }
+  },
+ 
   reports: {
     url: `${apiRoot}/reports`,
     transformer: transformers.array,
