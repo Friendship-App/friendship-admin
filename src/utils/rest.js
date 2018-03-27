@@ -23,7 +23,7 @@ Information about request: `state.teams.error`, `state.teams.sync`, `state.teams
 
 let apiRoot;
 
-if(process.env.NODE_ENV === 'development'){
+if (process.env.NODE_ENV === 'development') {
   apiRoot = 'http://localhost:3888';
 } else {
   apiRoot = 'https://friendshipbackend.herokuapp.com';
@@ -48,14 +48,14 @@ const rest = reduxApi({
     transformer: transformers.array,
     crud: true
   },
-  activateTag:{
-    url:`${apiRoot}/tags/activate/:tagId`,
+  activateTag: {
+    url: `${apiRoot}/tags/activate/:tagId`,
     crud: true,
-    options:{
+    options: {
       method: 'PATCH'
     }
   },
- 
+
   reports: {
     url: `${apiRoot}/reports`,
     transformer: transformers.array,
@@ -83,6 +83,13 @@ const rest = reduxApi({
     crud: true,
     options: {
       method: 'POST'
+    }
+  },
+  unbanUser: {
+    url: `${apiRoot}/users/unban/:userId`,
+    crud: true,
+    options: {
+      method: 'DELETE'
     }
   },
   latestTos: {
@@ -140,7 +147,7 @@ const rest = reduxApi({
       method: 'GET'
     }
   },
-  
+
   metricsAllMetrics: {
     url: `${apiRoot}/metrics`,
     transformer: transformers.array,
@@ -150,7 +157,7 @@ const rest = reduxApi({
     }
   },
 
-  metricsWeek:{
+  metricsWeek: {
     url: `${apiRoot}/metrics/week`,
     transformer: transformers.array,
     crud: true,
@@ -159,7 +166,7 @@ const rest = reduxApi({
     }
   },
 
-  metricsMonth:{
+  metricsMonth: {
     url: `${apiRoot}/metrics/month`,
     transformer: transformers.array,
     crud: true,
@@ -179,7 +186,7 @@ const rest = reduxApi({
   auth: {
     url: `${apiRoot}/users/authenticate`,
     transformer: (data = {}) => {
-      if(data.token){
+      if (data.token) {
         return {
           ...data,
           decoded: jwtDecode(data.token)
@@ -193,44 +200,44 @@ const rest = reduxApi({
     }
   }
 })
-  .use('options', (url, params, getState) => {
-    const {auth: {data: {token}}} = getState();
+    .use('options', (url, params, getState) => {
+      const {auth: {data: {token}}} = getState();
 
-    const headers = {
-      Accept: 'application/json',
-      'Content-Type': 'application/json'
-    };
+      const headers = {
+        Accept: 'application/json',
+        'Content-Type': 'application/json'
+      };
 
-    // Add token to request headers
-    if(token){
-      return {headers: {...headers, Authorization: `Bearer ${token}`}};
-    }
+      // Add token to request headers
+      if (token) {
+        return {headers: {...headers, Authorization: `Bearer ${token}`}};
+      }
 
-    return {headers};
-  })
-  .use('fetch', adapterFetch(fetch))
-  .use('responseHandler', err => {
-    if(err){
-      let msg = 'Error';
+      return {headers};
+    })
+    .use('fetch', adapterFetch(fetch))
+    .use('responseHandler', err => {
+      if (err) {
+        let msg = 'Error';
 
-      // error code
-      msg += err.statusCode ? ` ${err.statusCode}` : '';
+        // error code
+        msg += err.statusCode ? ` ${err.statusCode}` : '';
 
-      // error reason
-      msg += err.error ? ` ${err.error}` : '';
+        // error reason
+        msg += err.error ? ` ${err.error}` : '';
 
-      // error description
-      msg += err.message ? `: ${err.message}` : '';
-      store.dispatch(
-        showError({
-          msg,
-          details: JSON.stringify(err, Object.getOwnPropertyNames(err), 4)
-        })
-      );
+        // error description
+        msg += err.message ? `: ${err.message}` : '';
+        store.dispatch(
+            showError({
+              msg,
+              details: JSON.stringify(err, Object.getOwnPropertyNames(err), 4)
+            })
+        );
 
-      throw err;
-    }
-  });
+        throw err;
+      }
+    });
 
 export default rest;
 export const reducers = rest.reducers;
