@@ -1,8 +1,8 @@
-import reduxApi, {transformers} from 'redux-api';
-import adapterFetch from 'redux-api/lib/adapters/fetch';
-import jwtDecode from 'jwt-decode';
+import reduxApi, { transformers } from "redux-api";
+import adapterFetch from "redux-api/lib/adapters/fetch";
+import jwtDecode from "jwt-decode";
 
-import {showError} from '../modules/ErrorSnackbar';
+import { showError } from "../modules/ErrorSnackbar";
 
 let store;
 
@@ -23,10 +23,10 @@ Information about request: `state.teams.error`, `state.teams.sync`, `state.teams
 
 let apiRoot;
 
-if (process.env.NODE_ENV === 'development') {
-  apiRoot = 'http://localhost:3888';
+if (process.env.NODE_ENV === "development") {
+  apiRoot = "http://localhost:3888";
 } else {
-  apiRoot = 'https://friendshipbackend.herokuapp.com';
+  apiRoot = "https://friendshipbackend.herokuapp.com";
 }
 
 const rest = reduxApi({
@@ -40,7 +40,7 @@ const rest = reduxApi({
     transformer: transformers.array,
     crud: true,
     options: {
-      method: 'POST'
+      method: "POST"
     }
   },
   newtag: {
@@ -52,13 +52,36 @@ const rest = reduxApi({
     url: `${apiRoot}/tags/activate/:tagId`,
     crud: true,
     options: {
-      method: 'PATCH'
+      method: "PATCH"
     }
   },
 
   reports: {
-    url: `${apiRoot}/reports`,
+    url: `${apiRoot}/report/:startIndex`,
     transformer: transformers.array,
+    crud: true
+  },
+  totalReports: {
+    url: `${apiRoot}/getTotalReports`,
+    transformer: transformers.array,
+    crud: true
+  },
+  reportDetails: {
+    url: `${apiRoot}/reports/:reportId`,
+    crud: true
+  },
+  feedbacks: {
+    url: `${apiRoot}/feedback/:startIndex`,
+    transformer: transformers.array,
+    crud: true
+  },
+  totalFeedbacks: {
+    url: `${apiRoot}/getTotalFeedbacks`,
+    transformer: transformers.array,
+    crud: true
+  },
+  feedbackDetails: {
+    url: `${apiRoot}/feedbacks/:feedbackId`,
     crud: true
   },
   taglist: {
@@ -74,22 +97,18 @@ const rest = reduxApi({
     url: `${apiRoot}/users/:userId`,
     crud: true
   },
-  reportDetails: {
-    url: `${apiRoot}/reports/:reportId`,
-    crud: true
-  },
   banUser: {
     url: `${apiRoot}/users/:userId/ban`,
     crud: true,
     options: {
-      method: 'POST'
+      method: "POST"
     }
   },
   unbanUser: {
     url: `${apiRoot}/users/unban/:userId`,
     crud: true,
     options: {
-      method: 'DELETE'
+      method: "DELETE"
     }
   },
   latestTos: {
@@ -101,14 +120,14 @@ const rest = reduxApi({
     url: `${apiRoot}/tos`,
     reducerName: "tos",
     options: {
-      method: 'POST'
+      method: "POST"
     }
   },
   editUser: {
     url: `${apiRoot}/users/:userId`,
     crud: true,
     options: {
-      method: 'PATCH'
+      method: "PATCH"
     }
   },
 
@@ -117,7 +136,7 @@ const rest = reduxApi({
     transformer: transformers.array,
     crud: true,
     options: {
-      method: 'GET'
+      method: "GET"
     }
   },
 
@@ -126,7 +145,7 @@ const rest = reduxApi({
     transformer: transformers.array,
     crud: true,
     options: {
-      method: 'GET'
+      method: "GET"
     }
   },
 
@@ -135,7 +154,7 @@ const rest = reduxApi({
     transformer: transformers.array,
     crud: true,
     options: {
-      method: 'GET'
+      method: "GET"
     }
   },
 
@@ -144,7 +163,7 @@ const rest = reduxApi({
     transformer: transformers.array,
     crud: true,
     options: {
-      method: 'GET'
+      method: "GET"
     }
   },
 
@@ -153,7 +172,7 @@ const rest = reduxApi({
     transformer: transformers.array,
     crud: true,
     options: {
-      method: 'GET'
+      method: "GET"
     }
   },
 
@@ -162,7 +181,7 @@ const rest = reduxApi({
     transformer: transformers.array,
     crud: true,
     options: {
-      method: 'GET'
+      method: "GET"
     }
   },
 
@@ -171,7 +190,7 @@ const rest = reduxApi({
     transformer: transformers.array,
     crud: true,
     options: {
-      method: 'GET'
+      method: "GET"
     }
   },
 
@@ -179,7 +198,7 @@ const rest = reduxApi({
     url: `${apiRoot}/metrics/msgperconversation`,
     crud: false,
     options: {
-      method: 'GET'
+      method: "GET"
     }
   },
 
@@ -196,48 +215,48 @@ const rest = reduxApi({
     },
 
     options: {
-      method: 'POST'
+      method: "POST"
     }
   }
 })
-    .use('options', (url, params, getState) => {
-      const {auth: {data: {token}}} = getState();
+  .use("options", (url, params, getState) => {
+    const { auth: { data: { token } } } = getState();
 
-      const headers = {
-        Accept: 'application/json',
-        'Content-Type': 'application/json'
-      };
+    const headers = {
+      Accept: "application/json",
+      "Content-Type": "application/json"
+    };
 
-      // Add token to request headers
-      if (token) {
-        return {headers: {...headers, Authorization: `Bearer ${token}`}};
-      }
+    // Add token to request headers
+    if (token) {
+      return { headers: { ...headers, Authorization: `Bearer ${token}` } };
+    }
 
-      return {headers};
-    })
-    .use('fetch', adapterFetch(fetch))
-    .use('responseHandler', err => {
-      if (err) {
-        let msg = 'Error';
+    return { headers };
+  })
+  .use("fetch", adapterFetch(fetch))
+  .use("responseHandler", err => {
+    if (err) {
+      let msg = "Error";
 
-        // error code
-        msg += err.statusCode ? ` ${err.statusCode}` : '';
+      // error code
+      msg += err.statusCode ? ` ${err.statusCode}` : "";
 
-        // error reason
-        msg += err.error ? ` ${err.error}` : '';
+      // error reason
+      msg += err.error ? ` ${err.error}` : "";
 
-        // error description
-        msg += err.message ? `: ${err.message}` : '';
-        store.dispatch(
-            showError({
-              msg,
-              details: JSON.stringify(err, Object.getOwnPropertyNames(err), 4)
-            })
-        );
+      // error description
+      msg += err.message ? `: ${err.message}` : "";
+      store.dispatch(
+        showError({
+          msg,
+          details: JSON.stringify(err, Object.getOwnPropertyNames(err), 4)
+        })
+      );
 
-        throw err;
-      }
-    });
+      throw err;
+    }
+  });
 
 export default rest;
 export const reducers = rest.reducers;
