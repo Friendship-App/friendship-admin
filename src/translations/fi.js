@@ -30,7 +30,8 @@ export default {
 
   //Delete User
   deleteUser_title: 'Poista käyttäjä',
-  deleteUser_description: 'HUOMIO! Tämän käyttäjän poistaminen poistaa hänet lopullisesti sovelluksesta. Oletko varma että haluat poistaa käyättäjän lopullisesti?',
+  deleteUser_description:
+    'HUOMIO! Tämän käyttäjän poistaminen poistaa hänet lopullisesti sovelluksesta. Oletko varma että haluat poistaa käyättäjän lopullisesti?',
   deleteUser_ok: 'Yes',
   deleteUser_cancel: 'Peruuta',
   deleteUser_delete: 'Poista',
@@ -61,14 +62,16 @@ export default {
   tagStatus: '',
   tagCreationDate: '',
   tagRelatedEvent: '',
-  
+
   // Delete tag
   deleteTag_title: 'Poista tägi',
-  deleteTag_description: 'HUOMIO! Tämän tägin poistaminen poistaa sen lopullisesti sovelluksesta. Oletko varma että haluat poistaa tägin lopullisesti?',
+  deleteTag_description:
+    'HUOMIO! Tämän tägin poistaminen poistaa sen lopullisesti sovelluksesta. Oletko varma että haluat poistaa tägin lopullisesti?',
 
- // Terms of service
+  // Terms of service
   terms_of_service_titel: 'Terms of Service',
-  terms_of_service_description: 'Are you sure you want to change the terms of service?',
+  terms_of_service_description:
+    'Are you sure you want to change the terms of service?',
 
   // Scope user
   scopeUser_title: 'Vaihda käyttäjän alaa',

@@ -17,32 +17,29 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-    filterUsers: (filter) => {
-      dispatch(rest.actions.users.get({filter: filter}));
-    },
-})
+  filterUsers: filter => {
+    dispatch(rest.actions.users.get({ filter: filter }));
+  },
+});
 
 class FilterUserDialog extends React.Component {
+  renderDesc = () => {};
 
-    renderDesc = () => {
-
-    }
-
-    render() {
-        return (
-            <DialogWithButtons
-              textField={{label: 'Search', fullWidth: true}}
-              title="Search user"
-              description={this.renderDesc()}
-              submitAction="Search"
-              cancelAction="Cancel"
-              isOpen={this.props.isOpen}
-              submit={(data) => {
-
-              }}
-              />
-        );
-    }
+  render() {
+    return (
+      <DialogWithButtons
+        textField={{ label: 'Search', fullWidth: true }}
+        title="Search user"
+        description={this.renderDesc()}
+        submitAction="Search"
+        cancelAction="Cancel"
+        isOpen={this.props.isOpen}
+        submit={data => {}}
+      />
+    );
+  }
 }
 
-export default injectIntl(connect(mapStateToProps, mapDispatchToProps)(FilterUserDialog));
+export default injectIntl(
+  connect(mapStateToProps, mapDispatchToProps)(FilterUserDialog),
+);

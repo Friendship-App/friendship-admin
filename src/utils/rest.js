@@ -1,8 +1,8 @@
-import reduxApi, { transformers } from "redux-api";
-import adapterFetch from "redux-api/lib/adapters/fetch";
-import jwtDecode from "jwt-decode";
+import reduxApi, { transformers } from 'redux-api';
+import adapterFetch from 'redux-api/lib/adapters/fetch';
+import jwtDecode from 'jwt-decode';
 
-import { showError } from "../modules/ErrorSnackbar";
+import { showError } from '../modules/ErrorSnackbar';
 
 let store;
 
@@ -23,112 +23,111 @@ Information about request: `state.teams.error`, `state.teams.sync`, `state.teams
 
 let apiRoot;
 
-if (process.env.NODE_ENV === "development") {
-  apiRoot = "http://localhost:3888";
+if (process.env.NODE_ENV === 'development') {
+  apiRoot = 'http://localhost:3888';
 } else {
-  apiRoot = "https://friendshipbackend.herokuapp.com";
+  apiRoot = 'https://friendshipbackend.herokuapp.com';
 }
 
 const rest = reduxApi({
   users: {
     url: `${apiRoot}/users`,
     transformer: transformers.array,
-    crud: true
+    crud: true,
   },
   tags: {
     url: `${apiRoot}/tags`,
     transformer: transformers.array,
     crud: true,
     options: {
-      method: "POST"
-    }
+      method: 'POST',
+    },
   },
   newtag: {
     url: `${apiRoot}/tags`,
     transformer: transformers.array,
-    crud: true
+    crud: true,
   },
   activateTag: {
     url: `${apiRoot}/tags/activate/:tagId`,
     crud: true,
     options: {
-      method: "PATCH"
-    }
+      method: 'PATCH',
+    },
   },
-
   reports: {
     url: `${apiRoot}/report/:startIndex`,
     transformer: transformers.array,
-    crud: true
+    crud: true,
   },
   totalReports: {
     url: `${apiRoot}/getTotalReports`,
     transformer: transformers.array,
-    crud: true
+    crud: true,
   },
   reportDetails: {
     url: `${apiRoot}/reports/:reportId`,
-    crud: true
+    crud: true,
   },
   feedbacks: {
     url: `${apiRoot}/feedback/:startIndex`,
     transformer: transformers.array,
-    crud: true
+    crud: true,
   },
   totalFeedbacks: {
     url: `${apiRoot}/getTotalFeedbacks`,
     transformer: transformers.array,
-    crud: true
+    crud: true,
   },
   feedbackDetails: {
     url: `${apiRoot}/feedbacks/:feedbackId`,
-    crud: true
+    crud: true,
   },
   taglist: {
     url: `${apiRoot}/tags_user/taglist`,
     transformer: transformers.array,
-    crud: true
+    crud: true,
   },
   tagDetails: {
     url: `${apiRoot}/tags/:tagId`,
-    crud: true
+    crud: true,
   },
   userDetails: {
     url: `${apiRoot}/users/:userId`,
-    crud: true
+    crud: true,
   },
   banUser: {
     url: `${apiRoot}/users/:userId/ban`,
     crud: true,
     options: {
-      method: "POST"
-    }
+      method: 'POST',
+    },
   },
   unbanUser: {
     url: `${apiRoot}/users/unban/:userId`,
     crud: true,
     options: {
-      method: "DELETE"
-    }
+      method: 'DELETE',
+    },
   },
   latestTos: {
     url: `${apiRoot}/tos/latest`,
-    reducerName: "tos",
-    crud: true
+    reducerName: 'tos',
+    crud: true,
   },
   createTos: {
     url: `${apiRoot}/tos`,
-    reducerName: "tos",
+    reducerName: 'tos',
     options: {
-      method: "POST"
-    }
+      method: 'POST',
+    },
   },
   editUser: {
     url: `${apiRoot}/users/:userId`,
     crud: true,
     options: {
-      method: "PATCH"
-    }
+      method: 'PATCH',
+    },
   },
 
   metricsRegisteredUsers: {
@@ -136,8 +135,8 @@ const rest = reduxApi({
     transformer: transformers.array,
     crud: true,
     options: {
-      method: "GET"
-    }
+      method: 'GET',
+    },
   },
 
   metricsActiveUsers: {
@@ -145,8 +144,8 @@ const rest = reduxApi({
     transformer: transformers.array,
     crud: true,
     options: {
-      method: "GET"
-    }
+      method: 'GET',
+    },
   },
 
   metricsActiveConversations: {
@@ -154,8 +153,8 @@ const rest = reduxApi({
     transformer: transformers.array,
     crud: true,
     options: {
-      method: "GET"
-    }
+      method: 'GET',
+    },
   },
 
   metricsConversationsLength: {
@@ -163,8 +162,8 @@ const rest = reduxApi({
     transformer: transformers.array,
     crud: true,
     options: {
-      method: "GET"
-    }
+      method: 'GET',
+    },
   },
 
   metricsAllMetrics: {
@@ -172,8 +171,8 @@ const rest = reduxApi({
     transformer: transformers.array,
     crud: true,
     options: {
-      method: "GET"
-    }
+      method: 'GET',
+    },
   },
 
   metricsWeek: {
@@ -181,8 +180,8 @@ const rest = reduxApi({
     transformer: transformers.array,
     crud: true,
     options: {
-      method: "GET"
-    }
+      method: 'GET',
+    },
   },
 
   metricsMonth: {
@@ -190,16 +189,16 @@ const rest = reduxApi({
     transformer: transformers.array,
     crud: true,
     options: {
-      method: "GET"
-    }
+      method: 'GET',
+    },
   },
 
   metricsmsgperconversation: {
     url: `${apiRoot}/metrics/msgperconversation`,
     crud: false,
     options: {
-      method: "GET"
-    }
+      method: 'GET',
+    },
   },
 
   auth: {
@@ -208,23 +207,23 @@ const rest = reduxApi({
       if (data.token) {
         return {
           ...data,
-          decoded: jwtDecode(data.token)
+          decoded: jwtDecode(data.token),
         };
       }
       return data;
     },
 
     options: {
-      method: "POST"
-    }
-  }
+      method: 'POST',
+    },
+  },
 })
-  .use("options", (url, params, getState) => {
+  .use('options', (url, params, getState) => {
     const { auth: { data: { token } } } = getState();
 
     const headers = {
-      Accept: "application/json",
-      "Content-Type": "application/json"
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
     };
 
     // Add token to request headers
@@ -234,24 +233,24 @@ const rest = reduxApi({
 
     return { headers };
   })
-  .use("fetch", adapterFetch(fetch))
-  .use("responseHandler", err => {
+  .use('fetch', adapterFetch(fetch))
+  .use('responseHandler', err => {
     if (err) {
-      let msg = "Error";
+      let msg = 'Error';
 
       // error code
-      msg += err.statusCode ? ` ${err.statusCode}` : "";
+      msg += err.statusCode ? ` ${err.statusCode}` : '';
 
       // error reason
-      msg += err.error ? ` ${err.error}` : "";
+      msg += err.error ? ` ${err.error}` : '';
 
       // error description
-      msg += err.message ? `: ${err.message}` : "";
+      msg += err.message ? `: ${err.message}` : '';
       store.dispatch(
         showError({
           msg,
-          details: JSON.stringify(err, Object.getOwnPropertyNames(err), 4)
-        })
+          details: JSON.stringify(err, Object.getOwnPropertyNames(err), 4),
+        }),
       );
 
       throw err;

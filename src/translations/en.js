@@ -30,7 +30,8 @@ export default {
 
   // Delete User
   deleteUser_title: 'Delete user',
-  deleteUser_description: 'ATTENTION! Deleting this user will remove him permanently from the application. Are you sure you want to permanently delete this user?',
+  deleteUser_description:
+    'ATTENTION! Deleting this user will remove him permanently from the application. Are you sure you want to permanently delete this user?',
   deleteUser_ok: 'Yup',
   deleteUser_cancel: 'Cancel',
   deleteUser_delete: 'Delete',
@@ -52,7 +53,7 @@ export default {
   banUser_indicator_months: 'Month(s)',
   banUser_indicator_years: 'Year(s)',
 
-// Unban User
+  // Unban User
   unbanUser_unban: 'Unban',
   unbanUser_title: 'Unban user',
   unbanUser_ok: 'Unban',
@@ -78,15 +79,17 @@ export default {
 
   // Delete tag
   deleteTag_title: 'Delete tag',
-  deleteTag_description: 'ATTENTION! Deleting this tag will remove it permanently from the application. Are you sure you want to permanently delete this tag?',
+  deleteTag_description:
+    'ATTENTION! Deleting this tag will remove it permanently from the application. Are you sure you want to permanently delete this tag?',
 
   // Terms of service
   terms_of_service_titel: 'Terms of Service',
-  terms_of_service_description: 'Are you sure you want to change the terms of service?',
+  terms_of_service_description:
+    'Are you sure you want to change the terms of service?',
 
   // Scope user
   scopeUser_title: 'Change user scope',
-  scopeUser_desciption: 'Are you sure you want to change this user\'s scope?',
+  scopeUser_desciption: "Are you sure you want to change this user's scope?",
   scopeUser_ok: 'Yup',
   scopeUser_cancel: 'Cancel',
 
@@ -95,7 +98,7 @@ export default {
   selectedLanguage: 'Selected language',
   resetState: 'Reset app state',
   resetStateExplanation:
-      'Use this if you experience problems with the app. Only affects your session.',
+    'Use this if you experience problems with the app. Only affects your session.',
   resetStateButton: 'Clear app state',
 
   // Miscellaneous

@@ -110,10 +110,7 @@ const mapDispatchToProps = dispatch => ({
    * @return {void}
    */
   getUserDetails: user => {
-    const info = {
-      userId: user
-    };
-    dispatch(rest.actions.userDetails(null, { userId: user }));
+    dispatch(rest.actions.userDetails({ userId: user }));
   },
 
   banUser: (user, banInfo) => {
@@ -192,57 +189,25 @@ export class Reports extends React.Component {
    * @param  {object} user the to be banned user
    * @return {void}
    */
-  openBanModal = user => {
+  async openBanModal(user) {
+    await this.props.getUserDetails(user);
     this.setState({
       banUserDialogOpen: true,
-      toBeBannedUser: user
+      toBeBannedUser: this.props.userDetails.data
     });
-  };
+  }
 
   onPageChange = page => {
     console.log(page);
-    let nextStartIndex = parseInt(page + "0");
+    let nextStartIndex = page === 1 ? 1 : parseInt(page + "0");
     this.setState({
       currentPage: page
     });
+    this.props.getTotalReports();
     this.props.refresh(
       nextStartIndex
     ); /** in the back-end this is called offset, but here startIndex is better naming.https://www.postgresql.org/docs/8.0/static/queries-limit.html*/
   };
-
-  // renderReportDetailsDesc = () =>
-  //   <div>
-  //     <DialogContentText>
-  //       <b>
-  //         {this.props.intl.formatMessage({ id: 'email' })}
-  //       </b>
-  //       {`: ${this.props.reportDetails.data.email}`}
-  //     </DialogContentText>
-  //     <DialogContentText>
-  //       <b>
-  //         {this.props.intl.formatMessage({ id: 'user_id' })}
-  //       </b>
-  //       {`: ${this.props.reportDetails.data.user_id}`}
-  //     </DialogContentText>
-  //     <DialogContentText>
-  //       <b>
-  //         {this.props.intl.formatMessage({ id: 'status' })}
-  //       </b>
-  //       {`: ${this.props.reportDetails.data.status}`}
-  //     </DialogContentText>
-  //     <DialogContentText>
-  //       <b>
-  //         {this.props.intl.formatMessage({ id: 'description' })}
-  //       </b>
-  //       {`: ${this.props.reportDetails.data.description}`}
-  //     </DialogContentText>
-  //     <DialogContentText>
-  //       <b>
-  //         {this.props.intl.formatMessage({ id: 'username' })}
-  //       </b>
-  //       {`: ${this.props.reportDetails.data.username}`}
-  //     </DialogContentText>
-  //   </div>;
 
   renderUserDetailsDesc = () => (
     <div>
@@ -273,41 +238,66 @@ export class Reports extends React.Component {
     </div>
   );
 
-  // renderReportBanDesc = () =>
-  //   <div style={{display: 'flex'}}>
-  //     <FormControl>
-  //         <InputLabel htmlFor="expire-time">{this.props.intl.formatMessage({ id: 'banUser_amount' })}</InputLabel>
-  //         <Input id="expire-time"
-  //           onChange={(event) => {
-  //             this.setState({ banInfo: {...this.state.banInfo, expire: {...this.state.banInfo.expire, amount: event.target.value}} })}
-  //           }
-  //           inputComponent={NumberFormat}
-  //            />
-  //          <FormHelperText>{this.props.intl.formatMessage({ id: 'banUser_choose'})}</FormHelperText>
-  //       </FormControl>
-  //       <FormControl>
-  //         <InputLabel htmlFor="expire-indicator">{this.props.intl.formatMessage({ id: 'banUser_indicator' })}</InputLabel>
-  //         <Select
-  //           value={this.state.banInfo.expire.indicator}
-  //           onChange={(event) => this.setState({ banInfo: {...this.state.banInfo, expire: {...this.state.banInfo.expire, indicator: event.target.value}} })}
-  //           input={<Input id="expire-indicator" />}
-  //         >
-  //           <MenuItem value="">
-  //             <em>None</em>
-  //           </MenuItem>
-  //           <MenuItem value="hours">{this.props.intl.formatMessage({ id: 'banUser_indicator_hours' })}</MenuItem>
-  //           <MenuItem value="days">{this.props.intl.formatMessage({ id: 'banUser_indicator_days' })}</MenuItem>
-  //           <MenuItem value="weeks">{this.props.intl.formatMessage({ id: 'banUser_indicator_weeks' })}</MenuItem>
-  //           <MenuItem value="years">{this.props.intl.formatMessage({ id: 'banUser_indicator_years' })}</MenuItem>
-  //         </Select>
-  //       </FormControl>
-  // </div>;
+  renderUserBanDesc = () => (
+    <div style={{ display: "flex" }}>
+      <FormControl>
+        <TextField
+          id="expire-time"
+          label={this.props.intl.formatMessage({ id: "banUser_amount" })}
+          margin="normal"
+          type={"number"}
+          onChange={event => {
+            this.setState({
+              banInfo: {
+                ...this.state.banInfo,
+                expire: {
+                  ...this.state.banInfo.expire,
+                  amount: event.target.value
+                }
+              }
+            });
+          }}
+        />
+        <FormHelperText>
+          {this.props.intl.formatMessage({ id: "banUser_choose" })}
+        </FormHelperText>
+      </FormControl>
+      <TextField
+        id="expire-indicator"
+        select
+        label={this.props.intl.formatMessage({ id: "banUser_indicator" })}
+        value={this.state.banInfo.expire.indicator}
+        onChange={event =>
+          this.setState({
+            banInfo: {
+              ...this.state.banInfo,
+              expire: {
+                ...this.state.banInfo.expire,
+                indicator: event.target.value
+              }
+            }
+          })}
+        margin="normal"
+      >
+        <MenuItem value="">
+          <em>None</em>
+        </MenuItem>
+        <MenuItem value="hours">
+          {this.props.intl.formatMessage({ id: "banUser_indicator_hours" })}
+        </MenuItem>
+        <MenuItem value="days">
+          {this.props.intl.formatMessage({ id: "banUser_indicator_days" })}
+        </MenuItem>
+        <MenuItem value="weeks">
+          {this.props.intl.formatMessage({ id: "banUser_indicator_weeks" })}
+        </MenuItem>
+        <MenuItem value="years">
+          {this.props.intl.formatMessage({ id: "banUser_indicator_years" })}
+        </MenuItem>
+      </TextField>
+    </div>
+  );
 
-  /**
-   * Render the report delete dialog description
-   *
-   * @return {Node}
-   */
   renderReportDeleteDesc = () => (
     <div>
       <DialogContentText>
@@ -328,13 +318,6 @@ export class Reports extends React.Component {
       <TableCell>{report.createdAt}</TableCell>
       <TableCell>{report.reported_by}</TableCell>
       <TableCell numeric>
-        {/* <Button color="primary" onClick={() => {
-          this.openBanModal(user_id)
-          }}>
-        <WarningIcon style={{ paddingRight: 10 }} />
-        {this.props.intl.formatMessage({ id: 'banUser_ban' })}
-      </Button> */}
-
         <Button
           color="primary"
           onClick={() => {
@@ -343,6 +326,13 @@ export class Reports extends React.Component {
         >
           <DeleteIcon style={{ paddingRight: 10 }} />
           {this.props.intl.formatMessage({ id: "Delete Report" })}
+        </Button>
+        <Button
+          color="primary"
+          onClick={() => this.openBanModal(report.userId)}
+        >
+          <WarningIcon style={{ paddingRight: 10 }} />
+          {this.props.intl.formatMessage({ id: "banUser_ban" })}
         </Button>
         <Button
           color="primary"
@@ -387,25 +377,32 @@ export class Reports extends React.Component {
       />
       <DialogWithButtons
         textField={{
-          label: this.props.intl.formatMessage({ id: "banReport_reason" }),
+          label: this.props.intl.formatMessage({ id: "banUser_reason" }),
           fullWidth: true
         }}
-        title={this.props.intl.formatMessage({ id: "banReport_title" })}
-        // description={this.renderReportBanDesc()}
-        submitAction={this.props.intl.formatMessage({ id: "banReport_ok" })}
-        cancelAction={this.props.intl.formatMessage({ id: "banReport_cancel" })}
-        isOpen={this.state.banReportDialogOpen}
+        title={
+          this.props.intl.formatMessage({ id: "banUser_title" }) +
+          " " +
+          (this.props.userDetails.data
+            ? this.props.userDetails.data.username
+            : "")
+        }
+        description={this.renderUserBanDesc()}
+        submitAction={this.props.intl.formatMessage({ id: "banUser_ok" })}
+        cancelAction={this.props.intl.formatMessage({ id: "banUser_cancel" })}
+        isOpen={this.state.banUserDialogOpen}
         submit={data => {
           this.setState(
             { banInfo: { ...this.state.banInfo, reason: data.value } },
             () => {
-              this.props.banReport(
-                this.state.toBeBannedReport,
-                this.state.banInfo
+              this.props.banUser(
+                this.props.userDetails.data,
+                this.state.banInfo,
+                this.state.filter
               );
               this.setState({
                 banInfo: { reason: "", expire: { amount: "", indicator: "" } },
-                banReportDialogOpen: false
+                banUserDialogOpen: false
               });
             }
           );
@@ -413,7 +410,7 @@ export class Reports extends React.Component {
         close={() => {
           this.setState({
             banInfo: { reason: "", expire: { amount: "", indicator: "" } },
-            banReportDialogOpen: false
+            banUserDialogOpen: false
           });
         }}
       />
@@ -421,6 +418,7 @@ export class Reports extends React.Component {
   );
 
   render() {
+    console.log(this.props.totalReports.data[0].count)
     return (
       <div style={{ display: "flex", flexDirection: "column" }}>
         {this.renderDialogs()}
@@ -452,7 +450,6 @@ export class Reports extends React.Component {
           </TableBody>
         </Table>
         <Pagination
-          style={{ margin: "auto" }}
           className="ant-pagination"
           onChange={this.onPageChange}
           defaultCurrent={this.state.currentPage}
