@@ -8,8 +8,8 @@ export default {
 
   tablerow: {
     banned: {
-      backgroundColor: red
-    }
+      backgroundColor: red,
+    },
   },
 
   // App color palette

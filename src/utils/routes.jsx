@@ -1,8 +1,8 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-import { Redirect, withRouter } from 'react-router';
-import { Route, Switch } from 'react-router-dom';
+import React from "react";
+import PropTypes from "prop-types";
+import { connect } from "react-redux";
+import { Redirect, withRouter } from "react-router";
+import { Route, Switch } from "react-router-dom";
 
 /*
 Configure all your app's routes here.
@@ -34,106 +34,103 @@ Routes may optionally contain the following keys:
 */
 
 // Icons
-import HomeIcon from 'material-ui-icons/Home';
-import UsersIcon from 'material-ui-icons/SupervisorAccount';
-import LoyaltyIcon from 'material-ui-icons/Loyalty';
-import CopyrightIcon from 'material-ui-icons/Copyright';
-import PreferencesIcon from 'material-ui-icons/Settings';
-import LoginIcon from 'material-ui-icons/AccountCircle';
-import LogoutIcon from 'material-ui-icons/ExitToApp';
-import ReportIcon from 'material-ui-icons/Report';
-
-
+import HomeIcon from "material-ui-icons/Home";
+import UsersIcon from "material-ui-icons/SupervisorAccount";
+import LoyaltyIcon from "material-ui-icons/Loyalty";
+import CopyrightIcon from "material-ui-icons/Copyright";
+import PreferencesIcon from "material-ui-icons/Settings";
+import LoginIcon from "material-ui-icons/AccountCircle";
+import LogoutIcon from "material-ui-icons/ExitToApp";
+import ReportIcon from "material-ui-icons/Report";
 // Components
-import Home from '../modules/Home';
-import Users from '../modules/Users';
-import Tos from '../modules/Tos';
-import Preferences from '../modules/Preferences';
-import Login from '../modules/Login';
-import Logout from '../modules/Logout';
-import Tags from '../modules/Tags';
-import Metrics from '../modules/Metrics';
-import Reports from '../modules/Reports';
-
+import Home from "../modules/Home";
+import Users from "../modules/Users";
+import Tos from "../modules/Tos";
+import Preferences from "../modules/Preferences";
+import Login from "../modules/Login";
+import Logout from "../modules/Logout";
+import Tags from "../modules/Tags";
+import Metrics from "../modules/Metrics";
+import Reports from "../modules/Reports";
 // Routes
 const routeConfigs = [
   {
-    path: '/home',
-    name: 'Home',
+    path: "/home",
+    name: "Home",
     component: Home,
     icon: HomeIcon,
     requiresLogin: true,
-    hideWhenScope: [null],
+    hideWhenScope: [null]
   },
   {
-    path: '/users',
-    name: 'Users',
+    path: "/users",
+    name: "Users",
     component: Users,
     icon: UsersIcon,
     separator: true,
     requiresLogin: true,
-    hideWhenScope: [null],
+    hideWhenScope: [null]
   },
   {
-    path: '/tags',
-    name: 'Tags',
+    path: "/tags",
+    name: "Tags",
     component: Tags,
     icon: LoyaltyIcon,
     separator: true,
     requiresLogin: true,
-    hideWhenScope: [null],
+    hideWhenScope: [null]
   },
   {
-    path: '/metrics',
-    name: 'Metrics',
+    path: "/metrics",
+    name: "Metrics",
     component: Metrics,
     icon: HomeIcon,
     separator: true,
     requiresLogin: true,
-    hideWhenScope: [null],
+    hideWhenScope: [null]
   },
   {
-    path: '/reports',
-    name: 'Reports',
+    path: "/reports",
+    name: "Reports",
     component: Reports,
     icon: ReportIcon,
     separator: true,
     requiresLogin: true,
-    hideWhenScope: [null],
+    hideWhenScope: [null]
   },
   {
-  path: '/tos',
-  name: 'Tos',
-  component: Tos,
-  icon: CopyrightIcon,
-  separator: true,
-  requiresLogin: true,
-  hideWhenScope: [null],
+    path: "/tos",
+    name: "Tos",
+    component: Tos,
+    icon: CopyrightIcon,
+    separator: true,
+    requiresLogin: true,
+    hideWhenScope: [null]
   },
   {
-    path: '/preferences',
-    name: 'Preferences',
+    path: "/preferences",
+    name: "Preferences",
     component: Preferences,
     icon: PreferencesIcon,
     requiresLogin: true,
-    hideWhenScope: [null],
+    hideWhenScope: [null]
   },
   {
-    path: '/login',
-    name: 'Login',
+    path: "/login",
+    name: "Login",
     component: Login,
     icon: LoginIcon,
     requiresLogin: false,
-    hideWhenScope: ['user', 'admin'],
+    hideWhenScope: ["user", "admin"]
   },
   {
-    path: '/logout',
-    name: 'Logout',
+    path: "/logout",
+    name: "Logout",
     component: Logout,
     icon: LogoutIcon,
     requiresLogin: false,
-    hideWhenScope: [null],
-  },
+    hideWhenScope: [null]
+  }
 ];
 
 export default routeConfigs;
@@ -149,11 +146,11 @@ export const RouteConfigShape = PropTypes.shape({
   component: PropTypes.func.isRequired,
   icon: PropTypes.func.isRequired,
   requiresLogin: PropTypes.bool,
-  showHeader: PropTypes.bool,
+  showHeader: PropTypes.bool
 });
 
 const mapStateToProps = state => ({
-  loggedIn: !!state.auth.data.token,
+  loggedIn: !!state.auth.data.token
 });
 
 // Takes a routeConfig and wraps it in react-router's <Route> component.
@@ -165,12 +162,12 @@ class AuthRedirectRoute extends React.Component {
   static propTypes = {
     loggedIn: PropTypes.bool,
     requiresLogin: PropTypes.bool,
-    component: PropTypes.func.isRequired,
+    component: PropTypes.func.isRequired
   };
 
   static defaultProps = {
     loggedIn: false,
-    requiresLogin: false,
+    requiresLogin: false
   };
 
   render() {
@@ -185,56 +182,59 @@ class AuthRedirectRoute extends React.Component {
       <Route
         {...rest}
         render={props =>
-          !requiresLogin || loggedIn
-            ? <ChildComponent {...props} />
-            : <Redirect
-                to={{
-                  pathname: '/login',
-                  state: { from: props.location },
-                }}
-              />}
+          !requiresLogin || loggedIn ? (
+            <ChildComponent {...props} />
+          ) : (
+            <Redirect
+              to={{
+                pathname: "/login",
+                state: { from: props.location }
+              }}
+            />
+          )}
       />
     );
   }
 }
 
 const ConnectedAuthRedirectRoute = withRouter(
-  connect(mapStateToProps)(AuthRedirectRoute),
+  connect(mapStateToProps)(AuthRedirectRoute)
 );
 
 // AuthRedirectRoute wrapper which mounts routeConfig at '/' regardless of configured path
 export const IndexRoute = ({ routeConfig, ...rest }) => {
   const indexRoute = {
     ...routeConfig,
-    path: '/',
+    path: "/"
   };
 
   return <ConnectedAuthRedirectRoute exact {...rest} {...indexRoute} />;
 };
 
 IndexRoute.propTypes = {
-  routeConfig: RouteConfigShape.isRequired,
+  routeConfig: RouteConfigShape.isRequired
 };
 
 // Map all configured routes into AuthRedirectRoute components
-export const ConfiguredRoutes = ({ ...rest }) =>
+export const ConfiguredRoutes = ({ ...rest }) => (
   <Switch>
-    {routeConfigs.map(routeConfig =>
+    {routeConfigs.map(routeConfig => (
       <ConnectedAuthRedirectRoute
         key={routeConfig.path}
         {...routeConfig}
         {...rest}
-      />,
-    )}
-    <Redirect to={{ pathname: '/' }} />
-  </Switch>;
+      />
+    ))}
+    <Redirect to={{ pathname: "/" }} />
+  </Switch>
+);
 
 // Check that routeConfigs array is a valid RouteConfigShape
 PropTypes.checkPropTypes(
   {
-    routeConfigs: PropTypes.arrayOf(RouteConfigShape).isRequired,
+    routeConfigs: PropTypes.arrayOf(RouteConfigShape).isRequired
   },
   { routeConfigs },
-  'prop',
-  'routeConfigs',
+  "prop",
+  "routeConfigs"
 );

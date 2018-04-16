@@ -11,6 +11,7 @@
     "moment": "^2.19.1",
     "offline-plugin": "^4.8.3",
     "prop-types": "^15.5.10",
+    "rc-pagination": "^1.16.2",
     "react": "^15.6.2",
     "react-chartjs": "^1.2.0",
     "react-chartjs-2": "^2.7.0",
