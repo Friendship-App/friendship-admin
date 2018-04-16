@@ -1,6 +1,6 @@
 import React from "react";
-import { connect } from "react-redux";
-import { injectIntl } from "react-intl";
+import {connect} from "react-redux";
+import {injectIntl} from "react-intl";
 
 import Button from "material-ui/Button";
 import TextField from "material-ui/TextField";
@@ -10,24 +10,25 @@ import Table, {
   TableRow,
   TableCell
 } from "material-ui/Table";
-import { FormControlLabel } from "material-ui/Form";
+import {FormControlLabel} from "material-ui/Form";
 import Switch from "material-ui/Switch";
-import Input, { InputLabel } from "material-ui/Input";
-import { MenuItem } from "material-ui/Menu";
-import { FormControl, FormHelperText } from "material-ui/Form";
+import Input, {InputLabel} from "material-ui/Input";
+import {MenuItem} from "material-ui/Menu";
+import {FormControl, FormHelperText} from "material-ui/Form";
 import Select from "material-ui/Select";
 
 import Pagination from "rc-pagination";
 import "rc-pagination/assets/index.css";
 
-import { LinearProgress } from "material-ui/Progress";
+import {LinearProgress} from "material-ui/Progress";
 import ListIcon from "material-ui-icons/List";
 import DeleteIcon from "material-ui-icons/Delete";
 import WarningIcon from "material-ui-icons/Warning";
 import NumberFormat from "react-number-format";
-import { DialogContentText } from "material-ui/Dialog";
+import {DialogContentText} from "material-ui/Dialog";
 import DialogWithButtons from "../components/DialogWithButtons";
 import rest from "../utils/rest";
+import FullscreenSpinner from "../components/FullscreenSpinner";
 
 // Here we 'connect' the component to the Redux store. This means that the component will receive
 // parts of the Redux store as its props. Exactly which parts is chosen by mapStateToProps.
@@ -62,7 +63,7 @@ const mapDispatchToProps = dispatch => ({
    * @return {void}
    */
   refresh: startIndex => {
-    dispatch(rest.actions.reports({ startIndex }));
+    dispatch(rest.actions.reports({startIndex}));
   },
 
   getTotalReports: () => {
@@ -76,7 +77,7 @@ const mapDispatchToProps = dispatch => ({
    * @return {void}
    */
   refreshReport: report => {
-    dispatch(rest.actions.reportDetails({ reportId: report.id }));
+    dispatch(rest.actions.reportDetails({reportId: report.id}));
   },
 
   /**
@@ -87,9 +88,9 @@ const mapDispatchToProps = dispatch => ({
    */
   deleteReport: report => {
     dispatch(
-      rest.actions.reportDetails.delete({ reportId: report.id }, null, () => {
-        dispatch(rest.actions.reports({ startIndex: 1 }));
-      })
+        rest.actions.reportDetails.delete({reportId: report.id}, null, () => {
+          dispatch(rest.actions.reports({startIndex: 1}));
+        })
     );
   },
 
@@ -100,7 +101,7 @@ const mapDispatchToProps = dispatch => ({
    * @return {void}
    */
   refreshUser: user => {
-    dispatch(rest.actions.userDetails({ userId: user }));
+    dispatch(rest.actions.userDetails({userId: user}));
   },
 
   /**
@@ -110,28 +111,28 @@ const mapDispatchToProps = dispatch => ({
    * @return {void}
    */
   getUserDetails: user => {
-    dispatch(rest.actions.userDetails({ userId: user }));
+    dispatch(rest.actions.userDetails({userId: user}));
   },
 
   banUser: (user, banInfo) => {
     const info = {
       reason: banInfo.reason,
       expire:
-        banInfo.expire.amount === "" || banInfo.expire.indicator === ""
-          ? "x"
-          : banInfo.expire.amount + ":" + banInfo.expire.indicator
+          banInfo.expire.amount === "" || banInfo.expire.indicator === ""
+              ? "x"
+              : banInfo.expire.amount + ":" + banInfo.expire.indicator
     };
 
     dispatch(
-      rest.actions.banUser(
-        { userId: user.id },
-        {
-          body: JSON.stringify(info)
-        },
-        () => {
-          dispatch(rest.actions.users());
-        }
-      )
+        rest.actions.banUser(
+            {userId: user.id},
+            {
+              body: JSON.stringify(info)
+            },
+            () => {
+              dispatch(rest.actions.users());
+            }
+        )
     );
   }
 });
@@ -154,19 +155,20 @@ export class Reports extends React.Component {
   };
 
   // Refresh report list when component is first mounted
-  componentDidMount() {
-    const { refresh, getTotalReports } = this.props;
+  componentWillMount() {
+    console.log('Will nount ...');
+    const {refresh, getTotalReports} = this.props;
     getTotalReports();
     refresh(1);
   }
 
   // Allows you to render the side naviagtion bar
   renderProgressBar() {
-    const { reportsLoading } = this.props;
+    const {reportsLoading} = this.props;
     return reportsLoading ? (
-      <div style={{ marginBottom: "-5px" }}>
-        <LinearProgress />
-      </div>
+        <div style={{marginBottom: "-5px"}}>
+          <LinearProgress/>
+        </div>
     ) : null;
   }
 
@@ -205,257 +207,261 @@ export class Reports extends React.Component {
     });
     this.props.getTotalReports();
     this.props.refresh(
-      nextStartIndex
-    ); /** in the back-end this is called offset, but here startIndex is better naming.https://www.postgresql.org/docs/8.0/static/queries-limit.html*/
+        nextStartIndex
+    );
+    /** in the back-end this is called offset, but here startIndex is better naming.https://www.postgresql.org/docs/8.0/static/queries-limit.html*/
   };
 
   renderUserDetailsDesc = () => (
-    <div>
-      <DialogContentText>
-        <b>{this.props.intl.formatMessage({ id: "userId" })}</b>
-        {`: ${this.props.userDetails.data.id}`}
-      </DialogContentText>
-      <DialogContentText>
-        <b>{this.props.intl.formatMessage({ id: "username" })}</b>
-        {`: ${this.props.userDetails.data.username}`}
-      </DialogContentText>
-      <DialogContentText>
-        <b>{this.props.intl.formatMessage({ id: "email" })}</b>
-        {`: ${this.props.userDetails.data.email}`}
-      </DialogContentText>
-      <DialogContentText>
-        <b>{this.props.intl.formatMessage({ id: "status" })}</b>
-        {`: ${this.props.userDetails.data.status}`}
-      </DialogContentText>
-      <DialogContentText>
-        <b>{this.props.intl.formatMessage({ id: "createdAt" })}</b>
-        {`: ${this.props.userDetails.data.createdAt}`}
-      </DialogContentText>
-      <DialogContentText>
-        <b>{this.props.intl.formatMessage({ id: "description" })}</b>
-        {`: ${this.props.userDetails.data.description}`}
-      </DialogContentText>
-    </div>
+      <div>
+        <DialogContentText>
+          <b>{this.props.intl.formatMessage({id: "userId"})}</b>
+          {`: ${this.props.userDetails.data.id}`}
+        </DialogContentText>
+        <DialogContentText>
+          <b>{this.props.intl.formatMessage({id: "username"})}</b>
+          {`: ${this.props.userDetails.data.username}`}
+        </DialogContentText>
+        <DialogContentText>
+          <b>{this.props.intl.formatMessage({id: "email"})}</b>
+          {`: ${this.props.userDetails.data.email}`}
+        </DialogContentText>
+        <DialogContentText>
+          <b>{this.props.intl.formatMessage({id: "status"})}</b>
+          {`: ${this.props.userDetails.data.status}`}
+        </DialogContentText>
+        <DialogContentText>
+          <b>{this.props.intl.formatMessage({id: "createdAt"})}</b>
+          {`: ${this.props.userDetails.data.createdAt}`}
+        </DialogContentText>
+        <DialogContentText>
+          <b>{this.props.intl.formatMessage({id: "description"})}</b>
+          {`: ${this.props.userDetails.data.description}`}
+        </DialogContentText>
+      </div>
   );
 
   renderUserBanDesc = () => (
-    <div style={{ display: "flex" }}>
-      <FormControl>
+      <div style={{display: "flex"}}>
+        <FormControl>
+          <TextField
+              id="expire-time"
+              label={this.props.intl.formatMessage({id: "banUser_amount"})}
+              margin="normal"
+              type={"number"}
+              onChange={event => {
+                this.setState({
+                  banInfo: {
+                    ...this.state.banInfo,
+                    expire: {
+                      ...this.state.banInfo.expire,
+                      amount: event.target.value
+                    }
+                  }
+                });
+              }}
+          />
+          <FormHelperText>
+            {this.props.intl.formatMessage({id: "banUser_choose"})}
+          </FormHelperText>
+        </FormControl>
         <TextField
-          id="expire-time"
-          label={this.props.intl.formatMessage({ id: "banUser_amount" })}
-          margin="normal"
-          type={"number"}
-          onChange={event => {
-            this.setState({
-              banInfo: {
-                ...this.state.banInfo,
-                expire: {
-                  ...this.state.banInfo.expire,
-                  amount: event.target.value
-                }
-              }
-            });
-          }}
-        />
-        <FormHelperText>
-          {this.props.intl.formatMessage({ id: "banUser_choose" })}
-        </FormHelperText>
-      </FormControl>
-      <TextField
-        id="expire-indicator"
-        select
-        label={this.props.intl.formatMessage({ id: "banUser_indicator" })}
-        value={this.state.banInfo.expire.indicator}
-        onChange={event =>
-          this.setState({
-            banInfo: {
-              ...this.state.banInfo,
-              expire: {
-                ...this.state.banInfo.expire,
-                indicator: event.target.value
-              }
-            }
-          })}
-        margin="normal"
-      >
-        <MenuItem value="">
-          <em>None</em>
-        </MenuItem>
-        <MenuItem value="hours">
-          {this.props.intl.formatMessage({ id: "banUser_indicator_hours" })}
-        </MenuItem>
-        <MenuItem value="days">
-          {this.props.intl.formatMessage({ id: "banUser_indicator_days" })}
-        </MenuItem>
-        <MenuItem value="weeks">
-          {this.props.intl.formatMessage({ id: "banUser_indicator_weeks" })}
-        </MenuItem>
-        <MenuItem value="years">
-          {this.props.intl.formatMessage({ id: "banUser_indicator_years" })}
-        </MenuItem>
-      </TextField>
-    </div>
+            id="expire-indicator"
+            select
+            label={this.props.intl.formatMessage({id: "banUser_indicator"})}
+            value={this.state.banInfo.expire.indicator}
+            onChange={event =>
+                this.setState({
+                  banInfo: {
+                    ...this.state.banInfo,
+                    expire: {
+                      ...this.state.banInfo.expire,
+                      indicator: event.target.value
+                    }
+                  }
+                })}
+            margin="normal"
+        >
+          <MenuItem value="">
+            <em>None</em>
+          </MenuItem>
+          <MenuItem value="hours">
+            {this.props.intl.formatMessage({id: "banUser_indicator_hours"})}
+          </MenuItem>
+          <MenuItem value="days">
+            {this.props.intl.formatMessage({id: "banUser_indicator_days"})}
+          </MenuItem>
+          <MenuItem value="weeks">
+            {this.props.intl.formatMessage({id: "banUser_indicator_weeks"})}
+          </MenuItem>
+          <MenuItem value="years">
+            {this.props.intl.formatMessage({id: "banUser_indicator_years"})}
+          </MenuItem>
+        </TextField>
+      </div>
   );
 
   renderReportDeleteDesc = () => (
-    <div>
-      <DialogContentText>
-        <strong>
-          {this.props.intl.formatMessage({
-            id: "Are you sure you want to delete this report?"
-          })}
-        </strong>
-      </DialogContentText>
-    </div>
+      <div>
+        <DialogContentText>
+          <strong>
+            {this.props.intl.formatMessage({
+              id: "Are you sure you want to delete this report?"
+            })}
+          </strong>
+        </DialogContentText>
+      </div>
   );
 
   renderReportRow = report => (
-    <TableRow key={report.id}>
-      <TableCell>{report.id}</TableCell>
-      <TableCell>{report.userId}</TableCell>
-      <TableCell>{report.description}</TableCell>
-      <TableCell>{report.createdAt}</TableCell>
-      <TableCell>{report.reported_by}</TableCell>
-      <TableCell numeric>
-        <Button
-          color="primary"
-          onClick={() => {
-            this.openDeleteModal(report);
-          }}
-        >
-          <DeleteIcon style={{ paddingRight: 10 }} />
-          {this.props.intl.formatMessage({ id: "Delete Report" })}
-        </Button>
-        <Button
-          color="primary"
-          onClick={() => this.openBanModal(report.userId)}
-        >
-          <WarningIcon style={{ paddingRight: 10 }} />
-          {this.props.intl.formatMessage({ id: "banUser_ban" })}
-        </Button>
-        <Button
-          color="primary"
-          onClick={() => {
-            this.props.refreshUser(report.userId);
-            this.setState({ dialogOpen: true });
-          }}
-        >
-          <ListIcon style={{ paddingRight: 10 }} />
-          {this.props.intl.formatMessage({ id: "showUserDetails" })}
-        </Button>
-      </TableCell>
-    </TableRow>
+      <TableRow key={report.id}>
+        <TableCell>{report.id}</TableCell>
+        <TableCell>{report.userId}</TableCell>
+        <TableCell>{report.description}</TableCell>
+        <TableCell>{report.createdAt}</TableCell>
+        <TableCell>{report.reported_by}</TableCell>
+        <TableCell numeric>
+          <Button
+              color="primary"
+              onClick={() => {
+                this.openDeleteModal(report);
+              }}
+          >
+            <DeleteIcon style={{paddingRight: 10}}/>
+            {this.props.intl.formatMessage({id: "Delete Report"})}
+          </Button>
+          <Button
+              color="primary"
+              onClick={() => this.openBanModal(report.userId)}
+          >
+            <WarningIcon style={{paddingRight: 10}}/>
+            {this.props.intl.formatMessage({id: "banUser_ban"})}
+          </Button>
+          <Button
+              color="primary"
+              onClick={() => {
+                this.props.refreshUser(report.userId);
+                this.setState({dialogOpen: true});
+              }}
+          >
+            <ListIcon style={{paddingRight: 10}}/>
+            {this.props.intl.formatMessage({id: "showUserDetails"})}
+          </Button>
+        </TableCell>
+      </TableRow>
   );
 
   /**
-     * Render the dialogs
-     * @return {Node} The dialogs
-     */
+   * Render the dialogs
+   * @return {Node} The dialogs
+   */
   renderDialogs = () => (
-    <div>
-      <DialogWithButtons
-        title={this.props.intl.formatMessage({ id: "Reported User details" })}
-        description={this.renderUserDetailsDesc()}
-        submitAction={this.props.intl.formatMessage({ id: "close" })}
-        isOpen={this.state.dialogOpen}
-        // loading={this.props.reportDetails.loading}
-        submit={() => this.setState({ dialogOpen: false })}
-        close={() => this.setState({ dialogOpen: false })}
-      />
-      <DialogWithButtons
-        title={this.props.intl.formatMessage({ id: "Delete Report" })}
-        description={this.renderReportDeleteDesc()}
-        submitAction={this.props.intl.formatMessage({ id: "Yes" })}
-        cancelAction={this.props.intl.formatMessage({ id: "Cancel" })}
-        isOpen={this.state.deleteReportDialogOpen}
-        submit={() => {
-          this.props.deleteReport(this.state.toBeDeletedReport);
-          this.setState({ deleteReportDialogOpen: false });
-        }}
-        close={() => this.setState({ deleteReportDialogOpen: false })}
-      />
-      <DialogWithButtons
-        textField={{
-          label: this.props.intl.formatMessage({ id: "banUser_reason" }),
-          fullWidth: true
-        }}
-        title={
-          this.props.intl.formatMessage({ id: "banUser_title" }) +
-          " " +
-          (this.props.userDetails.data
-            ? this.props.userDetails.data.username
-            : "")
-        }
-        description={this.renderUserBanDesc()}
-        submitAction={this.props.intl.formatMessage({ id: "banUser_ok" })}
-        cancelAction={this.props.intl.formatMessage({ id: "banUser_cancel" })}
-        isOpen={this.state.banUserDialogOpen}
-        submit={data => {
-          this.setState(
-            { banInfo: { ...this.state.banInfo, reason: data.value } },
-            () => {
-              this.props.banUser(
-                this.props.userDetails.data,
-                this.state.banInfo,
-                this.state.filter
+      <div>
+        <DialogWithButtons
+            title={this.props.intl.formatMessage({id: "Reported User details"})}
+            description={this.renderUserDetailsDesc()}
+            submitAction={this.props.intl.formatMessage({id: "close"})}
+            isOpen={this.state.dialogOpen}
+            // loading={this.props.reportDetails.loading}
+            submit={() => this.setState({dialogOpen: false})}
+            close={() => this.setState({dialogOpen: false})}
+        />
+        <DialogWithButtons
+            title={this.props.intl.formatMessage({id: "Delete Report"})}
+            description={this.renderReportDeleteDesc()}
+            submitAction={this.props.intl.formatMessage({id: "Yes"})}
+            cancelAction={this.props.intl.formatMessage({id: "Cancel"})}
+            isOpen={this.state.deleteReportDialogOpen}
+            submit={() => {
+              this.props.deleteReport(this.state.toBeDeletedReport);
+              this.setState({deleteReportDialogOpen: false});
+            }}
+            close={() => this.setState({deleteReportDialogOpen: false})}
+        />
+        <DialogWithButtons
+            textField={{
+              label: this.props.intl.formatMessage({id: "banUser_reason"}),
+              fullWidth: true
+            }}
+            title={
+              this.props.intl.formatMessage({id: "banUser_title"}) +
+              " " +
+              (this.props.userDetails.data
+                  ? this.props.userDetails.data.username
+                  : "")
+            }
+            description={this.renderUserBanDesc()}
+            submitAction={this.props.intl.formatMessage({id: "banUser_ok"})}
+            cancelAction={this.props.intl.formatMessage({id: "banUser_cancel"})}
+            isOpen={this.state.banUserDialogOpen}
+            submit={data => {
+              this.setState(
+                  {banInfo: {...this.state.banInfo, reason: data.value}},
+                  () => {
+                    this.props.banUser(
+                        this.props.userDetails.data,
+                        this.state.banInfo,
+                        this.state.filter
+                    );
+                    this.setState({
+                      banInfo: {reason: "", expire: {amount: "", indicator: ""}},
+                      banUserDialogOpen: false
+                    });
+                  }
               );
+            }}
+            close={() => {
               this.setState({
-                banInfo: { reason: "", expire: { amount: "", indicator: "" } },
+                banInfo: {reason: "", expire: {amount: "", indicator: ""}},
                 banUserDialogOpen: false
               });
-            }
-          );
-        }}
-        close={() => {
-          this.setState({
-            banInfo: { reason: "", expire: { amount: "", indicator: "" } },
-            banUserDialogOpen: false
-          });
-        }}
-      />
-    </div>
+            }}
+        />
+      </div>
   );
 
   render() {
-    console.log(this.props.totalReports.data[0].count)
+    if (this.props.totalReports.loading || !this.props.totalReports.sync || this.props.reports.loading || !this.props.reports.sync) {
+      return <FullscreenSpinner/>;
+    }
+
     return (
-      <div style={{ display: "flex", flexDirection: "column" }}>
-        {this.renderDialogs()}
-        {this.renderProgressBar()}
-        <Table>
-          <TableHead>
-            <TableRow>
-              <TableCell>
-                {this.props.intl.formatMessage({ id: "reportId" })}
-              </TableCell>
-              <TableCell>
-                {this.props.intl.formatMessage({ id: "user_id" })}
-              </TableCell>
-              <TableCell style={{ whiteSpace: "normal" }}>
-                {this.props.intl.formatMessage({ id: "description" })}
-              </TableCell>
-              <TableCell>
-                {this.props.intl.formatMessage({ id: "createdAt" })}
-              </TableCell>
-              <TableCell>
-                {this.props.intl.formatMessage({ id: "reported_by" })}
-              </TableCell>
-              <TableCell />
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {// Loop over each report and render a <TableRow>
-            this.props.reports.data.map(report => this.renderReportRow(report))}
-          </TableBody>
-        </Table>
-        <Pagination
-          className="ant-pagination"
-          onChange={this.onPageChange}
-          defaultCurrent={this.state.currentPage}
-          total={this.props.totalReports.data[0].count}
-        />
-      </div>
+        <div style={{display: "flex", flexDirection: "column"}}>
+          {this.renderDialogs()}
+          {this.renderProgressBar()}
+          <Table>
+            <TableHead>
+              <TableRow>
+                <TableCell>
+                  {this.props.intl.formatMessage({id: "reportId"})}
+                </TableCell>
+                <TableCell>
+                  {this.props.intl.formatMessage({id: "user_id"})}
+                </TableCell>
+                <TableCell style={{whiteSpace: "normal"}}>
+                  {this.props.intl.formatMessage({id: "description"})}
+                </TableCell>
+                <TableCell>
+                  {this.props.intl.formatMessage({id: "createdAt"})}
+                </TableCell>
+                <TableCell>
+                  {this.props.intl.formatMessage({id: "reported_by"})}
+                </TableCell>
+                <TableCell/>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {// Loop over each report and render a <TableRow>
+                this.props.reports.data.map(report => this.renderReportRow(report))}
+            </TableBody>
+          </Table>
+          <Pagination
+              className="ant-pagination"
+              onChange={this.onPageChange}
+              defaultCurrent={this.state.currentPage}
+              total={this.props.totalReports.data[0].count}
+          />
+        </div>
     );
   }
 
@@ -466,5 +472,5 @@ export class Reports extends React.Component {
 }
 
 export default injectIntl(
-  connect(mapStateToProps, mapDispatchToProps)(Reports)
+    connect(mapStateToProps, mapDispatchToProps)(Reports)
 );
