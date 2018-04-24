@@ -10,7 +10,7 @@ export default {
   Metrics: 'Metriikka',
   Tos: 'Käyttöehdot',
   Reports: 'Ilmoitukset',
-
+  Feedbacks: 'palautteita',
   // Users view
   userId: 'ID',
   username: '???',
@@ -100,4 +100,9 @@ export default {
   cancel: 'Peruuta',
   close: 'Sulje',
   edit: 'Muokkaa',
+
+
+    //feedback
+    reasons: 'vittu',
+    feedback_otherReason:'Other reason for joining the app: ',
 };

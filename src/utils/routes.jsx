@@ -42,6 +42,7 @@ import PreferencesIcon from "material-ui-icons/Settings";
 import LoginIcon from "material-ui-icons/AccountCircle";
 import LogoutIcon from "material-ui-icons/ExitToApp";
 import ReportIcon from "material-ui-icons/Report";
+import FeedbackIcon from "material-ui-icons/Feedback";
 // Components
 import Home from "../modules/Home";
 import Users from "../modules/Users";
@@ -52,6 +53,7 @@ import Logout from "../modules/Logout";
 import Tags from "../modules/Tags";
 import Metrics from "../modules/Metrics";
 import Reports from "../modules/Reports";
+import Feedbacks from "../modules/Feedbacks";
 // Routes
 const routeConfigs = [
   {
@@ -94,6 +96,15 @@ const routeConfigs = [
     name: "Reports",
     component: Reports,
     icon: ReportIcon,
+    separator: true,
+    requiresLogin: true,
+    hideWhenScope: [null]
+  },
+  {
+    path: "/feedbacks",
+    name: "Feedbacks",
+    component: Feedbacks,
+    icon: FeedbackIcon,
     separator: true,
     requiresLogin: true,
     hideWhenScope: [null]

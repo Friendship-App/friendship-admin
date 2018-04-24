@@ -10,7 +10,7 @@ export default {
   Tos: 'Terms of service',
   Reports: 'Reports',
   Metrics: 'Metrics',
-
+  Feedbacks: 'Feedbacks',
   // Users view
   userId: 'ID',
   username: 'Username',
@@ -109,4 +109,8 @@ export default {
   close: 'Close',
   edit: 'Edit',
   save: 'Save',
+
+  //feedback
+  reasons: 'Reasons for joining the app: ',
+  feedback_otherReason:'Other reason for joining the app: ',
 };
