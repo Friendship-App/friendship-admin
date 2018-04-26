@@ -33,7 +33,8 @@ const mapStateToProps = state => ({
   feedbacks: state.feedbacks,
   feedbacksLoading: state.feedbacks.loading,
   totalFeedbacks: state.totalFeedbacks,
-  feedbackDetails: state.feedbackDetails
+  feedbackDetails: state.feedbackDetails,
+  userToken: state.auth.data.token
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -99,13 +100,20 @@ export class Feedbacks extends React.Component {
   }
 
   showFeedbackDetail(id) {
-    Promise.resolve(this.props.getFeedbackDetails(id))
-      .then(() =>
+    fetch(`http://localhost:3888/feedbacks/${id}`, {
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${this.props.userToken}`
+      }
+    })
+      .then(res => res.json())
+      .then(res => {
         this.setState({
+          selectedFeedback: res[0],
           feedbackDetailModal: true
-        })
-      )
-      .catch(() => console.log('Slow down!'));
+        });
+      });
   }
 
   onPageChange = page => {
@@ -129,7 +137,7 @@ export class Feedbacks extends React.Component {
       OtherReason,
       joinAppReasons,
       goalRate
-    } = this.props.feedbackDetails.data.data[0];
+    } = this.state.selectedFeedback;
     const { intl: { formatMessage } } = this.props;
     const fallBack = 'None';
     return (
@@ -150,7 +158,11 @@ export class Feedbacks extends React.Component {
               })}
             </b>
             {joinAppReasons.length > 1 ? (
-              <ul>{joinAppReasons.map(reason => <li>{reason}</li>)}</ul>
+              <ul>
+                {joinAppReasons.map((reason, index) => (
+                  <li key={index}>{reason}</li>
+                ))}
+              </ul>
             ) : (
               <span>None</span>
             )}
