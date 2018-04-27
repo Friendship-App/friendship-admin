@@ -1,33 +1,19 @@
 import React from 'react';
-import { connect } from 'react-redux';
-import { injectIntl } from 'react-intl';
+import {connect} from 'react-redux';
+import {injectIntl} from 'react-intl';
 import Button from 'material-ui/Button';
-import TextField from 'material-ui/TextField';
-import Table, {
-  TableBody,
-  TableHead,
-  TableRow,
-  TableCell
-} from 'material-ui/Table';
-import { FormControlLabel } from 'material-ui/Form';
-import Switch from 'material-ui/Switch';
-import Input, { InputLabel } from 'material-ui/Input';
-import { MenuItem } from 'material-ui/Menu';
-import { FormControl, FormHelperText } from 'material-ui/Form';
-import Select from 'material-ui/Select';
-import List, { ListItem, ListItemIcon, ListItemText } from 'material-ui/List';
+import Table, {TableBody, TableCell, TableHead, TableRow} from 'material-ui/Table';
 import Pagination from 'rc-pagination';
 import 'rc-pagination/assets/index.css';
-import { LinearProgress } from 'material-ui/Progress';
+import {LinearProgress} from 'material-ui/Progress';
 import ListIcon from 'material-ui-icons/List';
 import DeleteIcon from 'material-ui-icons/Delete';
-import WarningIcon from 'material-ui-icons/Warning';
-import NumberFormat from 'react-number-format';
-import { DialogContentText, Dialog } from 'material-ui/Dialog';
+import {Dialog, DialogContentText} from 'material-ui/Dialog';
 
 import DialogWithButtons from '../components/DialogWithButtons';
 import rest from '../utils/rest';
 import Paper from 'material-ui/Paper';
+import FullscreenSpinner from "../components/FullscreenSpinner";
 
 const mapStateToProps = state => ({
   feedbacks: state.feedbacks,
@@ -154,7 +140,7 @@ export class Feedbacks extends React.Component {
           <div style={{ display: 'flex', alignItems: 'center' }}>
             <b>
               {formatMessage({
-                id: 'Reasons for joining the app: '
+                id: 'reasons'
               })}
             </b>
             {joinAppReasons.length > 1 ? (
@@ -265,10 +251,14 @@ export class Feedbacks extends React.Component {
   );
 
   render() {
+    if (this.props.feedbacksLoading || !this.props.feedbacks.sync) {
+      return (<FullscreenSpinner/>);
+    }
+
     return (
       <Paper
         style={{
-          width: 1300,
+          width: '100vw',
           overflowX: 'auto'
         }}
       >
