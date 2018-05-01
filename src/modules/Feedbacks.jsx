@@ -1,14 +1,20 @@
 import React from 'react';
-import {connect} from 'react-redux';
-import {injectIntl} from 'react-intl';
+import { connect } from 'react-redux';
+import { injectIntl } from 'react-intl';
 import Button from 'material-ui/Button';
-import Table, {TableBody, TableCell, TableHead, TableRow} from 'material-ui/Table';
+import Table, {
+  TableBody,
+  TableCell,
+  TableHead,
+  TableRow
+} from 'material-ui/Table';
 import Pagination from 'rc-pagination';
 import 'rc-pagination/assets/index.css';
-import {LinearProgress} from 'material-ui/Progress';
+import { LinearProgress } from 'material-ui/Progress';
 import ListIcon from 'material-ui-icons/List';
 import DeleteIcon from 'material-ui-icons/Delete';
-import {Dialog, DialogContentText} from 'material-ui/Dialog';
+import { Dialog, DialogContentText } from 'material-ui/Dialog';
+import moment from 'moment';
 
 import DialogWithButtons from '../components/DialogWithButtons';
 import rest from '../utils/rest';
@@ -122,14 +128,14 @@ export class Feedbacks extends React.Component {
           </b>
           {` ${goalRate}`}
         </DialogContentText>
-        <DialogContentText>
-          <div style={{ display: 'flex', alignItems: 'center' }}>
-            <b>
-              {formatMessage({
-                id: 'reasons'
-              })}
-            </b>
-            {joinAppReasons.length > 1 ? (
+        {joinAppReasons.length > 1 && (
+          <DialogContentText style={{ margin: '10px 0 10px 0' }}>
+            <div style={{ display: 'flex', flexDirection: 'column' }}>
+              <b>
+                {formatMessage({
+                  id: 'feedback_reasons'
+                })}
+              </b>
               <ul>
                 {joinAppReasons.map((reason, index) => (
                   <li key={index}>{reason}</li>
@@ -249,11 +255,7 @@ export class Feedbacks extends React.Component {
 
   render() {
     if (this.props.feedbacksLoading || !this.props.feedbacks.sync) {
-<<<<<<< HEAD
       return <FullscreenSpinner />;
-=======
-      return (<FullscreenSpinner/>);
->>>>>>> 768530bc7226f09ee05d4fdcb651ad29b42fd333
     }
 
     return (
