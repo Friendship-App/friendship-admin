@@ -27,7 +27,8 @@ export default {
   active: 'Active',
   inactive: 'Inactive',
   banned: 'Banned',
-
+  user_status:'status',
+  user_createAt:'Created at',
   // Delete User
   deleteUser_title: 'Delete user',
   deleteUser_description:
@@ -109,4 +110,19 @@ export default {
   close: 'Close',
   edit: 'Edit',
   save: 'Save',
+
+
+
+
+
+  //reports
+  report_reporter:"Reporter",
+  report_createdAt:"Date",
+  report_description:'Report reason',
+  report_user:'User id',
+  reportId:'Report id',
+  report_showDetail:'User detail',
+  report_userDetail:'Reported user detail',
+  report_delete:'Delete report',
+  report_deleteConfirm:'Are you sure you want to delete this report?'
 };
