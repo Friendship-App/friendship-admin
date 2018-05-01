@@ -16,6 +16,7 @@ import Input, {InputLabel} from "material-ui/Input";
 import {MenuItem} from "material-ui/Menu";
 import {FormControl, FormHelperText} from "material-ui/Form";
 import Select from "material-ui/Select";
+import moment from 'moment';
 
 import Pagination from "rc-pagination";
 import "rc-pagination/assets/index.css";
@@ -86,10 +87,10 @@ const mapDispatchToProps = dispatch => ({
    * @param  {object} report The to be deleted report
    * @return {void}
    */
-  deleteReport: report => {
+  deleteReport: (report,currentPage) => {
     dispatch(
         rest.actions.reportDetails.delete({reportId: report.id}, null, () => {
-          dispatch(rest.actions.reports({startIndex: 1}));
+          dispatch(rest.actions.reports({startIndex: currentPage === 1 ? 1 : parseInt(currentPage + "0")}));
         })
     );
   },
@@ -223,19 +224,19 @@ export class Reports extends React.Component {
           {`: ${this.props.userDetails.data.username}`}
         </DialogContentText>
         <DialogContentText>
-          <b>{this.props.intl.formatMessage({id: "email"})}</b>
+          <b>{this.props.intl.formatMessage({id: "userEmail"})}</b>
           {`: ${this.props.userDetails.data.email}`}
         </DialogContentText>
         <DialogContentText>
-          <b>{this.props.intl.formatMessage({id: "status"})}</b>
+          <b>{this.props.intl.formatMessage({id: "user_status"})}</b>
           {`: ${this.props.userDetails.data.status}`}
         </DialogContentText>
         <DialogContentText>
-          <b>{this.props.intl.formatMessage({id: "createdAt"})}</b>
+          <b>{this.props.intl.formatMessage({id: "user_createAt"})}</b>
           {`: ${this.props.userDetails.data.createdAt}`}
         </DialogContentText>
         <DialogContentText>
-          <b>{this.props.intl.formatMessage({id: "description"})}</b>
+          <b>{this.props.intl.formatMessage({id: "userDescription"})}</b>
           {`: ${this.props.userDetails.data.description}`}
         </DialogContentText>
       </div>
@@ -306,7 +307,7 @@ export class Reports extends React.Component {
         <DialogContentText>
           <strong>
             {this.props.intl.formatMessage({
-              id: "Are you sure you want to delete this report?"
+              id: "report_deleteConfirm"
             })}
           </strong>
         </DialogContentText>
@@ -315,11 +316,11 @@ export class Reports extends React.Component {
 
   renderReportRow = report => (
       <TableRow key={report.id}>
-        <TableCell>{report.id}</TableCell>
-        <TableCell>{report.userId}</TableCell>
-        <TableCell>{report.description}</TableCell>
-        <TableCell>{report.createdAt}</TableCell>
-        <TableCell>{report.reported_by}</TableCell>
+        <TableCell style={styles}>{report.id}</TableCell>
+        <TableCell style={styles}>{report.userId}</TableCell>
+        <TableCell style={styles}>{report.description}</TableCell>
+        <TableCell>{moment(report.createdAt).format('DD-MM-YYYY')}</TableCell>
+        <TableCell style={styles}>{report.reported_by}</TableCell>
         <TableCell numeric>
           <Button
               color="primary"
@@ -328,7 +329,7 @@ export class Reports extends React.Component {
               }}
           >
             <DeleteIcon style={{paddingRight: 10}}/>
-            {this.props.intl.formatMessage({id: "Delete Report"})}
+            {this.props.intl.formatMessage({id: "report_delete"})}
           </Button>
           <Button
               color="primary"
@@ -345,7 +346,7 @@ export class Reports extends React.Component {
               }}
           >
             <ListIcon style={{paddingRight: 10}}/>
-            {this.props.intl.formatMessage({id: "showUserDetails"})}
+            {this.props.intl.formatMessage({id: "report_showDetail"})}
           </Button>
         </TableCell>
       </TableRow>
@@ -358,7 +359,7 @@ export class Reports extends React.Component {
   renderDialogs = () => (
       <div>
         <DialogWithButtons
-            title={this.props.intl.formatMessage({id: "Reported User details"})}
+            title={this.props.intl.formatMessage({id: "report_userDetail"})}
             description={this.renderUserDetailsDesc()}
             submitAction={this.props.intl.formatMessage({id: "close"})}
             isOpen={this.state.dialogOpen}
@@ -367,13 +368,13 @@ export class Reports extends React.Component {
             close={() => this.setState({dialogOpen: false})}
         />
         <DialogWithButtons
-            title={this.props.intl.formatMessage({id: "Delete Report"})}
+            title={this.props.intl.formatMessage({id: "report_delete"})}
             description={this.renderReportDeleteDesc()}
             submitAction={this.props.intl.formatMessage({id: "Yes"})}
-            cancelAction={this.props.intl.formatMessage({id: "Cancel"})}
+            cancelAction={this.props.intl.formatMessage({id: "cancel"})}
             isOpen={this.state.deleteReportDialogOpen}
             submit={() => {
-              this.props.deleteReport(this.state.toBeDeletedReport);
+              this.props.deleteReport(this.state.toBeDeletedReport,this.state.currentPage);
               this.setState({deleteReportDialogOpen: false});
             }}
             close={() => this.setState({deleteReportDialogOpen: false})}
@@ -426,7 +427,8 @@ export class Reports extends React.Component {
     }
 
     return (
-        <div style={{display: "flex", flexDirection: "column"}}>
+        <div style={{ width: '100vw',
+                  overflowX: 'auto'}}>
           {this.renderDialogs()}
           {this.renderProgressBar()}
           <Table>
@@ -436,16 +438,16 @@ export class Reports extends React.Component {
                   {this.props.intl.formatMessage({id: "reportId"})}
                 </TableCell>
                 <TableCell>
-                  {this.props.intl.formatMessage({id: "user_id"})}
+                  {this.props.intl.formatMessage({id: "report_user"})}
                 </TableCell>
                 <TableCell style={{whiteSpace: "normal"}}>
-                  {this.props.intl.formatMessage({id: "description"})}
+                  {this.props.intl.formatMessage({id: "report_description"})}
                 </TableCell>
                 <TableCell>
-                  {this.props.intl.formatMessage({id: "createdAt"})}
+                  {this.props.intl.formatMessage({id: "report_createdAt"})}
                 </TableCell>
                 <TableCell>
-                  {this.props.intl.formatMessage({id: "reported_by"})}
+                  {this.props.intl.formatMessage({id: "report_reporter"})}
                 </TableCell>
                 <TableCell/>
               </TableRow>
@@ -456,20 +458,22 @@ export class Reports extends React.Component {
             </TableBody>
           </Table>
           <Pagination
+              style={{ display: 'flex', justifyContent: 'center' }}
               className="ant-pagination"
               onChange={this.onPageChange}
               defaultCurrent={this.state.currentPage}
-              total={this.props.totalReports.data[0].count}
+              total={Number(this.props.totalReports.data[0].count)}
           />
         </div>
     );
   }
-
-  // const style = {
-  //    wordWrap: 'break-word'
-  //    maxwidth: 20px
-  // };
 }
+
+const styles = {
+  //fix overflow
+  whiteSpace: 'normal',
+  wordWrap: 'break-word'
+};
 
 export default injectIntl(
     connect(mapStateToProps, mapDispatchToProps)(Reports)
