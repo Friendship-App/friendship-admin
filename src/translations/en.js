@@ -109,8 +109,22 @@ export default {
   close: 'Close',
   edit: 'Edit',
   save: 'Save',
+  Yes:'Yes',
+
 
   //feedback
-  reasons: 'Reasons for joining the app: ',
+  feedback_reasons: 'Reasons for joining the app: ',
   feedback_otherReason:'Other reason for joining the app: ',
+  feedback_date:'Date',
+  feedback_userId:"User id",
+  feedbackId:'Feedback id',
+  feedback_rating:'Overall rating',
+  feedback_goalRate:'Rating for matching to the original goal of using the app:',
+  feedback_suggestion: 'Suggestion for interest or activity or an idea: ',
+  feedback_findFriendEasy:'How has the app made finding one good friend easy: ',
+  feedback_findFriendHard:'How has the app made finding one good friend hard: ',
+  feedback_improvement:'How we could improve: ',
+  feedback_deleteConfirm:'Are you sure you want to delete this feedback?',
+  feedback_delete:'Delete feedback',
+  feedback_detail:'Details'
 };

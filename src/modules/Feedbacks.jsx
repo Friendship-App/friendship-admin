@@ -2,39 +2,29 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { injectIntl } from 'react-intl';
 import Button from 'material-ui/Button';
-import TextField from 'material-ui/TextField';
 import Table, {
   TableBody,
+  TableCell,
   TableHead,
-  TableRow,
-  TableCell
+  TableRow
 } from 'material-ui/Table';
-import { FormControlLabel } from 'material-ui/Form';
-import Switch from 'material-ui/Switch';
-import Input, { InputLabel } from 'material-ui/Input';
-import { MenuItem } from 'material-ui/Menu';
-import { FormControl, FormHelperText } from 'material-ui/Form';
-import Select from 'material-ui/Select';
-import List, { ListItem, ListItemIcon, ListItemText } from 'material-ui/List';
 import Pagination from 'rc-pagination';
 import 'rc-pagination/assets/index.css';
 import { LinearProgress } from 'material-ui/Progress';
 import ListIcon from 'material-ui-icons/List';
 import DeleteIcon from 'material-ui-icons/Delete';
-import WarningIcon from 'material-ui-icons/Warning';
-import NumberFormat from 'react-number-format';
-import { DialogContentText, Dialog } from 'material-ui/Dialog';
+import { Dialog, DialogContentText } from 'material-ui/Dialog';
+import moment from 'moment';
 
 import DialogWithButtons from '../components/DialogWithButtons';
 import rest from '../utils/rest';
 import Paper from 'material-ui/Paper';
+import FullscreenSpinner from '../components/FullscreenSpinner';
 
 const mapStateToProps = state => ({
   feedbacks: state.feedbacks,
   feedbacksLoading: state.feedbacks.loading,
-  totalFeedbacks: state.totalFeedbacks,
-  feedbackDetails: state.feedbackDetails,
-  userToken: state.auth.data.token
+  totalFeedbacks: state.totalFeedbacks
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -46,17 +36,17 @@ const mapDispatchToProps = dispatch => ({
     dispatch(rest.actions.totalFeedbacks());
   },
 
-  getFeedbackDetails: feedbackId => {
-    dispatch(rest.actions.feedbackDetails({ feedbackId }));
-  },
-
-  deleteFeedback: feedback => {
+  deleteFeedback: (feedback, currentPage) => {
     dispatch(
       rest.actions.feedbackDetails.delete(
         { feedbackId: feedback.id },
         null,
         () => {
-          dispatch(rest.actions.feedbacks({ startIndex: 1 }));
+          dispatch(
+            rest.actions.feedbacks({
+              startIndex: currentPage === 1 ? 1 : parseInt(currentPage + '0')
+            }) // stay on the same page after delete
+          );
         }
       )
     );
@@ -74,7 +64,7 @@ export class Feedbacks extends React.Component {
   // Refresh report list when component is first mounted
   componentWillMount() {
     const { getFeedbacksByPage, getTotalFeedbacks } = this.props;
-    getTotalFeedbacks();
+    getTotalFeedbacks(); //for pagination, get total number of feedbacks
     getFeedbacksByPage(1);
   }
 
@@ -92,28 +82,18 @@ export class Feedbacks extends React.Component {
       <DialogContentText>
         <strong>
           {this.props.intl.formatMessage({
-            id: 'Are you sure you want to delete this feedback?'
+            id: 'feedback_deleteConfirm'
           })}
         </strong>
       </DialogContentText>
     );
   }
 
-  showFeedbackDetail(id) {
-    fetch(`http://localhost:3888/feedbacks/${id}`, {
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${this.props.userToken}`
-      }
-    })
-      .then(res => res.json())
-      .then(res => {
-        this.setState({
-          selectedFeedback: res[0],
-          feedbackDetailModal: true
-        });
-      });
+  showFeedbackDetail(feedback) {
+    this.setState({
+      selectedFeedback: feedback,
+      feedbackDetailModal: true
+    });
   }
 
   onPageChange = page => {
@@ -130,7 +110,6 @@ export class Feedbacks extends React.Component {
   feedbackDetails = () => {
     const {
       suggestion,
-      username,
       findFriendEasy,
       findFriendHard,
       suggestImprovement,
@@ -139,71 +118,78 @@ export class Feedbacks extends React.Component {
       goalRate
     } = this.state.selectedFeedback;
     const { intl: { formatMessage } } = this.props;
-    const fallBack = 'None';
     return (
       <div>
-        <DialogContentText>
+        <DialogContentText style={{ margin: '10px 0 10px 0' }}>
           <b>
             {formatMessage({
-              id: 'username'
+              id: 'feedback_goalRate'
             })}
           </b>
-          {`: ${username}`}
+          {` ${goalRate}`}
         </DialogContentText>
-        <DialogContentText>
-          <div style={{ display: 'flex', alignItems: 'center' }}>
-            <b>
-              {formatMessage({
-                id: 'Reasons for joining the app: '
-              })}
-            </b>
-            {joinAppReasons.length > 1 ? (
+        {joinAppReasons.length > 1 && (
+          <DialogContentText style={{ margin: '10px 0 10px 0' }}>
+            <div style={{ display: 'flex', flexDirection: 'column' }}>
+              <b>
+                {formatMessage({
+                  id: 'feedback_reasons'
+                })}
+              </b>
               <ul>
                 {joinAppReasons.map((reason, index) => (
                   <li key={index}>{reason}</li>
                 ))}
               </ul>
-            ) : (
-              <span>None</span>
-            )}
-          </div>
-        </DialogContentText>
-        <DialogContentText>
-          <b>
-            {formatMessage({
-              id: 'Other reasons for joining the app: '
-            })}
-          </b>
-          {OtherReason ? OtherReason : fallBack}
-        </DialogContentText>
-        <DialogContentText>
-          <b>
-            {formatMessage({
-              id: 'Suggestion for interest or activity or an idea: '
-            })}
-          </b>
-          {suggestion ? suggestion : fallBack}
-        </DialogContentText>
-        <DialogContentText>
-          <b>
-            {formatMessage({
-              id: 'How has the app made finding one good friend easy: '
-            })}
-          </b>
-          {findFriendEasy ? findFriendEasy : fallBack}
-        </DialogContentText>
-        <DialogContentText>
-          <b>
-            {formatMessage({
-              id: 'How has the app made finding one good friend hard: '
-            })}
-          </b>
-          {findFriendHard ? findFriendHard : fallBack}
-        </DialogContentText>
-        <DialogContentText>
-          <b>{formatMessage({ id: 'How we could improve: ' })}</b>
-          {suggestImprovement ? suggestImprovement : fallBack}
-        </DialogContentText>
+            </div>
+          </DialogContentText>
+        )}
+        {OtherReason && (
+          <DialogContentText style={{ margin: '10px 0 10px 0' }}>
+            <b>
+              {formatMessage({
+                id: 'feedback_otherReason'
+              })}
+            </b>
+            {OtherReason}
+          </DialogContentText>
+        )}
+        {suggestion && (
+          <DialogContentText style={{ margin: '10px 0 10px 0' }}>
+            <b>
+              {formatMessage({
+                id: 'feedback_suggestion'
+              })}
+            </b>
+            {suggestion}
+          </DialogContentText>
+        )}
+        {findFriendEasy && (
+          <DialogContentText style={{ margin: '10px 0 10px 0' }}>
+            <b>
+              {formatMessage({
+                id: 'feedback_findFriendEasy'
+              })}
+            </b>
+            {findFriendEasy}
+          </DialogContentText>
+        )}
+        {findFriendHard && (
+          <DialogContentText style={{ margin: '10px 0 10px 0' }}>
+            <b>
+              {formatMessage({
+                id: 'feedback_findFriendHard'
+              })}
+            </b>
+            {findFriendHard}
+          </DialogContentText>
+        )}
+        {suggestImprovement && (
+          <DialogContentText style={{ margin: '10px 0 10px 0' }}>
+            <b>{formatMessage({ id: 'feedback_improvement' })}</b>
+            {suggestImprovement}
+          </DialogContentText>
+        )}
       </div>
     );
   };
@@ -212,9 +198,9 @@ export class Feedbacks extends React.Component {
     <TableRow key={feedback.id}>
       <TableCell style={styles}>{feedback.id}</TableCell>
       <TableCell style={styles}>{feedback.given_by}</TableCell>
+      <TableCell style={styles}>{feedback.username}</TableCell>
       <TableCell style={styles}>{feedback.rating}</TableCell>
-      <TableCell style={styles}>{feedback.goalRate}</TableCell>
-      <TableCell style={styles}>{feedback.createdAt}</TableCell>
+      <TableCell>{moment(feedback.createdAt).format('DD-MM-YYYY')}</TableCell>
       <TableCell>
         <Button
           onClick={() =>
@@ -225,14 +211,14 @@ export class Feedbacks extends React.Component {
           color="primary"
         >
           <DeleteIcon style={{ paddingRight: 10 }} />
-          {this.props.intl.formatMessage({ id: 'Delete Feedback' })}
+          {this.props.intl.formatMessage({ id: 'feedback_delete' })}
         </Button>
         <Button
           color="primary"
-          onClick={() => this.showFeedbackDetail(feedback.id)}
+          onClick={() => this.showFeedbackDetail(feedback)}
         >
           <ListIcon style={{ paddingRight: 10 }} />
-          {this.props.intl.formatMessage({ id: 'showFeedbackDetails' })}
+          {this.props.intl.formatMessage({ id: 'feedback_detail' })}
         </Button>
       </TableCell>
     </TableRow>
@@ -241,7 +227,7 @@ export class Feedbacks extends React.Component {
   renderDialogs = () => (
     <div>
       <DialogWithButtons
-        title={this.props.intl.formatMessage({ id: 'Feedback details' })}
+        title={this.props.intl.formatMessage({ id: 'feedback_detail' })}
         description={this.state.feedbackDetailModal && this.feedbackDetails()}
         submitAction={this.props.intl.formatMessage({ id: 'close' })}
         isOpen={this.state.feedbackDetailModal}
@@ -249,13 +235,16 @@ export class Feedbacks extends React.Component {
         close={() => this.setState({ feedbackDetailModal: false })}
       />
       <DialogWithButtons
-        title={this.props.intl.formatMessage({ id: 'Delete Feedback' })}
+        title={this.props.intl.formatMessage({ id: 'feedback_delete' })}
         description={this.deleteModal()}
         submitAction={this.props.intl.formatMessage({ id: 'Yes' })}
-        cancelAction={this.props.intl.formatMessage({ id: 'Cancel' })}
+        cancelAction={this.props.intl.formatMessage({ id: 'cancel' })}
         isOpen={this.state.openDeleteModal}
         submit={() => {
-          this.props.deleteFeedback(this.state.selectedFeedback);
+          this.props.deleteFeedback(
+            this.state.selectedFeedback,
+            this.state.currentPage
+          );
           this.setState({ openDeleteModal: false, feedbackDetailModal: false });
         }}
         close={() =>
@@ -265,10 +254,14 @@ export class Feedbacks extends React.Component {
   );
 
   render() {
+    if (this.props.feedbacksLoading || !this.props.feedbacks.sync) {
+      return <FullscreenSpinner />;
+    }
+
     return (
       <Paper
         style={{
-          width: 1300,
+          width: '100vw',
           overflowX: 'auto'
         }}
       >
@@ -281,18 +274,16 @@ export class Feedbacks extends React.Component {
                 {this.props.intl.formatMessage({ id: 'feedbackId' })}
               </TableCell>
               <TableCell>
-                {this.props.intl.formatMessage({ id: 'user_id' })}
+                {this.props.intl.formatMessage({ id: 'feedback_userId' })}
+              </TableCell>
+              <TableCell>
+                {this.props.intl.formatMessage({ id: 'username' })}
               </TableCell>
               <TableCell style={{ whiteSpace: 'normal' }}>
-                {this.props.intl.formatMessage({ id: 'overall rating' })}
+                {this.props.intl.formatMessage({ id: 'feedback_rating' })}
               </TableCell>
               <TableCell>
-                {this.props.intl.formatMessage({
-                  id: 'rating matches to original goal'
-                })}
-              </TableCell>
-              <TableCell>
-                {this.props.intl.formatMessage({ id: 'created At' })}
+                {this.props.intl.formatMessage({ id: 'feedback_date' })}
               </TableCell>
               <TableCell />
             </TableRow>
@@ -308,7 +299,7 @@ export class Feedbacks extends React.Component {
           style={{ display: 'flex', justifyContent: 'center' }}
           onChange={this.onPageChange}
           defaultCurrent={this.state.currentPage}
-          total={this.props.totalFeedbacks.data[0].count}
+          total={Number(this.props.totalFeedbacks.data[0].count)}
         />
       </Paper>
     );
