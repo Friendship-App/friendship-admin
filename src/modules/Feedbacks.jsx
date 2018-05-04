@@ -138,7 +138,7 @@ export class Feedbacks extends React.Component {
               </b>
               <ul>
                 {joinAppReasons.map((reason, index) => (
-                  <li key={index}>{reason}</li>
+                  <li style={{ listStyleType: "none" }} key={index}>{reason}</li>
                 ))}
               </ul>
             </div>
@@ -262,7 +262,8 @@ export class Feedbacks extends React.Component {
       <Paper
         style={{
           width: '100vw',
-          overflowX: 'auto'
+          overflowX: 'auto',
+          height: '100vh',
         }}
       >
         {this.renderDialogs()}
