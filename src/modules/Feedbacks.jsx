@@ -287,6 +287,7 @@ export class Feedbacks extends React.Component {
                 <TableCell>
                   {this.props.intl.formatMessage({id: 'feedback_date'})}
                 </TableCell>
+                <TableCell />
               </TableRow>
             </TableHead>
             <TableBody>
