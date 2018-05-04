@@ -100,9 +100,4 @@ export default {
   cancel: 'Peruuta',
   close: 'Sulje',
   edit: 'Muokkaa',
-
-
-    //feedback
-    reasons: 'vittu',
-    feedback_otherReason:'Other reason for joining the app: ',
 };
