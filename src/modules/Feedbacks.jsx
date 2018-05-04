@@ -6,7 +6,8 @@ import Table, {
   TableBody,
   TableCell,
   TableHead,
-  TableRow
+  TableRow,
+  TablePagination
 } from 'material-ui/Table';
 import Pagination from 'rc-pagination';
 import 'rc-pagination/assets/index.css';
@@ -302,6 +303,20 @@ export class Feedbacks extends React.Component {
               onChange={this.onPageChange}
               defaultCurrent={this.state.currentPage}
               total={Number(this.props.totalFeedbacks.data[0].count)}
+          />
+          <TablePagination
+              component="div"
+              count={100}
+              rowsPerPage={10}
+              page={0}
+              backIconButtonProps={{
+                'aria-label': 'Previous Page',
+              }}
+              nextIconButtonProps={{
+                'aria-label': 'Next Page',
+              }}
+              onChangePage={() => {}}
+              onChangeRowsPerPage={() => {}}
           />
         </Paper>
     );
