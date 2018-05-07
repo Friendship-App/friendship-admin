@@ -10,7 +10,7 @@ export default {
   Metrics: 'Metriikka',
   Tos: 'Käyttöehdot',
   Reports: 'Ilmoitukset',
-
+  Feedbacks: 'palautteita',
   // Users view
   userId: 'ID',
   username: '???',
