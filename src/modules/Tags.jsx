@@ -74,7 +74,7 @@ const mapDispatchToProps = dispatch => ({
 
   onAddTag: (newtag) => {
     dispatch(rest.actions.tags(null, {
-        body: JSON.stringify(newtag)
+        body: JSON.stringify({name: newtag.value, category: newtag.category})
     }, () => {
       dispatch(rest.actions.taglist())
     }
@@ -247,8 +247,9 @@ export class Tags extends React.Component {
               <InputHandler
                 btnName="+ Add"
                 labelName="+ Add new tag"
-                onSubmit={(value, fields) =>{
-                  this.props.onAddTag({name: value});
+                addTags
+                onSubmit={(newTag) =>{
+                  this.props.onAddTag(newTag);
                 }}
               />
 

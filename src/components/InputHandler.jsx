@@ -3,11 +3,18 @@ import PropTypes from 'prop-types';
 
 import TextField from 'material-ui/TextField';
 import Button from 'material-ui/Button';
+import {MenuItem, Select} from "material-ui";
+
+const initialState = {
+  value: '',
+  category: '',
+};
 
 class InputHandler extends React.Component {
 
-  constructor(props){
-    super(props)
+  constructor(props) {
+    super(props);
+    this.state = initialState;
   }
 
   static PropTypes = {
@@ -16,10 +23,6 @@ class InputHandler extends React.Component {
       label: PropTypes.string,
     }),
     filterButton: PropTypes.string
-  }
-
-  state = {
-    value: '',
   }
 
   handleChange = (event) => {
@@ -40,26 +43,40 @@ class InputHandler extends React.Component {
     } = this.props;
 
     return (
-        <div style={{paddingLeft: 20}}>
+      <div style={{display: 'flex', paddingLeft: 20}}>
+        <TextField
+          label={(textField && textField.label) || this.props.labelName}
+          margin="normal"
+          onChange={(event) => this.handleChange(event)}
+          value={this.state.value}
+          style={{width: 200}}
+        />
+        {this.props.addTags ? (
           <TextField
-            label={(textField && textField.label) || this.props.labelName}
+            select
+            label="Select category"
             margin="normal"
-            onChange={(event) => this.handleChange(event)}
-            value={this.state.value}
-          />
-          <Button
-            color="primary"
-            key="submit"
-            onClick={async () => {
-              await onSubmit(this.state.value);
-              this.setState({value: ""});
-            }}
+            onChange={(evt) => this.setState({category: evt.target.value})}
+            value={this.state.category}
+            style={{width: 150, marginLeft: 20}}
           >
-            {this.props.btnName}
-          </Button>
-        </div>
-    )
-  }
-}
+            <MenuItem value={1}>Activity</MenuItem>
+            <MenuItem value={2}>Interest</MenuItem>
+          </TextField>
+        ) : null}
+        <Button
+          color="primary"
+          key="submit"
+          onClick={async () => {
+            await onSubmit(this.props.addTags ? this.state : this.state.value);
+            this.setState(initialState);
+          }}
+            >
+          {this.props.btnName}
+            </Button>
+            </div>
+            )
+            }
+        }
 
-export default InputHandler;
+        export default InputHandler;
