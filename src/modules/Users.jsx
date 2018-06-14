@@ -451,9 +451,9 @@ export class Users extends React.Component {
         <TableCell>
           {user.isbanned === "1" ? this.props.intl.formatMessage({id: 'banned'}) : (user.active ? this.props.intl.formatMessage({id: 'active'}) : this.props.intl.formatMessage({id: 'inactive'}))}
         </TableCell>
-        {/*<TableCell>
+        <TableCell>
           {user.reports}
-        </TableCell>*/}
+        </TableCell>
         <TableCell>
           {moment(user.createdAt).format('DD-MM-YYYY hh:mm')}
         </TableCell>
