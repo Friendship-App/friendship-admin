@@ -2,11 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import TextField from 'material-ui/TextField';
-import Paper from 'material-ui/Paper';
-import Grid from 'material-ui/Grid';
 import Button from 'material-ui/Button';
-
-import theme from '../utils/theme';
 
 class InputHandler extends React.Component {
 
@@ -44,7 +40,7 @@ class InputHandler extends React.Component {
     } = this.props;
 
     return (
-        <div style={{display: 'inline-block'}}>
+        <div style={{paddingLeft: 20}}>
           <TextField
             label={(textField && textField.label) || this.props.labelName}
             margin="normal"
@@ -61,7 +57,6 @@ class InputHandler extends React.Component {
           >
             {this.props.btnName}
           </Button>
-          <div style={{margin: '0 2px', width: 1, backgroundColor: 'rgba(0, 0, 0, 0.075)', display: 'inline-flex', verticalAlign: 'middle', height: 30}}></div>
         </div>
     )
   }

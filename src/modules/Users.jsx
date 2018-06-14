@@ -234,10 +234,10 @@ export class Users extends React.Component {
   renderProgressBar() {
     const {usersLoading} = this.props;
     return usersLoading
-        ? <div style={{marginBottom: '-5px'}}>
-          <LinearProgress/>
-        </div>
-        : null;
+      ? <div style={{marginBottom: '-5px'}}>
+        <LinearProgress/>
+      </div>
+      : null;
   }
 
   /**
@@ -273,10 +273,10 @@ export class Users extends React.Component {
    * @return {void}
    */
   openUnbanModal = user =>
-      this.setState({
-        unbanUserDialogOpen: true,
-        toBeUnbannedUser: user
-      })
+    this.setState({
+      unbanUserDialogOpen: true,
+      toBeUnbannedUser: user
+    })
 
   /**
    * Open the edit user modal
@@ -293,80 +293,80 @@ export class Users extends React.Component {
 
 
   renderEditUser = () =>
-      <div>
-        <TextField
-            id="username"
-            label="Username"
-            defaultValue={this.state.toBeEditedUser ? this.state.toBeEditedUser.username : ''}
-            value={this.state.editUserInfo.username}
-            onChange={(event) => {
-              this.setState({editUserInfo: {...this.state.editUserInfo, username: event.target.value}})
-            }}
-            margin="normal"
-        />
-        <br/>
-        <TextField
-            id="userEmail"
-            label="E-Mail"
-            defaultValue={this.state.toBeEditedUser ? this.state.toBeEditedUser.email : ''}
-            value={this.state.editUserInfo.email}
-            onChange={(event) => {
-              this.setState({editUserInfo: {...this.state.editUserInfo, email: event.target.value}})
-            }}
-            margin="normal"
-        />
-        <br/>
-        <InputLabel htmlFor="password">Password</InputLabel>
-        <br/>
-        <Input
-            id="password"
-            value={this.state.editUserInfo.password}
-            type="password"
-            onChange={(event) => {
-              this.setState({editUserInfo: {...this.state.editUserInfo, password: event.target.value}})
-            }}
-        />
-      </div>
+    <div>
+      <TextField
+        id="username"
+        label="Username"
+        defaultValue={this.state.toBeEditedUser ? this.state.toBeEditedUser.username : ''}
+        value={this.state.editUserInfo.username}
+        onChange={(event) => {
+          this.setState({editUserInfo: {...this.state.editUserInfo, username: event.target.value}})
+        }}
+        margin="normal"
+      />
+      <br/>
+      <TextField
+        id="userEmail"
+        label="E-Mail"
+        defaultValue={this.state.toBeEditedUser ? this.state.toBeEditedUser.email : ''}
+        value={this.state.editUserInfo.email}
+        onChange={(event) => {
+          this.setState({editUserInfo: {...this.state.editUserInfo, email: event.target.value}})
+        }}
+        margin="normal"
+      />
+      <br/>
+      <InputLabel htmlFor="password">Password</InputLabel>
+      <br/>
+      <Input
+        id="password"
+        value={this.state.editUserInfo.password}
+        type="password"
+        onChange={(event) => {
+          this.setState({editUserInfo: {...this.state.editUserInfo, password: event.target.value}})
+        }}
+      />
+    </div>
 
   renderUserDetailsDesc = () =>
-      <div>
-        <DialogContentText>
-          <b>
-            {this.props.intl.formatMessage({id: 'userId'})}
-          </b>
-          {`: ${this.props.userDetails.data.id}`}
-        </DialogContentText>
-        <DialogContentText>
-          <b>
-            {this.props.intl.formatMessage({id: 'username'})}
-          </b>
-          {`: ${this.props.userDetails.data.username}`}
-        </DialogContentText>
-        <DialogContentText>
-          <b>
-            {this.props.intl.formatMessage({id: 'userEmail'})}
-          </b>
-          {`: ${this.props.userDetails.data.email}`}
-        </DialogContentText>
-        <DialogContentText>
-          <b>
-            {this.props.intl.formatMessage({id: 'status'})}
-          </b>
-          {`: ${this.props.userDetails.data.isbanned === '1' ? this.props.intl.formatMessage({id: 'status_banned'}) : this.props.userDetails.data.status}`}
-        </DialogContentText>
-        <DialogContentText>
-          <b>
-            {this.props.intl.formatMessage({id: 'createdAt'})}
-          </b>
-          {`: ${moment(this.props.userDetails.data.createdAt).format('DD-MM-YYYY hh:mm')}`}
-        </DialogContentText>
-        <DialogContentText>
-          <b>
-            {this.props.intl.formatMessage({id: 'userDescription'})}
-          </b>
-          {`: ${this.props.userDetails.data.description}`}
-        </DialogContentText>
-      </div>
+    <div>
+      <DialogContentText>
+        <b>
+          {this.props.intl.formatMessage({id: 'userId'})}
+        </b>
+        {`: ${this.props.userDetails.data.id}`}
+      </DialogContentText>
+      <DialogContentText>
+        <b>
+          {this.props.intl.formatMessage({id: 'username'})}
+        </b>
+        {`: ${this.props.userDetails.data.username}`}
+      </DialogContentText>
+      <DialogContentText>
+        <b>
+          {this.props.intl.formatMessage({id: 'userEmail'})}
+        </b>
+        {`: ${this.props.userDetails.data.email}`}
+      </DialogContentText>
+      <DialogContentText>
+        <b>
+          {this.props.intl.formatMessage({id: 'status'})}
+        </b>
+        {`: ${this.props.userDetails.data.isbanned === '1' ? this.props.intl.formatMessage({id: 'status_banned'}) : this.props.userDetails.data.status}`}
+      </DialogContentText>
+      <DialogContentText>
+        <b>
+          {this.props.intl.formatMessage({id: 'createdAt'})}
+        </b>
+        {`: ${moment(this.props.userDetails.data.createdAt).format('DD-MM-YYYY hh:mm')}`}
+      </DialogContentText>
+      <DialogContentText>
+        <b>
+          {this.props.intl.formatMessage({id: 'userDescription'})}
+        </b>
+        {`: ${this.props.userDetails.data.description}`}
+      </DialogContentText>
+    </div>
   ;
 
   /**
@@ -375,59 +375,59 @@ export class Users extends React.Component {
    * @return {Node}
    */
   renderUserDeleteDesc = () =>
-      <div>
-        <DialogContentText>
-          <strong>
-            {this.props.intl.formatMessage({id: 'deleteUser_description'})}
-          </strong>
-        </DialogContentText>
-      </div>
+    <div>
+      <DialogContentText>
+        <strong>
+          {this.props.intl.formatMessage({id: 'deleteUser_description'})}
+        </strong>
+      </DialogContentText>
+    </div>
   ;
 
   renderUserBanDesc = () =>
-      <div style={{display: 'flex'}}>
-        <FormControl>
-          <TextField
-              id="expire-time"
-              label={this.props.intl.formatMessage({id: 'banUser_amount'})}
-              margin="normal"
-              type={"number"}
-              onChange={(event) => {
-                this.setState({
-                  banInfo: {
-                    ...this.state.banInfo,
-                    expire: {...this.state.banInfo.expire, amount: event.target.value}
-                  }
-                })
-              }
-              }
-          />
-          <FormHelperText>{this.props.intl.formatMessage({id: 'banUser_choose'})}</FormHelperText>
-        </FormControl>
+    <div style={{display: 'flex'}}>
+      <FormControl>
         <TextField
-            id="expire-indicator"
-            select
-            label={this.props.intl.formatMessage({id: 'banUser_indicator'})}
-            value={this.state.banInfo.expire.indicator}
-            onChange={(event) => this.setState({
+          id="expire-time"
+          label={this.props.intl.formatMessage({id: 'banUser_amount'})}
+          margin="normal"
+          type={"number"}
+          onChange={(event) => {
+            this.setState({
               banInfo: {
                 ...this.state.banInfo,
-                expire: {...this.state.banInfo.expire, indicator: event.target.value}
+                expire: {...this.state.banInfo.expire, amount: event.target.value}
               }
-            })}
-            margin="normal"
-        >
-          <MenuItem value="">
-            <em>None</em>
-          </MenuItem>
-          <MenuItem value="hours">{this.props.intl.formatMessage({id: 'banUser_indicator_hours'})}</MenuItem>
-          <MenuItem value="days">{this.props.intl.formatMessage({id: 'banUser_indicator_days'})}</MenuItem>
-          <MenuItem value="weeks">{this.props.intl.formatMessage({id: 'banUser_indicator_weeks'})}</MenuItem>
-          <MenuItem value="years">{this.props.intl.formatMessage({id: 'banUser_indicator_years'})}</MenuItem>
-        </TextField>
+            })
+          }
+          }
+        />
+        <FormHelperText>{this.props.intl.formatMessage({id: 'banUser_choose'})}</FormHelperText>
+      </FormControl>
+      <TextField
+        id="expire-indicator"
+        select
+        label={this.props.intl.formatMessage({id: 'banUser_indicator'})}
+        value={this.state.banInfo.expire.indicator}
+        onChange={(event) => this.setState({
+          banInfo: {
+            ...this.state.banInfo,
+            expire: {...this.state.banInfo.expire, indicator: event.target.value}
+          }
+        })}
+        margin="normal"
+      >
+        <MenuItem value="">
+          <em>None</em>
+        </MenuItem>
+        <MenuItem value="hours">{this.props.intl.formatMessage({id: 'banUser_indicator_hours'})}</MenuItem>
+        <MenuItem value="days">{this.props.intl.formatMessage({id: 'banUser_indicator_days'})}</MenuItem>
+        <MenuItem value="weeks">{this.props.intl.formatMessage({id: 'banUser_indicator_weeks'})}</MenuItem>
+        <MenuItem value="years">{this.props.intl.formatMessage({id: 'banUser_indicator_years'})}</MenuItem>
+      </TextField>
 
 
-      </div>
+    </div>
   ;
 
   /**
@@ -437,147 +437,150 @@ export class Users extends React.Component {
    * @return {TableRow} The tablerow associated with the user
    */
   renderUserRow = (user) => {
-    return <TableRow key={user.id} style={{backgroundColor: user.isbanned === "1" ? theme.palette.error[100] : null}}>
-      <TableCell>
-        {user.id}
-      </TableCell>
-      <TableCell>
-        {user.username}
-      </TableCell>
-      <TableCell>
-        {user.email}
-      </TableCell>
-      <TableCell>
-        {user.isbanned === "1" ? this.props.intl.formatMessage({id: 'banned'}) : (user.active ? this.props.intl.formatMessage({id: 'active'}) : this.props.intl.formatMessage({id: 'inactive'}))}
-      </TableCell>
-      <TableCell>
-        {user.reports}
-      </TableCell>
-      <TableCell>
-        {moment(user.createdAt).format('DD-MM-YYYY hh:mm')}
-      </TableCell>
-      <TableCell numeric>
-        <FormControlLabel
+    return (
+      <TableRow key={user.id} style={{backgroundColor: user.isbanned === "1" ? theme.palette.error[100] : null}}>
+        <TableCell>
+          {user.id}
+        </TableCell>
+        <TableCell>
+          {user.username}
+        </TableCell>
+        <TableCell>
+          {user.email}
+        </TableCell>
+        <TableCell>
+          {user.isbanned === "1" ? this.props.intl.formatMessage({id: 'banned'}) : (user.active ? this.props.intl.formatMessage({id: 'active'}) : this.props.intl.formatMessage({id: 'inactive'}))}
+        </TableCell>
+        {/*<TableCell>
+          {user.reports}
+        </TableCell>*/}
+        <TableCell>
+          {moment(user.createdAt).format('DD-MM-YYYY hh:mm')}
+        </TableCell>
+        <TableCell numeric>
+          <FormControlLabel
             control={
               <Switch
-                  checked={user.active}
-                  onChange={(event, checked) => {
-                    this.props.activateUser(user, checked, this.state.filter)
-                  }}
+                checked={user.active}
+                onChange={(event, checked) => {
+                  this.props.activateUser(user, checked, this.state.filter)
+                }}
               />
             }
             label={user.active ? this.props.intl.formatMessage({id: 'userDetails_deactivate'}) : this.props.intl.formatMessage({id: 'userDetails_activate'})}
-        />
-        <Button
+          />
+          <Button
             color="primary"
             onClick={() => {
               this.props.refreshUser(user);
               this.setState({dialogOpen: true});
             }}
-        >
-          <ListIcon style={{paddingRight: 10}}/>
-          {this.props.intl.formatMessage({id: 'userShowUserDetails'})}
-        </Button>
-        <Button
+          >
+            <ListIcon style={{paddingRight: 10}}/>
+            {this.props.intl.formatMessage({id: 'userShowUserDetails'})}
+          </Button>
+          <Button
             color="primary"
             onClick={() => {
               this.openDeleteModal(user)
             }}>
-          <DeleteIcon style={{paddingRight: 10}}/>
-          {this.props.intl.formatMessage({id: 'deleteUser_delete'})}
-        </Button>
-        <Button color="primary" onClick={() => user.isbanned === '1' ? this.openUnbanModal(user) : this.openBanModal(user)}>
-          <WarningIcon style={{paddingRight: 10}}/>
-          {user.isbanned === '1' ? this.props.intl.formatMessage({id: 'unbanUser_unban'}) : this.props.intl.formatMessage({id: 'banUser_ban'})}
-        </Button>
-        <Button color="primary" onClick={() => {
-          this.props.refreshUser(user);
-          this.setState({editUserInfo: {username: user.username, email: user.email}});
-          this.openEditUserModal(user);
-        }}>
-          <CreateIcon style={{paddingRight: 10}}/>
-          {this.props.intl.formatMessage({id: 'edit'})}
-        </Button>
-      </TableCell>
-    </TableRow>
-  }
+            <DeleteIcon style={{paddingRight: 10}}/>
+            {this.props.intl.formatMessage({id: 'deleteUser_delete'})}
+          </Button>
+          <Button color="primary"
+                  onClick={() => user.isbanned === '1' ? this.openUnbanModal(user) : this.openBanModal(user)}>
+            <WarningIcon style={{paddingRight: 10}}/>
+            {user.isbanned === '1' ? this.props.intl.formatMessage({id: 'unbanUser_unban'}) : this.props.intl.formatMessage({id: 'banUser_ban'})}
+          </Button>
+          <Button color="primary" onClick={() => {
+            this.props.refreshUser(user);
+            this.setState({editUserInfo: {username: user.username, email: user.email}});
+            this.openEditUserModal(user);
+          }}>
+            <CreateIcon style={{paddingRight: 10}}/>
+            {this.props.intl.formatMessage({id: 'edit'})}
+          </Button>
+        </TableCell>
+      </TableRow>
+    )
+  };
 
   /**
    * Render the dialogs
    * @return {Node} The dialogs
    */
   renderDialogs = () =>
-      <div>
-        <DialogWithButtons
-            title={this.props.intl.formatMessage({id: 'userDetails'})}
-            description={this.renderUserDetailsDesc()}
-            submitAction={this.props.intl.formatMessage({id: 'close'})}
-            isOpen={this.state.dialogOpen}
-            loading={this.props.userDetails.loading}
-            submit={() => this.setState({dialogOpen: false})}
-            close={() => this.setState({dialogOpen: false})}
-        />
-        <DialogWithButtons
-            title={this.props.intl.formatMessage({id: 'deleteUser_title'})}
-            description={this.renderUserDeleteDesc()}
-            submitAction={this.props.intl.formatMessage({id: 'deleteUser_ok'})}
-            cancelAction={this.props.intl.formatMessage({id: 'deleteUser_cancel'})}
-            isOpen={this.state.deleteUserDialogOpen}
-            submit={() => {
-              this.props.deleteUser(this.state.toBeDeletedUser, this.state.filter);
-              this.setState({deleteUserDialogOpen: false})
+    <div>
+      <DialogWithButtons
+        title={this.props.intl.formatMessage({id: 'userDetails'})}
+        description={this.renderUserDetailsDesc()}
+        submitAction={this.props.intl.formatMessage({id: 'close'})}
+        isOpen={this.state.dialogOpen}
+        loading={this.props.userDetails.loading}
+        submit={() => this.setState({dialogOpen: false})}
+        close={() => this.setState({dialogOpen: false})}
+      />
+      <DialogWithButtons
+        title={this.props.intl.formatMessage({id: 'deleteUser_title'})}
+        description={this.renderUserDeleteDesc()}
+        submitAction={this.props.intl.formatMessage({id: 'deleteUser_ok'})}
+        cancelAction={this.props.intl.formatMessage({id: 'deleteUser_cancel'})}
+        isOpen={this.state.deleteUserDialogOpen}
+        submit={() => {
+          this.props.deleteUser(this.state.toBeDeletedUser, this.state.filter);
+          this.setState({deleteUserDialogOpen: false})
 
-            }}
-            close={() => this.setState({deleteUserDialogOpen: false})}
-        />
-        <DialogWithButtons
-            textField={{label: this.props.intl.formatMessage({id: 'banUser_reason'}), fullWidth: true}}
-            title={this.props.intl.formatMessage({id: 'banUser_title'}) + ' ' + (this.state.toBeBannedUser ? this.state.toBeBannedUser.username : '')}
-            description={this.renderUserBanDesc()}
-            submitAction={this.props.intl.formatMessage({id: 'banUser_ok'})}
-            cancelAction={this.props.intl.formatMessage({id: 'banUser_cancel'})}
-            isOpen={this.state.banUserDialogOpen}
-            submit={(data) => {
-              this.setState({banInfo: {...this.state.banInfo, reason: data.value}}, () => {
-                this.props.banUser(this.state.toBeBannedUser, this.state.banInfo, this.state.filter);
-                this.setState({banInfo: {reason: '', expire: {amount: '', indicator: ''}}, banUserDialogOpen: false});
-              })
-            }}
-            close={() => {
-              this.setState({banInfo: {reason: '', expire: {amount: '', indicator: ''}}, banUserDialogOpen: false});
-            }}
-        />
-        <DialogWithButtons
-            // textField={{label: this.props.intl.formatMessage({id: 'banUser_reason'}), fullWidth: true}}
-            title={this.props.intl.formatMessage({id: 'unbanUser_title'}) + ' ' + (this.state.toBeUnbannedUser ? this.state.toBeUnbannedUser.username : '') + '?'}
-            // description={this.renderUserBanDesc()}
-            submitAction={this.props.intl.formatMessage({id: 'unbanUser_ok'})}
-            cancelAction={this.props.intl.formatMessage({id: 'unbanUser_cancel'})}
-            isOpen={this.state.unbanUserDialogOpen}
-            submit={(data) => {
-              this.setState({banInfo: {...this.state.banInfo, reason: data.value}}, () => {
-                this.props.unbanUser(this.state.toBeUnbannedUser, this.state.banInfo, this.state.filter);
-                this.setState({banInfo: {reason: '', expire: {amount: '', indicator: ''}}, unbanUserDialogOpen: false});
-              })
-            }}
-            close={() => {
-              this.setState({banInfo: {reason: '', expire: {amount: '', indicator: ''}}, unbanUserDialogOpen: false});
-            }}
-        />
-        <DialogWithButtons
-            title={this.props.intl.formatMessage({id: 'edit'})}
-            description={this.renderEditUser()}
-            submitAction={this.props.intl.formatMessage({id: 'ok'})}
-            cancelAction={this.props.intl.formatMessage({id: 'cancel'})}
-            isOpen={this.state.editUserDialogOpen}
-            submit={() => {
-              this.props.editUser(this.state.toBeEditedUser, this.state.editUserInfo, this.state.filter);
-              this.setState({editUserDialogOpen: false})
+        }}
+        close={() => this.setState({deleteUserDialogOpen: false})}
+      />
+      <DialogWithButtons
+        textField={{label: this.props.intl.formatMessage({id: 'banUser_reason'}), fullWidth: true}}
+        title={this.props.intl.formatMessage({id: 'banUser_title'}) + ' ' + (this.state.toBeBannedUser ? this.state.toBeBannedUser.username : '')}
+        description={this.renderUserBanDesc()}
+        submitAction={this.props.intl.formatMessage({id: 'banUser_ok'})}
+        cancelAction={this.props.intl.formatMessage({id: 'banUser_cancel'})}
+        isOpen={this.state.banUserDialogOpen}
+        submit={(data) => {
+          this.setState({banInfo: {...this.state.banInfo, reason: data.value}}, () => {
+            this.props.banUser(this.state.toBeBannedUser, this.state.banInfo, this.state.filter);
+            this.setState({banInfo: {reason: '', expire: {amount: '', indicator: ''}}, banUserDialogOpen: false});
+          })
+        }}
+        close={() => {
+          this.setState({banInfo: {reason: '', expire: {amount: '', indicator: ''}}, banUserDialogOpen: false});
+        }}
+      />
+      <DialogWithButtons
+        // textField={{label: this.props.intl.formatMessage({id: 'banUser_reason'}), fullWidth: true}}
+        title={this.props.intl.formatMessage({id: 'unbanUser_title'}) + ' ' + (this.state.toBeUnbannedUser ? this.state.toBeUnbannedUser.username : '') + '?'}
+        // description={this.renderUserBanDesc()}
+        submitAction={this.props.intl.formatMessage({id: 'unbanUser_ok'})}
+        cancelAction={this.props.intl.formatMessage({id: 'unbanUser_cancel'})}
+        isOpen={this.state.unbanUserDialogOpen}
+        submit={(data) => {
+          this.setState({banInfo: {...this.state.banInfo, reason: data.value}}, () => {
+            this.props.unbanUser(this.state.toBeUnbannedUser, this.state.banInfo, this.state.filter);
+            this.setState({banInfo: {reason: '', expire: {amount: '', indicator: ''}}, unbanUserDialogOpen: false});
+          })
+        }}
+        close={() => {
+          this.setState({banInfo: {reason: '', expire: {amount: '', indicator: ''}}, unbanUserDialogOpen: false});
+        }}
+      />
+      <DialogWithButtons
+        title={this.props.intl.formatMessage({id: 'edit'})}
+        description={this.renderEditUser()}
+        submitAction={this.props.intl.formatMessage({id: 'ok'})}
+        cancelAction={this.props.intl.formatMessage({id: 'cancel'})}
+        isOpen={this.state.editUserDialogOpen}
+        submit={() => {
+          this.props.editUser(this.state.toBeEditedUser, this.state.editUserInfo, this.state.filter);
+          this.setState({editUserDialogOpen: false})
 
-            }}
-            close={() => this.setState({editUserDialogOpen: false})}
-        />
-      </div>
+        }}
+        close={() => this.setState({editUserDialogOpen: false})}
+      />
+    </div>
   ;
 
   /**
@@ -587,65 +590,67 @@ export class Users extends React.Component {
    */
   render() {
     return (
-        <div style={{width: '150vw'}}>
-          {this.renderDialogs()}
-          {this.renderProgressBar()}
-          <Grid container>
-            <Grid item xs={12}>
-              <Paper style={theme.paper}>
-                <InputHandler
-                    btnName="Go"
-                    labelName="Filter"
-                    onSubmit={(value, fields) => {
-                      this.setState({filter: {username: value, email: value, ...fields}}, () => {
-                        this.props.filterUsers({username: value, email: value});
-                      });
-                    }}
-                />
-              </Paper></Grid></Grid>
-          <Table>
-            <TableHead>
-              <TableRow>
-                <TableCell>
-                  {this.props.intl.formatMessage({id: 'userId'})}
-                </TableCell>
-                <TableCell>
-                  {this.props.intl.formatMessage({id: 'username'})}
-                </TableCell>
-                <TableCell>
-                  {this.props.intl.formatMessage({id: 'userEmail'})}
-                </TableCell>
-                <TableCell>
-                  {this.props.intl.formatMessage({id: 'status'})}
-                </TableCell>
-                <TableCell>
-                  {this.props.intl.formatMessage({id: 'reports'})}
-                </TableCell>
-                <TableCell>
-                  {this.props.intl.formatMessage({id: 'createdAt'})}
-                </TableCell>
-                <TableCell/>
-              </TableRow>
-            </TableHead>
+      <div style={{width: '100vw'}}>
+        {this.renderDialogs()}
+        {this.renderProgressBar()}
+        <Grid container>
+          <Grid item xs={12}>
+            <Paper style={theme.paper}>
+              <InputHandler
+                btnName="Go"
+                labelName="Filter"
+                onSubmit={(value, fields) => {
+                  this.setState({filter: {username: value, email: value, ...fields}}, () => {
+                    this.props.filterUsers({username: value, email: value});
+                  });
+                }}
+              />
+            </Paper>
+          </Grid>
+        </Grid>
+        <Table>
+          <TableHead>
+            <TableRow>
+              <TableCell>
+                {this.props.intl.formatMessage({id: 'userId'})}
+              </TableCell>
+              <TableCell>
+                {this.props.intl.formatMessage({id: 'username'})}
+              </TableCell>
+              <TableCell>
+                {this.props.intl.formatMessage({id: 'userEmail'})}
+              </TableCell>
+              <TableCell>
+                {this.props.intl.formatMessage({id: 'status'})}
+              </TableCell>
+              <TableCell>
+                {this.props.intl.formatMessage({id: 'reports'})}
+              </TableCell>
+              <TableCell>
+                {this.props.intl.formatMessage({id: 'createdAt'})}
+              </TableCell>
+              <TableCell/>
+            </TableRow>
+          </TableHead>
 
-            <TableBody>
-              {// Loop over each user and render a <TableRow>
-                this.props.users.data.map(user =>
-                    this.renderUserRow(user)
-                )}
-            </TableBody>
-          </Table>
-          <br/>
-          <div style={{textAlign: 'center'}}>
-            <Button color="primary">
-              <CSVLink data={this.props.users.data} filename={'user-list.csv'}>
-                Download User List
-              </CSVLink>
-              <ArrowDropDownCircle/>
-            </Button>
-          </div>
-          <br/>
+          <TableBody>
+            {// Loop over each user and render a <TableRow>
+              this.props.users.data.map(user =>
+                this.renderUserRow(user)
+              )}
+          </TableBody>
+        </Table>
+        <br/>
+        <div style={{textAlign: 'center'}}>
+          <Button color="primary">
+            <CSVLink data={this.props.users.data} filename={'user-list.csv'}>
+              Download User List
+            </CSVLink>
+            <ArrowDropDownCircle/>
+          </Button>
         </div>
+        <br/>
+      </div>
     );
   }
 }
