@@ -8,17 +8,6 @@ import Typography from 'material-ui/Typography';
 
 import CardGridWrapper from '../components/CardGridWrapper';
 
-const styles = {
-  cards: {
-    // background: `url(${chilicorn})`,
-    // backgroundColor: theme.palette.primary[100],
-    // backgroundSize: 'contain',
-    // backgroundPosition: 'center',
-    // backgroundRepeat: 'no-repeat',
-    width: '35vw'
-  }
-};
-
 const mapStateToProps = state => ({});
 
 const mapDispatchToProps = dispatch => ({
@@ -30,7 +19,6 @@ const mapDispatchToProps = dispatch => ({
 export class Home extends React.Component {
   renderReportCard = () => (
     <Card
-      style={styles.cards}
       className="Reportbtn"
       onClick={() => {
         this.props.changeView('/reports');
@@ -52,7 +40,6 @@ export class Home extends React.Component {
 
   renderFeedbackCard = () => (
     <Card
-      style={styles.cards}
       className="Reportbtn"
       onClick={() => {
         this.props.changeView('/feedbacks');
@@ -67,7 +54,6 @@ export class Home extends React.Component {
 
   renderUserCard = () => (
     <Card
-      style={styles.cards}
       className="Reportbtn"
       onClick={() => {
         this.props.changeView('/users');
@@ -82,7 +68,6 @@ export class Home extends React.Component {
 
   renderMetricsCard = () => (
     <Card
-      style={styles.cards}
       className="Reportbtn"
       onClick={() => {
         this.props.changeView('/metrics');
@@ -97,7 +82,6 @@ export class Home extends React.Component {
 
   renderEventsCard = () => (
     <Card
-      style={styles.cards}
       className="Reportbtn"
       onClick={() => {
         this.props.changeView('/events');
@@ -112,7 +96,6 @@ export class Home extends React.Component {
 
   renderTagsCard = () => (
     <Card
-      style={styles.cards}
       className="Reportbtn"
       onClick={() => {
         this.props.changeView('/tags');
