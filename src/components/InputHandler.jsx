@@ -67,16 +67,29 @@ class InputHandler extends React.Component {
         <Button
           color="primary"
           key="submit"
-          onClick={async () => {
-            await onSubmit(this.props.addTags ? this.state : this.state.value);
-            this.setState(initialState);
-          }}
-            >
-          {this.props.btnName}
-            </Button>
-            </div>
-            )
+          onClick={() => {
+            if (this.state.value) {
+              onSubmit(this.props.addTags ? this.state : this.state.value);
             }
-        }
+          }}
+        >
+          {this.props.btnName}
+        </Button>
+        <Button
+          color="primary"
+          key="clear"
+          onClick={() => {
+            if (this.state.value) {
+              onSubmit(this.props.addTags ? initialState : initialState.value);
+              this.setState(initialState);
+            }
+          }}
+        >
+          Clear
+        </Button>
+      </div>
+    )
+  }
+}
 
-        export default InputHandler;
+export default InputHandler;
