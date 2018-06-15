@@ -26,7 +26,7 @@ let apiRoot;
 if (process.env.NODE_ENV === 'development') {
   apiRoot = 'http://localhost:3888';
 } else {
-  apiRoot = 'https://friendshipbackend.herokuapp.com';
+  apiRoot = 'https://friendshipapp-backend.herokuapp.com';
 }
 
 const rest = reduxApi({
@@ -202,7 +202,7 @@ const rest = reduxApi({
   },
 
   auth: {
-    url: `${apiRoot}/users/authenticate`,
+    url: `${apiRoot}/users/authenticateAdmin`,
     transformer: (data = {}) => {
       if (data.token) {
         return {
