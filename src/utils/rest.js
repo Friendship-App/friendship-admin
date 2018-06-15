@@ -202,7 +202,7 @@ const rest = reduxApi({
   },
 
   auth: {
-    url: `${apiRoot}/users/authenticate`,
+    url: `${apiRoot}/users/authenticateAdmin`,
     transformer: (data = {}) => {
       if (data.token) {
         return {
