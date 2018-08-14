@@ -27,3 +27,11 @@ and additionally includes:
 * [redux-api](https://github.com/lexich/redux-api), store REST API responses and status in redux
 * [react-router-redux](https://github.com/ReactTraining/react-router/tree/master/packages/react-router-redux), sync router state with redux
 * [redux-act](https://github.com/pauldijou/redux-act), use actions themselves as references inside reducers
+
+### Docker
+#### Launching trough docker-compose (admin & backend+db)
+    docker-compose build
+    docker-compose up
+
+##### When done, remove containers and networks
+    docker-compose down
