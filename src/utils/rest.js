@@ -24,12 +24,28 @@ Information about request: `state.teams.error`, `state.teams.sync`, `state.teams
 let apiRoot;
 
 if (process.env.NODE_ENV === 'development') {
-  apiRoot = 'http://localhost:3888';
+  apiRoot = 'http://localhost:3000/api/admin';
 } else {
   apiRoot = 'https://friendshipapp-backend.herokuapp.com';
 }
 
 const rest = reduxApi({
+  auth: {
+    url: `${apiRoot}/login`,
+    transformer: (data = {}) => {
+      if (data.token) {
+        return {
+          ...data,
+          decoded: jwtDecode(data.token),
+        };
+      }
+      return data;
+    },
+
+    options: {
+      method: 'POST',
+    },
+  },
   users: {
     url: `${apiRoot}/users`,
     transformer: transformers.array,
@@ -122,6 +138,7 @@ const rest = reduxApi({
       method: 'POST',
     },
   },
+
   editUser: {
     url: `${apiRoot}/users/:userId`,
     crud: true,
@@ -198,23 +215,6 @@ const rest = reduxApi({
     crud: false,
     options: {
       method: 'GET',
-    },
-  },
-
-  auth: {
-    url: `${apiRoot}/users/authenticateAdmin`,
-    transformer: (data = {}) => {
-      if (data.token) {
-        return {
-          ...data,
-          decoded: jwtDecode(data.token),
-        };
-      }
-      return data;
-    },
-
-    options: {
-      method: 'POST',
     },
   },
 })
