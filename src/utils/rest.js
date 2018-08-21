@@ -51,6 +51,10 @@ const rest = reduxApi({
     transformer: transformers.array,
     crud: true,
   },
+  userDetails: {
+    url: `${apiRoot}/users/:userId`,
+    crud: true,
+  },
   tags: {
     url: `${apiRoot}/tags`,
     transformer: transformers.array,
@@ -106,10 +110,6 @@ const rest = reduxApi({
   },
   tagDetails: {
     url: `${apiRoot}/tags/:tagId`,
-    crud: true,
-  },
-  userDetails: {
-    url: `${apiRoot}/users/:userId`,
     crud: true,
   },
   banUser: {

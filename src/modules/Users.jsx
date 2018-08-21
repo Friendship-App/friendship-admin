@@ -155,7 +155,7 @@ const mapDispatchToProps = dispatch => ({
    * @return {void}
    */
   activateUser: (user, checked, filter) => {
-    dispatch(rest.actions.userDetails.patch({userId: user.id}, {body: JSON.stringify({active: checked})}, () => {
+    dispatch(rest.actions.userDetails.patch({userId: user.id}, {body: JSON.stringify({toggleTo: checked})}, () => {
       if (filter.username || filter.email) {
         dispatch(rest.actions.users.get({filter: filter}));
       }
