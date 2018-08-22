@@ -89,7 +89,7 @@ const mapDispatchToProps = dispatch => ({
    * @return {void}
    */
   deleteUser: (user, filter) => {
-    dispatch(rest.actions.userDetails.delete({userId: user.id}, null, () => {
+    dispatch(rest.actions.userDetails.post({userId: user.id}, null, () => {
       if (filter.username || filter.email) {
         dispatch(rest.actions.users.get({filter: filter}));
       }

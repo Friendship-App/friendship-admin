@@ -26,7 +26,7 @@ let apiRoot;
 if (process.env.NODE_ENV === 'development') {
   apiRoot = 'http://localhost:3000/api/admin';
 } else {
-  apiRoot = 'https://friendshipapp-backend.herokuapp.com';
+  apiRoot = 'https://friendshipapp-backend.herokuapp.com/api/admin';
 }
 
 const rest = reduxApi({
@@ -52,8 +52,11 @@ const rest = reduxApi({
     crud: true,
   },
   userDetails: {
-    url: `${apiRoot}/users/:userId`,
+    url: `${apiRoot}/users/delete/:userId`,
     crud: true,
+    options: {
+      method: 'POST',
+    },
   },
   tags: {
     url: `${apiRoot}/tags`,
