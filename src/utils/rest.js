@@ -52,7 +52,31 @@ const rest = reduxApi({
     crud: true,
   },
   userDetails: {
+    url: `${apiRoot}/users/:userId`,
+    crud: true,
+  },
+  deleteUser: {
     url: `${apiRoot}/users/delete/:userId`,
+    crud: true,
+  },
+  taglist: {
+    url: `${apiRoot}/tags`,
+    transformer: transformers.array,
+    crud: true,
+    options: {
+      method: 'GET'
+    }
+  },
+  deleteTag: {
+    url: `${apiRoot}/tags/delete/:tagId`,
+    crud: true,
+    options: {
+      method: 'POST'
+    }
+  },
+  addTag: {
+    url: `${apiRoot}/tags/add`,
+    transformer: transformers.array,
     crud: true,
     options: {
       method: 'POST',
@@ -65,11 +89,6 @@ const rest = reduxApi({
     options: {
       method: 'POST',
     },
-  },
-  newtag: {
-    url: `${apiRoot}/tags`,
-    transformer: transformers.array,
-    crud: true,
   },
   activateTag: {
     url: `${apiRoot}/tags/activate/:tagId`,
@@ -104,15 +123,6 @@ const rest = reduxApi({
   },
   feedbackDetails: {
     url: `${apiRoot}/feedbacks/:feedbackId`,
-    crud: true,
-  },
-  taglist: {
-    url: `${apiRoot}/tags_user/taglist`,
-    transformer: transformers.array,
-    crud: true,
-  },
-  tagDetails: {
-    url: `${apiRoot}/tags/:tagId`,
     crud: true,
   },
   banUser: {

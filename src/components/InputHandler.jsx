@@ -51,19 +51,6 @@ class InputHandler extends React.Component {
           value={this.state.value}
           style={{width: 200}}
         />
-        {this.props.addTags ? (
-          <TextField
-            select
-            label="Select category"
-            margin="normal"
-            onChange={(evt) => this.setState({category: evt.target.value})}
-            value={this.state.category}
-            style={{width: 150, marginLeft: 20}}
-          >
-            <MenuItem value={1}>Activity</MenuItem>
-            <MenuItem value={2}>Interest</MenuItem>
-          </TextField>
-        ) : null}
         <Button
           color="primary"
           key="submit"

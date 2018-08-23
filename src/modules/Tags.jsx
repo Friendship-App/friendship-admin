@@ -58,7 +58,7 @@ const mapDispatchToProps = dispatch => ({
    * @return {void}
    */
   deleteTagUser: (tag, filter) => {
-    dispatch(rest.actions.tagDetails.delete({tagId: tag.id}, null, () => {
+    dispatch(rest.actions.deleteTag.post({tagId: tag.id}, null, () => {
       if (filter.name) {
         dispatch(rest.actions.taglist.get({filter: filter}));
       }
@@ -72,13 +72,17 @@ const mapDispatchToProps = dispatch => ({
     dispatch(rest.actions.taglist.get({filter: filter}));
   },
 
-  onAddTag: (newtag) => {
-    dispatch(rest.actions.tags(null, {
+  addTag: (newtag) => {
+    console.log(newtag);
+    dispatch(rest.actions.addTag(null, {
+      body: JSON.stringify({name: newtag})
+    }, () => dispatch(rest.actions.taglist())))
+    /*dispatch(rest.actions.tags(null, {
         body: JSON.stringify({name: newtag.value, category: newtag.category})
     }, () => {
       dispatch(rest.actions.taglist())
     }
-    ));
+    ));*/
   },
 
   /**
@@ -172,10 +176,7 @@ export class Tags extends React.Component {
         {tag.nbHates}
       </TableCell>
       <TableCell>
-        {tag.creator}
-      </TableCell>
-      <TableCell>
-        {tag.status ? "1" : "2"}
+        {tag.creatorId}
       </TableCell>
       <TableCell>
         {moment(tag.createdAt).format('DD-MM-YYYY hh:mm')}
@@ -187,11 +188,11 @@ export class Tags extends React.Component {
         <FormControlLabel
           control={
             <Switch
-              checked={tag.status}
+              checked={tag.active}
               onChange={(event, checked) => this.props.activateTag(tag, checked, this.state.filter)}
             />
           }
-          label={this.props.intl.formatMessage({id: 'userDetails_activate'})}
+          label={tag.active ? this.props.intl.formatMessage({id: 'userDetails_deactivate'}) : this.props.intl.formatMessage({id: 'userDetails_activate'})}
         />
         <Button
           color="primary"
@@ -249,7 +250,7 @@ export class Tags extends React.Component {
                 labelName="+ Add new tag"
                 addTags
                 onSubmit={(newTag) =>{
-                  this.props.onAddTag(newTag);
+                  this.props.addTag(newTag.value);
                 }}
               />
 
@@ -274,9 +275,6 @@ export class Tags extends React.Component {
               </TableCell>
               <TableCell>
                 {this.props.intl.formatMessage({id: 'tagCreator'})}
-              </TableCell>
-              <TableCell>
-                {this.props.intl.formatMessage({id: 'tagStatus'})}
               </TableCell>
               <TableCell>
                 {this.props.intl.formatMessage({id: 'tagCreationdate'})}
