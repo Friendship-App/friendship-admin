@@ -69,7 +69,6 @@ const mapDispatchToProps = dispatch => ({
    * @return {void}
    */
   refresh: (filter = '') => {
-    console.log(filter);
     dispatch(rest.actions.users({username: filter}));
   },
 
