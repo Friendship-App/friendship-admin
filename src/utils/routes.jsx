@@ -54,6 +54,7 @@ import Tags from "../modules/Tags";
 import Metrics from "../modules/Metrics";
 import Reports from "../modules/Reports";
 import Feedbacks from "../modules/Feedbacks";
+import Events from "../modules/Events";
 // Routes
 const routeConfigs = [
   {
@@ -77,6 +78,15 @@ const routeConfigs = [
     path: "/tags",
     name: "Tags",
     component: Tags,
+    icon: LoyaltyIcon,
+    separator: true,
+    requiresLogin: true,
+    hideWhenScope: [null]
+  },
+  {
+    path: "/events",
+    name: "Events",
+    component: Events,
     icon: LoyaltyIcon,
     separator: true,
     requiresLogin: true,

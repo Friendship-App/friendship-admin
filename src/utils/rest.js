@@ -51,6 +51,19 @@ const rest = reduxApi({
     transformer: transformers.array,
     crud: true,
   },
+  events: {
+    url: `${apiRoot}/events`,
+    transformer: transformers.array,
+    crud: true,
+  },
+  deleteEvent: {
+    url: `${apiRoot}/events/delete/:eventId`,
+    transformer: transformers.array,
+    crud: true,
+    options: {
+      method: 'POST'
+    }
+  },
   userDetails: {
     url: `${apiRoot}/users/:userId`,
     crud: true,
