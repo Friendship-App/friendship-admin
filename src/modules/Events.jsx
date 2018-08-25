@@ -60,7 +60,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  refresh : (filter = '') => dispatch(rest.actions.events(filter)),
+  refresh : (filter = '') => dispatch(rest.actions.events({title: filter})),
   deleteEvent: eventId => dispatch(rest.actions.deleteEvent({eventId}, {}, () => {dispatch(rest.actions.events(''))}))
 });
 
@@ -292,8 +292,11 @@ export class Users extends React.Component {
         <TableCell>
           { event.title }
         </TableCell>
-        <TableCell>
+        <TableCell >
           { event.eventImage }
+        </TableCell>
+        <TableCell>
+          { event.description }
         </TableCell>
         <TableCell>
           { event.reports }
@@ -371,7 +374,7 @@ export class Users extends React.Component {
             </Paper>
           </Grid>
         </Grid>*/ }
-        <Table>
+        <Table style={{width: '100vw'}}>
           <TableHead>
             <TableRow>
               <TableCell>
@@ -382,6 +385,9 @@ export class Users extends React.Component {
               </TableCell>
               <TableCell>
                 { this.props.intl.formatMessage({id: 'eventImage'}) }
+              </TableCell>
+              <TableCell>
+                { this.props.intl.formatMessage({id: 'eventDescription'}) }
               </TableCell>
               <TableCell>
                 { this.props.intl.formatMessage({id: 'reports'}) }
