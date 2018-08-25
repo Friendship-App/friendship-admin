@@ -68,8 +68,9 @@ const mapDispatchToProps = dispatch => ({
    *
    * @return {void}
    */
-  refresh: () => {
-    dispatch(rest.actions.users());
+  refresh: (filter = '') => {
+    console.log(filter);
+    dispatch(rest.actions.users({username: filter}));
   },
 
   /**
@@ -438,7 +439,7 @@ export class Users extends React.Component {
    */
   renderUserRow = (user) => {
     return (
-      <TableRow key={user.id} style={{backgroundColor: user.isbanned === "1" ? theme.palette.error[100] : null}}>
+      <TableRow key={user.id} style={{backgroundColor: user.isbanned === "1" || user.reports > 0 ? theme.palette.error[100] : null}}>
         <TableCell>
           {user.id}
         </TableCell>
@@ -599,11 +600,7 @@ export class Users extends React.Component {
               <InputHandler
                 btnName="Go"
                 labelName="Filter"
-                onSubmit={(value, fields) => {
-                  this.setState({filter: {username: value, email: value, ...fields}}, () => {
-                    this.props.filterUsers({username: value, email: value});
-                  });
-                }}
+                onSubmit={(value, fields) => this.props.refresh(value)}
               />
             </Paper>
           </Grid>
