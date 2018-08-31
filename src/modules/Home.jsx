@@ -115,7 +115,7 @@ export class Home extends React.Component {
           {/*{this.renderReportCard()}*/}
           {/*{this.renderFeedbackCard()}*/}
           {this.renderUserCard()}
-          {/*{this.renderMetricsCard()}*/}
+          {this.renderMetricsCard()}
           {this.renderTagsCard()}
           {this.renderEventsCard()}
         </CardGridWrapper>

@@ -92,7 +92,7 @@ const routeConfigs = [
     requiresLogin: true,
     hideWhenScope: [null]
   },
-  /*{
+  {
     path: "/metrics",
     name: "Metrics",
     component: Metrics,
@@ -101,7 +101,7 @@ const routeConfigs = [
     requiresLogin: true,
     hideWhenScope: [null]
   },
-  {
+  /*{
     path: "/reports",
     name: "Reports",
     component: Reports,
