@@ -117,6 +117,7 @@ export class Home extends React.Component {
           {this.renderUserCard()}
           {this.renderMetricsCard()}
           {this.renderTagsCard()}
+          {this.renderEventsCard()}
         </CardGridWrapper>
       </div>
     );
