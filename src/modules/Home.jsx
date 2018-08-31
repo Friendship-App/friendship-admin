@@ -112,10 +112,10 @@ export class Home extends React.Component {
     return (
       <div style={{ width: '100vw' }}>
         <CardGridWrapper>
-          {this.renderReportCard()}
-          {this.renderFeedbackCard()}
+          {/*{this.renderReportCard()}*/}
+          {/*{this.renderFeedbackCard()}*/}
           {this.renderUserCard()}
-          {this.renderMetricsCard()}
+          {/*{this.renderMetricsCard()}*/}
           {this.renderTagsCard()}
           {this.renderEventsCard()}
         </CardGridWrapper>
