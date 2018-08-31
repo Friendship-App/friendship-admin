@@ -101,6 +101,15 @@ const routeConfigs = [
     requiresLogin: true,
     hideWhenScope: [null]
   },
+  {
+    path: "/tos",
+    name: "Tos",
+    component: Tos,
+    icon: CopyrightIcon,
+    separator: true,
+    requiresLogin: true,
+    hideWhenScope: [null]
+  },
   /*{
     path: "/reports",
     name: "Reports",
@@ -115,15 +124,6 @@ const routeConfigs = [
     name: "Feedbacks",
     component: Feedbacks,
     icon: FeedbackIcon,
-    separator: true,
-    requiresLogin: true,
-    hideWhenScope: [null]
-  },
-  {
-    path: "/tos",
-    name: "Tos",
-    component: Tos,
-    icon: CopyrightIcon,
     separator: true,
     requiresLogin: true,
     hideWhenScope: [null]
