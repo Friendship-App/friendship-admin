@@ -95,6 +95,14 @@ const rest = reduxApi({
       method: 'POST',
     },
   },
+  updateTag: {
+    url: `${apiRoot}/tags/update`,
+    transformer: transformers.array,
+    crud: true,
+    options: {
+      method: 'POST',
+    },
+  },
   tags: {
     url: `${apiRoot}/tags`,
     transformer: transformers.array,

@@ -16,13 +16,19 @@ import theme from '../utils/theme';
 
 import {FormControlLabel} from 'material-ui/Form';
 import Switch from 'material-ui/Switch';
+import TextField from 'material-ui/TextField';
 import DeleteIcon from 'material-ui-icons/Delete';
+import Edit from 'material-ui-icons/Edit';
 
 import {DialogContentText} from 'material-ui/Dialog';
 import DialogWithButtons from '../components/DialogWithButtons';
 
 import rest from '../utils/rest';
 import InputHandler from "../components/InputHandler";
+import Dialog from "material-ui/Dialog/Dialog";
+import DialogTitle from "material-ui/Dialog/DialogTitle";
+import DialogContent from "material-ui/Dialog/DialogContent";
+import DialogActions from "material-ui/Dialog/DialogActions";
 
 const mapStateToProps = state => ({
   tags: state.filteredTags || state.taglist,
@@ -101,6 +107,11 @@ const mapDispatchToProps = dispatch => ({
       }
     }))
   },
+  update: (tagId, name) => {
+    dispatch(rest.actions.updateTag.post(null, {body: JSON.stringify({tagId, name})}, () => {
+      dispatch(rest.actions.taglist());
+    }))
+  }
 
 
 });
@@ -134,7 +145,14 @@ export class Tags extends React.Component {
       deleteTagDialogOpen: true,
       toBeDeletedTag: tag
     });
-  }
+  };
+
+  openEditModal = (tag) => {
+    this.setState({
+      editTagDialogOpen: true,
+      toBeEditedTag: tag
+    });
+  };
 
   renderTagDetailsDesc = () =>
     <div>
@@ -147,6 +165,15 @@ export class Tags extends React.Component {
     </div>;
 
   renderTagDeleteDesc = () =>
+    <div>
+      <DialogContentText>
+        <strong>
+          {this.props.intl.formatMessage({id: 'deleteTag_description'})}
+        </strong>
+      </DialogContentText>
+    </div>;
+
+    renderTagEditDesc = () =>
     <div>
       <DialogContentText>
         <strong>
@@ -202,6 +229,14 @@ export class Tags extends React.Component {
           <DeleteIcon style={{paddingRight: 10}}/>
           {this.props.intl.formatMessage({id: 'deleteUser_delete'})}
         </Button>
+        <Button
+          color="primary"
+          onClick={() => {
+            this.openEditModal(tag)
+          }}>
+          <Edit style={{paddingRight: 10}}/>
+          {this.props.intl.formatMessage({id: 'edit'})}
+        </Button>
       </TableCell>
     </TableRow>;
 
@@ -220,6 +255,39 @@ export class Tags extends React.Component {
         }}
         close={() => this.setState({deleteTagDialogOpen: false})}
       />
+      <Dialog
+        open={this.state.editTagDialogOpen}
+        onClose={() => this.setState({editTagDialogOpen: false})}
+        aria-labelledby="form-dialog-title"
+      >
+        <DialogTitle id="form-dialog-title">Update Tag</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            Update tag name
+          </DialogContentText>
+          <TextField
+            autoFocus
+            margin="dense"
+            id="name"
+            label="Tag name"
+            type="text"
+            fullWidth
+            defaultValue={this.state.toBeEditedTag ? this.state.toBeEditedTag.name : ''}
+            onChange={(event) => this.setState({newTagName: event.target.value})}
+          />
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => this.setState({editTagDialogOpen: false})} color="primary">
+            Cancel
+          </Button>
+          <Button onClick={() => {
+            this.props.update(this.state.toBeEditedTag.id, this.state.newTagName ? this.state.newTagName  : this.state.toBeEditedTag.name);
+            this.setState({editTagDialogOpen: false})}
+          } color="primary">
+            Update
+          </Button>
+        </DialogActions>
+      </Dialog>
     </div>
 
   /**
