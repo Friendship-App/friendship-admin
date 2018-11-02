@@ -118,7 +118,7 @@ const routeConfigs = [
     separator: true,
     requiresLogin: true,
     hideWhenScope: [null]
-  },
+  },*/
   {
     path: "/feedbacks",
     name: "Feedbacks",
@@ -127,7 +127,7 @@ const routeConfigs = [
     separator: true,
     requiresLogin: true,
     hideWhenScope: [null]
-  },*/
+  },
   {
     path: "/preferences",
     name: "Preferences",

@@ -22,8 +22,8 @@ import Paper from 'material-ui/Paper';
 import FullscreenSpinner from '../components/FullscreenSpinner';
 
 const mapStateToProps = state => ({
-  feedbacks: state.feedbacks,
-  feedbacksLoading: state.feedbacks.loading,
+  feedbacks: state.totalFeedbacks,
+  feedbacksLoading: state.totalFeedbacks.loading,
   totalFeedbacks: state.totalFeedbacks
 });
 
@@ -65,7 +65,7 @@ export class Feedbacks extends React.Component {
   componentWillMount() {
     const {getFeedbacksByPage, getTotalFeedbacks} = this.props;
     getTotalFeedbacks(); //for pagination, get total number of feedbacks
-    getFeedbacksByPage(1);
+    // getFeedbacksByPage(1);
   }
 
   renderProgressBar() {
@@ -198,11 +198,10 @@ export class Feedbacks extends React.Component {
   renderFeedbacks = feedback => (
       <TableRow key={feedback.id}>
         <TableCell style={styles}>{feedback.id}</TableCell>
-        <TableCell style={styles}>{feedback.given_by}</TableCell>
         <TableCell style={styles}>{feedback.username}</TableCell>
-        <TableCell style={styles}>{feedback.rating}</TableCell>
-        <TableCell>{moment(feedback.createdAt).format('DD-MM-YYYY')}</TableCell>
-        <TableCell numeric>
+        {/*<TableCell style={styles}>{feedback.username}</TableCell>*/}
+        <TableCell style={styles}>{feedback.description}</TableCell>
+        {/*<TableCell numeric>
           <Button
               onClick={() =>
                   this.setState({
@@ -221,7 +220,7 @@ export class Feedbacks extends React.Component {
             <ListIcon style={{paddingRight: 10}}/>
             {this.props.intl.formatMessage({id: 'feedback_detail'})}
           </Button>
-        </TableCell>
+        </TableCell>*/}
       </TableRow>
   );
 
@@ -255,7 +254,7 @@ export class Feedbacks extends React.Component {
   );
 
   render() {
-    if (this.props.feedbacksLoading || !this.props.feedbacks.sync) {
+    if (this.props.feedbacksLoading) {
       return <FullscreenSpinner/>;
     }
 
@@ -275,19 +274,23 @@ export class Feedbacks extends React.Component {
                 <TableCell>
                   {this.props.intl.formatMessage({id: 'feedbackId'})}
                 </TableCell>
-                <TableCell>
+                {/*<TableCell>
                   {this.props.intl.formatMessage({id: 'feedback_userId'})}
-                </TableCell>
+                </TableCell>*/}
                 <TableCell>
                   {this.props.intl.formatMessage({id: 'username'})}
                 </TableCell>
-                <TableCell style={{whiteSpace: 'normal'}}>
+                <TableCell>
+                  {this.props.intl.formatMessage({id: 'feedback_description'})}
+                </TableCell>
+                {/*<TableCell style={{whiteSpace: 'normal'}}>
                   {this.props.intl.formatMessage({id: 'feedback_rating'})}
                 </TableCell>
                 <TableCell>
                   {this.props.intl.formatMessage({id: 'feedback_date'})}
-                </TableCell>
-                <TableCell />
+                </TableCell>*/}
+
+                {/*<TableCell />*/}
               </TableRow>
             </TableHead>
             <TableBody>
@@ -296,13 +299,13 @@ export class Feedbacks extends React.Component {
               )}
             </TableBody>
           </Table>
-          <Pagination
+          {/*<Pagination
               className="ant-pagination"
               style={{display: 'flex', justifyContent: 'center'}}
               onChange={this.onPageChange}
               defaultCurrent={this.state.currentPage}
               total={Number(this.props.totalFeedbacks.data[0].count)}
-          />
+          />*/}
         </Paper>
     );
   }
