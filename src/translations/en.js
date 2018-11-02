@@ -130,6 +130,7 @@ export default {
   feedback_deleteConfirm: 'Are you sure you want to delete this feedback?',
   feedback_delete: 'Delete feedback',
   feedback_detail: 'Details',
+  feedback_description: 'Message',
 
   //reports
   report_reporter: 'Reporter',

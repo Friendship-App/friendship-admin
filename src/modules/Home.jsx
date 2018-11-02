@@ -46,7 +46,7 @@ export class Home extends React.Component {
       }}
     >
       <CardContent>
-        <Typography component="p">number of New feedbacks</Typography>
+        <Typography component="p">Feedbacks</Typography>
       </CardContent>
       <CardActions />
     </Card>
@@ -113,11 +113,11 @@ export class Home extends React.Component {
       <div style={{ width: '100vw' }}>
         <CardGridWrapper>
           {/*{this.renderReportCard()}*/}
-          {/*{this.renderFeedbackCard()}*/}
           {this.renderUserCard()}
           {this.renderMetricsCard()}
           {this.renderTagsCard()}
           {this.renderEventsCard()}
+          {this.renderFeedbackCard()}
         </CardGridWrapper>
       </div>
     );
