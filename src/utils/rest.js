@@ -66,6 +66,7 @@ const rest = reduxApi({
   },
   userDetails: {
     url: `${apiRoot}/users/:userId`,
+    // transformer: transformers.array,
     crud: true,
   },
   deleteUser: {
