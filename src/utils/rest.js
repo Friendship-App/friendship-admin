@@ -175,7 +175,7 @@ const rest = reduxApi({
   },
 
   editUser: {
-    url: `${apiRoot}/users/:userId`,
+    url: `${apiRoot}/users/edit/:userId`,
     crud: true,
     options: {
       method: 'PATCH',

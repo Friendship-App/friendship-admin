@@ -178,13 +178,6 @@ const mapDispatchToProps = dispatch => ({
 
     dispatch(rest.actions.editUser({userId: user.id}, {
       body: JSON.stringify(info)
-    }, () => {
-      if (filter.username || filter.email) {
-        dispatch(rest.actions.users.get({filter: filter}));
-      }
-      else {
-        dispatch(rest.actions.users());
-      }
     }))
 
   }
@@ -586,8 +579,8 @@ export class Users extends React.Component {
         isOpen={ this.state.editUserDialogOpen }
         submit={ () => {
           this.props.editUser(this.state.toBeEditedUser, this.state.editUserInfo, this.state.filter);
-          this.setState({editUserDialogOpen: false})
-
+          this.setState({editUserDialogOpen: false});
+          this.props.refresh();
         } }
         close={ () => this.setState({editUserDialogOpen: false}) }
       />
