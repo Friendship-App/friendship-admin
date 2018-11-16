@@ -364,9 +364,9 @@ export class Users extends React.Component {
           { this.props.intl.formatMessage({id: 'report_description'}) }
         </b>
         <ul>
-          { this.props.userDetails.data.reports.map(report => {
+          { this.props.data ? this.props.userDetails.data.reports.map(report => {
           return <li>{report.description}</li>
-        }) }
+        }) : null}
         </ul>
       </DialogContentText>
     </div>
