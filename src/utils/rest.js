@@ -254,7 +254,7 @@ const rest = reduxApi({
   },
 
   sendPushNotification: {
-    url: `${apiRoot}/notifications/send`,
+    url: `${apiRoot}/pushNotifications/send`,
     crud: true,
     options: {
       method: 'POST',
