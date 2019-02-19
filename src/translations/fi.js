@@ -11,6 +11,7 @@ export default {
   Tos: 'Käyttöehdot',
   Reports: 'Ilmoitukset',
   Feedbacks: 'palautteita',
+  PushNotifications: 'Push-ilmoitukset',
   // Users view
   userId: 'ID',
   username: '???',
@@ -63,6 +64,9 @@ export default {
   tagCreationDate: '',
   tagRelatedEvent: '',
 
+  // Push notifications view
+  pushNotifications_pushNotification: 'Push-ilmoitus',
+
   // Delete tag
   deleteTag_title: 'Poista tägi',
   deleteTag_description:
@@ -100,4 +104,6 @@ export default {
   cancel: 'Peruuta',
   close: 'Sulje',
   edit: 'Muokkaa',
+  send: 'Lähetä',
+  clear: 'Tyhjennä',
 };

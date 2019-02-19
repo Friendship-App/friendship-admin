@@ -252,6 +252,14 @@ const rest = reduxApi({
       method: 'GET',
     },
   },
+
+  sendPushNotification: {
+    url: `${apiRoot}/notifications/send`,
+    crud: true,
+    options: {
+      method: 'POST',
+    },
+  },
 })
   .use('options', (url, params, getState) => {
     const { auth: { data: { token } } } = getState();

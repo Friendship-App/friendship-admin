@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import {injectIntl} from 'react-intl';
 
 import TextField from 'material-ui/TextField';
 import Button from 'material-ui/Button';
@@ -41,7 +42,8 @@ class InputHandler extends React.Component {
       onSubmit,
       textField,
       multiline,
-      submitOnClear
+      submitOnClear,
+      intl,
     } = this.props;
 
     return (
@@ -77,11 +79,11 @@ class InputHandler extends React.Component {
             }
           }}
         >
-          Clear
+          {intl.formatMessage({id: 'clear'})}
         </Button>
       </div>
     )
   }
 }
 
-export default InputHandler;
+export default injectIntl(InputHandler);

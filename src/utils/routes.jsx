@@ -43,6 +43,7 @@ import LoginIcon from "material-ui-icons/AccountCircle";
 import LogoutIcon from "material-ui-icons/ExitToApp";
 import ReportIcon from "material-ui-icons/Report";
 import FeedbackIcon from "material-ui-icons/Feedback";
+import PushNotificationIcon from "material-ui-icons/Message";
 // Components
 import Home from "../modules/Home";
 import Users from "../modules/Users";
@@ -55,6 +56,7 @@ import Metrics from "../modules/Metrics";
 import Reports from "../modules/Reports";
 import Feedbacks from "../modules/Feedbacks";
 import Events from "../modules/Events";
+import PushNotifications from "../modules/PushNotifications";
 // Routes
 const routeConfigs = [
   {
@@ -124,6 +126,15 @@ const routeConfigs = [
     name: "Feedbacks",
     component: Feedbacks,
     icon: FeedbackIcon,
+    separator: true,
+    requiresLogin: true,
+    hideWhenScope: [null]
+  },
+  {
+    path: "/pushnotifications",
+    name: "PushNotifications",
+    component: PushNotifications,
+    icon: PushNotificationIcon,
     separator: true,
     requiresLogin: true,
     hideWhenScope: [null]
