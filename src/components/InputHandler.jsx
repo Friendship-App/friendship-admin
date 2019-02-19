@@ -18,7 +18,7 @@ class InputHandler extends React.Component {
   }
 
   static propTypes = {
-    onSubmit: PropTypes.isRequired,
+    onSubmit: PropTypes.func.isRequired,
     textField: PropTypes.shape({
       label: PropTypes.string,
     }),

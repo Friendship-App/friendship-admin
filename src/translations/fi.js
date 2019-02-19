@@ -66,6 +66,9 @@ export default {
 
   // Push notifications view
   pushNotifications_pushNotification: 'Push-ilmoitus',
+  pushNotifications_sender: 'Lähettäjä',
+  pushNotifications_message: 'Viesti',
+  pushNotifications_time: 'Aika',
 
   // Delete tag
   deleteTag_title: 'Poista tägi',

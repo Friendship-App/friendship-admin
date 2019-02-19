@@ -74,7 +74,9 @@ export default {
 
   // Push notifications view
   pushNotifications_pushNotification: 'Push notification',
-
+  pushNotifications_sender: 'Sender',
+  pushNotifications_message: 'Message',
+  pushNotifications_time: 'Time',
 
   // Metrics
   metrics_day: 'Day',
