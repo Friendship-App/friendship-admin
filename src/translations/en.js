@@ -73,9 +73,10 @@ export default {
   tagRelatedEvent: 'Related event',
 
   // Push notifications view
-  pushNotifications_pushNotification: 'Push notification',
+  pushNotifications_new_push_notification: 'New push-notification',
   pushNotifications_sender: 'Sender',
   pushNotifications_message: 'Message',
+  pushNotifications_title: 'Title',
   pushNotifications_time: 'Time',
 
   // Metrics

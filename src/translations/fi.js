@@ -65,9 +65,10 @@ export default {
   tagRelatedEvent: '',
 
   // Push notifications view
-  pushNotifications_pushNotification: 'Push-ilmoitus',
+  pushNotifications_new_push_notification: 'Uusi push-ilmoitus',
   pushNotifications_sender: 'Lähettäjä',
   pushNotifications_message: 'Viesti',
+  pushNotifications_title: 'Otsikko',
   pushNotifications_time: 'Aika',
 
   // Delete tag
