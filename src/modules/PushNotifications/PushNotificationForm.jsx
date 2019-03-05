@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import { injectIntl } from 'react-intl';
-import TextField from 'material-ui/TextField';
 import Button from 'material-ui/Button';
 import Paper from 'material-ui/Paper';
 import Typography from 'material-ui/Typography';
 
 import theme from '../../utils/theme';
+import TextFieldWithEmojis from '../../components/TextFieldWithEmojis';
 
 const defaultState = {
   title: '',
@@ -34,13 +34,13 @@ class PushNotificationForm extends Component {
           <div
             style={{ display: 'flex', padding: 20, flexDirection: 'column' }}
           >
-            <TextField
+            <TextFieldWithEmojis
               label={formatMessage({ id: 'pushNotifications_title' })}
               onChange={event => this.setState({ title: event.target.value })}
               value={this.state.title}
               style={{ width }}
             />
-            <TextField
+            <TextFieldWithEmojis
               label={formatMessage({ id: 'pushNotifications_message' })}
               onChange={event => this.setState({ message: event.target.value })}
               value={this.state.message}
