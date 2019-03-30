@@ -1,9 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import {injectIntl} from 'react-intl';
 
 import TextField from 'material-ui/TextField';
 import Button from 'material-ui/Button';
-import {MenuItem, Select} from "material-ui";
 
 const initialState = {
   value: '',
@@ -17,18 +17,21 @@ class InputHandler extends React.Component {
     this.state = initialState;
   }
 
-  static PropTypes = {
-    onChange: PropTypes.isRequired,
+  static propTypes = {
+    onSubmit: PropTypes.func.isRequired,
     textField: PropTypes.shape({
       label: PropTypes.string,
     }),
-    filterButton: PropTypes.string
+    submitOnClear: PropTypes.bool,
+    multiline: PropTypes.bool,
+  }
+
+  static defaultProps = {
+    submitOnClear: true,
+    multiline: false
   }
 
   handleChange = (event) => {
-    const {
-      onChange
-    } = this.props;
     this.setState({
       value: event.target.value,
     });
@@ -38,8 +41,9 @@ class InputHandler extends React.Component {
     const {
       onSubmit,
       textField,
-      filterButton,
-      fields,
+      multiline,
+      submitOnClear,
+      intl,
     } = this.props;
 
     return (
@@ -50,6 +54,7 @@ class InputHandler extends React.Component {
           onChange={(event) => this.handleChange(event)}
           value={this.state.value}
           style={{width: 200}}
+          multiline={multiline}
         />
         <Button
           color="primary"
@@ -67,16 +72,18 @@ class InputHandler extends React.Component {
           key="clear"
           onClick={() => {
             if (this.state.value) {
-              onSubmit(this.props.addTags ? initialState : initialState.value);
+              if (submitOnClear) {
+                onSubmit(this.props.addTags ? initialState : initialState.value);
+              }
               this.setState(initialState);
             }
           }}
         >
-          Clear
+          {intl.formatMessage({id: 'clear'})}
         </Button>
       </div>
     )
   }
 }
 
-export default InputHandler;
+export default injectIntl(InputHandler);

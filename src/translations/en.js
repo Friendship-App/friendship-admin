@@ -11,6 +11,7 @@ export default {
   Reports: 'Reports',
   Metrics: 'Metrics',
   Feedbacks: 'Feedbacks',
+  PushNotifications: 'Push notifications',
   // Users view
   userId: 'ID',
   username: 'Username',
@@ -71,6 +72,13 @@ export default {
   tagCreationDate: 'Creation date',
   tagRelatedEvent: 'Related event',
 
+  // Push notifications view
+  pushNotifications_new_push_notification: 'New push-notification',
+  pushNotifications_sender: 'Sender',
+  pushNotifications_message: 'Message',
+  pushNotifications_title: 'Title',
+  pushNotifications_time: 'Time',
+
   // Metrics
   metrics_day: 'Day',
   metrics_registered_users: 'Registered users',
@@ -111,6 +119,8 @@ export default {
   edit: 'Edit',
   save: 'Save',
   Yes: 'Yes',
+  send: 'Send',
+  clear: 'Clear',
 
   //feedback
   feedback_reasons: 'Reasons for joining the app: ',

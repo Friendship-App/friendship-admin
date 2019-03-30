@@ -317,6 +317,7 @@ export class Tags extends React.Component {
                 btnName="+ Add"
                 labelName="+ Add new tag"
                 addTags
+                submitOnClear={false}
                 onSubmit={(newTag) =>{
                   this.props.addTag(newTag.value);
                 }}
