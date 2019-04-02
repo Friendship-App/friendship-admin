@@ -14,7 +14,7 @@ import _ from 'lodash';
 import Typography from 'material-ui/Typography';
 
 import Paper from 'material-ui/Paper';
-import theme from '../utils/theme';
+import theme from '../../utils/theme';
 
 import { FormControlLabel } from 'material-ui/Form';
 import Switch from 'material-ui/Switch';
@@ -23,10 +23,10 @@ import DeleteIcon from 'material-ui-icons/Delete';
 import Edit from 'material-ui-icons/Edit';
 
 import { DialogContentText } from 'material-ui/Dialog';
-import DialogWithButtons from '../components/DialogWithButtons';
+import DialogWithButtons from '../../components/DialogWithButtons';
 
-import rest from '../utils/rest';
-import InputHandler from '../components/InputHandler';
+import rest from '../../utils/rest';
+import InputHandler from '../../components/InputHandler';
 import Dialog from 'material-ui/Dialog/Dialog';
 import DialogTitle from 'material-ui/Dialog/DialogTitle';
 import DialogContent from 'material-ui/Dialog/DialogContent';
