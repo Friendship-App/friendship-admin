@@ -10,6 +10,8 @@ import Table, {
   TableRow,
   TableCell,
 } from 'material-ui/Table';
+import _ from 'lodash';
+import Typography from 'material-ui/Typography';
 
 import Paper from 'material-ui/Paper';
 import theme from '../utils/theme';
@@ -317,6 +319,60 @@ export class Tags extends React.Component {
     </div>
   );
 
+  renderTable = tags => (
+    <Table>
+      <TableHead>
+        <TableRow>
+          <TableCell>
+            {this.props.intl.formatMessage({ id: 'tagId' })}
+          </TableCell>
+          <TableCell>
+            {this.props.intl.formatMessage({ id: 'tagName' })}
+          </TableCell>
+          <TableCell>
+            {this.props.intl.formatMessage({ id: 'tagLoves' })}
+          </TableCell>
+          <TableCell>
+            {this.props.intl.formatMessage({ id: 'tagHates' })}
+          </TableCell>
+          <TableCell>
+            {this.props.intl.formatMessage({ id: 'tagCreator' })}
+          </TableCell>
+          <TableCell>
+            {this.props.intl.formatMessage({ id: 'tagCreationdate' })}
+          </TableCell>
+          <TableCell>
+            {this.props.intl.formatMessage({ id: 'tagRelatedEvent' })}
+          </TableCell>
+        </TableRow>
+      </TableHead>
+      <TableBody>
+        {// Loop over each user and render a <TableRow>
+        tags.map(tag => this.renderTagRow(tag))}
+      </TableBody>
+    </Table>
+  );
+
+  renderTags = type => {
+    const tags = this.props.tags.data;
+    const alternatingTags = _.filter(tags, tag => tag.type === type);
+
+    return (
+      <div>
+        <Typography style={{ padding: 8 }} type="headline">
+          {this.props.intl.formatMessage({ id: `tag_${type}_title` })}
+        </Typography>
+        {this.renderTable(alternatingTags)}
+      </div>
+    );
+  }
+
+  renderAlternatingTags = () =>
+    this.renderTags('alternating');
+
+  renderBaseTags = () =>
+    this.renderTags('base');
+
   /**
    * Render the tag list
    *
@@ -352,38 +408,8 @@ export class Tags extends React.Component {
             </Paper>
           </Grid>
         </Grid>
-
-        <Table>
-          <TableHead>
-            <TableRow>
-              <TableCell>
-                {this.props.intl.formatMessage({ id: 'tagId' })}
-              </TableCell>
-              <TableCell>
-                {this.props.intl.formatMessage({ id: 'tagName' })}
-              </TableCell>
-              <TableCell>
-                {this.props.intl.formatMessage({ id: 'tagLoves' })}
-              </TableCell>
-              <TableCell>
-                {this.props.intl.formatMessage({ id: 'tagHates' })}
-              </TableCell>
-              <TableCell>
-                {this.props.intl.formatMessage({ id: 'tagCreator' })}
-              </TableCell>
-              <TableCell>
-                {this.props.intl.formatMessage({ id: 'tagCreationdate' })}
-              </TableCell>
-              <TableCell>
-                {this.props.intl.formatMessage({ id: 'tagRelatedEvent' })}
-              </TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {// Loop over each user and render a <TableRow>
-            this.props.tags.data.map(tag => this.renderTagRow(tag))}
-          </TableBody>
-        </Table>
+        {this.renderAlternatingTags()}
+        {this.renderBaseTags()}
       </div>
     );
   }

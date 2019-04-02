@@ -63,6 +63,8 @@ export default {
   tagStatus: '',
   tagCreationDate: '',
   tagRelatedEvent: '',
+  tag_alternating_title: 'Vaihtuvat tägit',
+  tag_base_title: 'Perus tägit',
 
   // Push notifications view
   pushNotifications_new_push_notification: 'Uusi push-ilmoitus',

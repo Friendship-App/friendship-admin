@@ -71,6 +71,8 @@ export default {
   tagStatus: 'Status',
   tagCreationDate: 'Creation date',
   tagRelatedEvent: 'Related event',
+  tag_alternating_title: 'Alternating tags',
+  tag_base_title: 'Base tags',
 
   // Push notifications view
   pushNotifications_new_push_notification: 'New push-notification',
