@@ -31,6 +31,7 @@ import Dialog from 'material-ui/Dialog/Dialog';
 import DialogTitle from 'material-ui/Dialog/DialogTitle';
 import DialogContent from 'material-ui/Dialog/DialogContent';
 import DialogActions from 'material-ui/Dialog/DialogActions';
+import AddTagForm from './AddTagForm';
 
 const mapStateToProps = state => ({
   tags: state.filteredTags || state.taglist,
@@ -86,7 +87,7 @@ const mapDispatchToProps = dispatch => ({
       rest.actions.addTag(
         null,
         {
-          body: JSON.stringify({ name: newtag }),
+          body: JSON.stringify({ ...newtag }),
         },
         () => dispatch(rest.actions.taglist()),
       ),
@@ -385,7 +386,6 @@ export class Tags extends React.Component {
         <Grid container style={{ width: '100vw' }}>
           <Grid item xs={12}>
             <Paper style={theme.paper}>
-              {/*InputHandler handels both filtering and add new tag. is found in components*/}
               <InputHandler
                 btnName="Go"
                 labelName="Filter"
@@ -396,15 +396,7 @@ export class Tags extends React.Component {
                 }}
               />
 
-              <InputHandler
-                btnName="+ Add"
-                labelName="+ Add new tag"
-                addTags
-                submitOnClear={false}
-                onSubmit={newTag => {
-                  this.props.addTag(newTag.value);
-                }}
-              />
+              <AddTagForm addTag={this.props.addTag} />
             </Paper>
           </Grid>
         </Grid>

@@ -73,6 +73,10 @@ export default {
   tagRelatedEvent: 'Related event',
   tag_alternating_title: 'Alternating tags',
   tag_base_title: 'Base tags',
+  tag_add: 'Add tag',
+  tag_type_alternating: 'Alternating',
+  tag_type_base: 'Base',
+  tag_type: 'Type',
 
   // Push notifications view
   pushNotifications_new_push_notification: 'New push-notification',
@@ -123,6 +127,7 @@ export default {
   Yes: 'Yes',
   send: 'Send',
   clear: 'Clear',
+  add: 'Add',
 
   //feedback
   feedback_reasons: 'Reasons for joining the app: ',
