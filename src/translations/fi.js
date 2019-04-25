@@ -56,13 +56,19 @@ export default {
 
   // Tag view
   tagId: '',
-  tagName: '',
+  tagName: 'Nimi',
   tagLoves: '',
   tagHates: '',
   tagCreator: '',
   tagStatus: '',
   tagCreationDate: '',
   tagRelatedEvent: '',
+  tag_alternating_title: 'Vaihtuvat tägit',
+  tag_base_title: 'Perus tägit',
+  tag_add: 'Lisää tägi',
+  tag_type_alternating: 'Vaihtuva',
+  tag_type_base: 'Perus',
+  tag_type: 'Tyyppi',
 
   // Push notifications view
   pushNotifications_new_push_notification: 'Uusi push-ilmoitus',
@@ -110,4 +116,5 @@ export default {
   edit: 'Muokkaa',
   send: 'Lähetä',
   clear: 'Tyhjennä',
+  add: 'Lisää',
 };
